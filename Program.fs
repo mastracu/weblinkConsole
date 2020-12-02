@@ -7,7 +7,7 @@ let app =
     choose
         [ GET >=> choose
             [ path "/" >=> OK "Index"
-              path "/hello" >=> OK "Hello!" ]
+              path "/hello" >=> OK "Hello Italy!" ]
           POST >=> choose
             [ path "/hello" >=> OK "Hello POST!" ] ]
 
