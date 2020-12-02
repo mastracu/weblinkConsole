@@ -13,11 +13,10 @@ let app =
             [ path "/hello" >=> OK "Hello POST!" ] ]
 
 let config = 
-    let port = "8080"
     let ipZero = IPAddress.Parse("0.0.0.0")
 
     { defaultConfig with
-        bindings=[ (HttpBinding.create HTTP ipZero (uint16 8083)) ] }
+        bindings=[ (HttpBinding.create HTTP ipZero (uint16 8080)) ] }
 
 [<EntryPoint>]
 let main argv =
