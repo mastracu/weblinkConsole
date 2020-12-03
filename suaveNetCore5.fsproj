@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="console.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="jsonhelper.fs" />
     <Compile Include="b64.fs" />
     <Compile Include="ZebraWebSocket.fs" />
@@ -16,6 +19,8 @@
     <Compile Include="labelbuilder.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
