@@ -10,5 +10,5 @@ echo "starting container:"
 docker run -d \
   -it \
   -p8083:8083 \
-  --mount type=bind,source="$(pwd)"/../zebrafirmware,target=/src/firmware \
+  --mount type=bind,source="$(pwd)"/../zebrafirmware,target=/App/firmware \
   $1

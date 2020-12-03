@@ -23,7 +23,7 @@ type FwFile =
 
 let fwFileList() = json<FwFile array> (
                       [|"*.zpl";"*.ZPL";"*.NRD";"*.nrd"|]
-                      |> (Array.map (fun filter -> Directory.GetFiles("./firmware", filter)) >> Array.concat)
+                      |> (Array.map (fun filter -> Directory.GetFiles(Path.GetFullPath "./firmware", filter)) >> Array.concat)
                       |> (Array.map (fun s -> {fwFileName = Path.GetFileName s}) )
                     )
 
