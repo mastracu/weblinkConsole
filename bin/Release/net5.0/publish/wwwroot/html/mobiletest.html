@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<title>ZEBRA RETURNS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3mobile.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
+
+<html>
+
+<head>
+    <link href="./node_modules/jquery.tabulator/dist/css/tabulator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+        }
+
+        .button-left {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            margin-left: 4px;
+        }
+
+        .button:hover {
+            background: green;
+        }
+
+        .form {
+            margin-bottom: 25px;
+            margin-left: 4px;
+        }
+
+        #example-table {
+            float: left;
+            margin-bottom: 25px;
+        }
+
+        #shipmentchoices-table {
+            float: left;
+            margin-bottom: 25px;
+        }
+
+        #printers-div {
+            width: 300px;
+            margin-bottom: 25px;
+            margin-left: 4px;
+        }
+
+        .left-div {
+            float: left;
+        }
+
+        .left-div-margin {
+            float: left;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+
+
+
+<body onload="document.getElementById('ordernum').innerHTML = 'Order #'+ cur_order_num">
+
+
+    <script>
+
+        function getRndNum(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        var cur_order_num = getRndNum(100000, 999999);
+
+        function randomString(length, chars) {
+            var result = '';
+            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+            return result;
+        }
+
+        function shuffle(a) {
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function getRndSKU() {
+            //return Math.random().toString(36).slice(2);
+            return randomString(2, '0123456789') + '-' + randomString(3, 'ABCDEFGHJKLMNPQRSTUVWXYZ');
+        }
+
+        var itemsDescriptions = ['Nike shoes', 'Napapijri bag', 'Cutlery 36pcs', 'Screws 100g', 'HP Laptop 13inch', 'Motorola Hc4 Phone', 'Tomatoe Soup 23kg', 'Olive tree 80cm', 'Water 1cu.m', 'Rotowash Power1', 'Dior Homme 50ml', 'Shopping Cart Black01', 'Sony SoundBass BigX', 'Rowenta VR7040', 'Walfront Pyramid', 'Yagi Antenna 3el.', 'RCYAGO Gas Detector', 'Vansky UV Led Lamp', 'Man Down Zipper', 'RADEX Geiger Counter', 'Morse Key Traditional'];
+        shuffle(itemsDescriptions);
+
+        var itemsPrices = [120.99, 103.40, 99.90, 110.15, 201.01, 176.82, 93.12, 223.99, 81.15, 581.11];
+        shuffle(itemsPrices);
+
+
+
+    </script>
+
+
+
+    <header class="w3-top w3-bar w3-theme">
+        <button class="w3-bar-item w3-button w3-xxlarge w3-hover-theme">&#9776;</button>
+        <h2 class="w3-bar-item">Zebra Return</h2>
+    </header>
+
+    <div class="w3-container" style="margin-top:90px">
+        <hr>
+        <div class="w3-cell-row">
+
+            <div class="w3-cell w3-container">
+                <h3 id="ordernum"></h3>
+                <p id="subtitle1">Choose one item you want to return</p>
+            </div>
+
+        </div>
+        <div id="example-table"></div>
+        <hr style="clear:both;">
+        <div id="shipmentchoices-table"></div>
+        <hr style="clear:both;">
+        <div id="button_checkout">
+            <button id="newrow-button" class="button-left" onclick="showShipmentBarcode()">
+                <span class="glyphicon glyphicon-barcode"> I'm done!</span>
+            </button>
+        </div>
+
+        <hr>
+        <div id="finaldiv" class="w3-cell-row" style="display:none;">
+            <div id="bc_ndzl" class="w3-cell" style="width:30%">
+
+            </div>
+            <div class="w3-cell w3-container">
+                <h2>You're almost done!</h2>
+                <p>Walk to your preferred Parcel Shop</p>
+                <p>Scan the barcode, stick the label on your parcel and ship it!</p>
+            </div>
+        </div>
+        <hr>
+
+        <hr>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="jquery-barcode.js"></script>
+    <script type="text/javascript" src="./node_modules/jquery.tabulator/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript">
+
+        $("#example-table").tabulator({
+            selectable: 1,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                { title: "SKU", field: "sku", sorter: "number", width: 90, align: "left" },
+                { title: "Description", field: "description", sorter: "string", align: "left", width: 200 },
+                { title: "Price (€)", field: "price", width: 110, sorter: "number", validator: ["float", "required"], align: "right", sortable: false },
+            ],
+        });
+
+
+
+        var itemstolist = [];
+        for (var i = 0; i < getRndNum(1, 4); i++) {
+            itemstolist.push({ id: i, sku: getRndSKU(), description: itemsDescriptions[i], price: itemsPrices[i] });
+        }
+
+        $("#example-table").tabulator("setData", itemstolist);
+
+
+        $("#shipmentchoices-table").tabulator({
+            selectable: 1,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                { title: "Shipment Type", field: "description", sorter: "string", align: "left", width: 350 },
+                { title: "Price (€)", field: "price", width: 110, sorter: "string", align: "right", sortable: false },
+                { title: "Time", field: "time", width: 90, sorter: "string", align: "right", sortable: false },
+            ],
+        });
+        var choices_for_shipment = [
+            { id: 1, description: "Normal", price: "free", time: "3-day" },
+            { id: 2, description: "Urgent (I want my money back asap)", price: "12.50", time: "1-day" },
+            { id: 3, description: "I have a discount code", price: "---", time: "N/A" },
+        ];
+        $("#shipmentchoices-table").tabulator("setData", choices_for_shipment);
+
+
+        function showShipmentBarcode() {
+
+            var selectedItem = $("#example-table").tabulator("getSelectedData");
+            var selectedShipmentType = $("#shipmentchoices-table").tabulator("getSelectedData");
+
+            if (selectedItem.length == 0) {
+                alert("No products selected to return.")
+            }
+            else {
+                if (selectedShipmentType.length == 0) {
+                    alert("No Shipment Type selected.")
+                }
+                else {
+                    var transaction_epoch = Date.now() / 1000;
+                    var barcodetobescanned =
+                        "{\"epoch\":" + transaction_epoch +
+                        ",\"order\":" + cur_order_num +
+                        ",\"returnItem\":" + JSON.stringify(selectedItem) +
+                        ",\"returnType\":" + JSON.stringify(selectedShipmentType) +
+                        "}"
+                        ;
+
+                    document.getElementById('finaldiv').style.display = 'block';
+                    document.getElementById('subtitle1').style.display = 'none';
+                    document.getElementById('example-table').style.display = 'none';
+                    document.getElementById('shipmentchoices-table').style.display = 'none';
+
+                    $("#bc_ndzl").barcode('' + barcodetobescanned, "datamatrix", { moduleSize: 4, showHRI: false });
+
+                    //alert("generating barcode for "+barcodetobescanned);
+                }
+            }
+        };
+    </script>
+
+
+
+</body>
+</html>

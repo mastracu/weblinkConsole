@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="./node_modules/jquery.tabulator/dist/css/tabulator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        body, html {
+            width: 100%;
+            height: 95%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+        }
+
+            .button:hover {
+                background: green;
+            }
+
+        .top-div {
+        }
+
+        .left-div-margin {
+            margin-left: 4px;
+            margin-right: 4px;
+            height: 80%
+        }
+
+        .button-margin {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-div" class="top-div">
+        <h1 style="text-align: center;">WebLinkEndpoint Log Table</h1>
+        <button id="logclear-button" class="button-margin">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
+        <button id="refresh-button" class="button">
+            <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+        <button id="download-button" class="button">
+            <span class="glyphicon glyphicon-download"></span>
+        </button>
+    </div>
+
+    <div id="example-table" class="left-div-margin"></div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./node_modules/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="./node_modules/jquery.tabulator/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript">
+
+        $("#logclear-button").click(function () {
+            $.get("clearlog", function () { $("#example-table").tabulator("setData", "logdump.json"); });
+        });
+
+        $("#example-table").tabulator({
+            selectable: 1,
+            layout: "fitDataFill", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                { title: "Timestamp", field: "timestamp", sorter: "datetime", width: 180, align: "left", headerFilter: "input", headerFilterPlaceholder: "Since", headerFilterFunc: ">=" },
+                { title: "Log Entry", field: "txt", sorter: "string", align: "left", headerFilter: "input", headerFilterPlaceholder: "Contains", headerFilterFunc: "like" },
+            ],
+            rowSelectionChanged: function (data, rows) {
+                //update selected row counter on selection change
+            },
+        });
+
+        $("#example-table").tabulator("setData", "logdump.json");
+
+        $("#refresh-button").click(function () {
+            $("#example-table").tabulator("setData", "logdump.json");
+        });
+
+        $("#download-button").click(function () {
+            $("#example-table").tabulator("download", "csv", "log.csv", { delimiter: "," });
+        });
+
+    </script>
+</body>
+</html>

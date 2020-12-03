@@ -6,19 +6,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\html\logtable.html" />
-    <Content Include="wwwroot\html\mobiletest.html" />
-    <Content Include="wwwroot\html\monaco.html" />
-    <Content Include="wwwroot\html\console.html">
+    <Content Include="wwwroot\logtable.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="wwwroot\js\jquery-barcode.js">
+    <Content Include="wwwroot\mobiletest.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="wwwroot\json\defaultinventory.json">
+    <Content Include="wwwroot\monaco.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="wwwroot\json\printerdefaultapp.json">
+    <Content Include="wwwroot\console.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\jquery-barcode.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="json\defaultinventory.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="json\printerdefaultapp.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="jsonhelper.fs" />
