@@ -68,7 +68,9 @@ let config =
 
     { defaultConfig with
         bindings=[ (if port = null then HttpBinding.create HTTP ipZero (uint16 8083)  // 3 Nov - it was ipZero
-                    else HttpBinding.create HTTP ipZero (uint16 port)) ] }
+                    else HttpBinding.create HTTP ipZero (uint16 port)) ]
+        homeFolder= Some "./wwwroot/html"
+    }
 
     
 let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
@@ -487,4 +489,5 @@ let app  : WebPart =
 let main _ =
   startWebServer config app
   0
-  
+
+SuaveConfig.  

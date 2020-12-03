@@ -1,0 +1,110 @@
+[
+    {
+        "description": "House of Sleep:J.Coe",
+        "eanCode": "9780241967744",
+        "sku": "1212121216",
+        "unitPrice": 7.99
+    },
+    {
+        "description": "Pasta dough",
+        "eanCode": "9421021461303",
+        "sku": "1212121215",
+        "unitPrice": 1.30
+    },
+    {
+        "description": "Norda friz 50 cl",
+        "eanCode": "8007500111023",
+        "sku": "72432423",
+        "unitPrice": 0.80
+    },
+    {
+        "description": "Norda naturale 50cl",
+        "eanCode": "8007500111238",
+        "sku": "1212121212",
+        "unitPrice": 0.80
+    },
+    {
+        "description": "MacBookAir",
+        "eanCode": "5601007425638",
+        "sku": "1212121218",
+        "unitPrice": 1221.80
+    },
+    {
+        "description": "Svelto Lemon100",
+        "eanCode": "8000630720066",
+        "sku": "30720066",
+        "unitPrice": 4.80
+    },
+    {
+        "description": "IZIPIZI glasses",
+        "eanCode": "3760222627276",
+        "sku": "76013419",
+        "unitPrice": 23.00
+    },
+    {
+        "description": "Ray-Ban Aviator Large",
+        "eanCode": "805367200481",
+        "sku": "RB1821",
+        "unitPrice": 80.5
+    },
+    {
+        "description": "Gucci Donna Black",
+        "eanCode": "889652049588",
+        "sku": "GG0053S",
+        "unitPrice": 260
+    },
+    {
+        "description": "Prada Uomo Black",
+        "eanCode": "8053672573664",
+        "sku": "PR 19SS",
+        "unitPrice": 215
+    },
+    {
+        "description": "Dolce & Gabbana",
+        "eanCode": "8053672859966",
+        "sku": "DG6115",
+        "unitPrice": 195
+    },
+    {
+        "description": "Ray-Ban Erika",
+        "eanCode": "8053672495744",
+        "sku": "RB9908",
+        "unitPrice": 162
+    },
+    {
+        "description": "Gucci Uomo",
+        "eanCode": "8896520475600",
+        "sku": "GC4456",
+        "unitPrice": 250
+    },
+    {
+        "description": "Oakley Holbrook",
+        "eanCode": "8883922697990",
+        "sku": "OKLY008",
+        "unitPrice": 232
+    },
+    {
+        "description": "Ray-Ban Donna",
+        "eanCode": "8053672358605",
+        "sku": "RB6521",
+        "unitPrice": 142
+    },
+    {
+        "description": "Burberry Donna",
+        "eanCode": "8053672163469",
+        "sku": "BRY6744",
+        "unitPrice": 175
+    },
+    {
+        "description": "Michael Kors Suz",
+        "eanCode": "7251259870804",
+        "sku": "MK00334",
+        "unitPrice": 140
+    },
+    {
+        "description": "Emporio Armani",
+        "eanCode": "8053672035704",
+        "sku": "EA0089",
+        "unitPrice": 115
+    }
+]
