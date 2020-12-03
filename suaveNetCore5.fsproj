@@ -6,16 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="docker-buildandrun.sh" />
     <Content Include="wwwroot\tabulator.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\tabulator.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\editor.main.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\editor.main.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="wwwroot\tabulator.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\logtable.html">
@@ -46,6 +47,8 @@
     <Compile Include="labelbuilder.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
