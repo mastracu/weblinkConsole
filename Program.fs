@@ -69,7 +69,7 @@ let config =
     { defaultConfig with
         bindings=[ (if port = null then HttpBinding.create HTTP ipZero (uint16 8083)  // 3 Nov - it was ipZero
                     else HttpBinding.create HTTP ipZero (uint16 port)) ]
-        homeFolder= Some "wwwroot"
+        homeFolder= Some (Path.GetFullPath "./wwwroot")
     }
 
     
