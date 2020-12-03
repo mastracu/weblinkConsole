@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="docker-buildandrun.sh" />
+    <None Include="Dockerfile">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="docker-buildandrun.sh">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <Content Include="wwwroot\tabulator.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
