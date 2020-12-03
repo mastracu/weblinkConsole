@@ -1,6 +1,6 @@
 namespace Suave
 
-module WebSocket =
+module ZebraWebSocket =
 
   open Suave.Sockets
   open Suave.Sockets.Control

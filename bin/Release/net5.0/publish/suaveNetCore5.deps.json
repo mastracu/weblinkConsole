@@ -9,6 +9,7 @@
       "suaveNetCore5/1.0.0": {
         "dependencies": {
           "FSharp.Core": "5.0.0",
+          "FSharp.Data": "3.3.3",
           "Suave": "2.5.6"
         },
         "runtime": {
@@ -64,6 +65,17 @@
           }
         }
       },
+      "FSharp.Data/3.3.3": {
+        "dependencies": {
+          "FSharp.Core": "5.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FSharp.Data.dll": {
+            "assemblyVersion": "3.3.3.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "Suave/2.5.6": {
         "dependencies": {
           "FSharp.Core": "5.0.0"
@@ -89,6 +101,13 @@
       "sha512": "sha512-iHoYXA0VaSQUONGENB1aVafjDDZDZpwu39MtaRCTrmwFW/cTcK0b2yKNVYneFHJMc3ChtsSoM9lNtJ1dYXkHfA==",
       "path": "fsharp.core/5.0.0",
       "hashPath": "fsharp.core.5.0.0.nupkg.sha512"
+    },
+    "FSharp.Data/3.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-O+fV9oPNktESFngvTzPIQUhTdQGNX0XYXToL1l7+3jE46Y7tp8Ux4FkTMzj8wa8QV07l4sY4pJ7bBppGDi3Lsw==",
+      "path": "fsharp.data/3.3.3",
+      "hashPath": "fsharp.data.3.3.3.nupkg.sha512"
     },
     "Suave/2.5.6": {
       "type": "package",
