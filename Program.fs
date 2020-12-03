@@ -489,5 +489,3 @@ let app  : WebPart =
 let main _ =
   startWebServer config app
   0
-
-SuaveConfig.  
