@@ -65,7 +65,7 @@ let doFwUpgrade (fwJob:FwJobObj) (agent: ChannelAgent) (mLogAgent:LogAgent) =
            else
               ()
 
-        do mLogAgent.AppendToLog (sprintf "Fw Download started (%u frames of %d bytes queued-up)  %s > %s" acc.Value chunckSize fwJob.fwFile fwJob.id )
+        do mLogAgent.AppendToLog (sprintf "Upload started (%u frames of %d bytes are being queued-up for transmission)  %s > %s" acc.Value chunckSize fwJob.fwFile fwJob.id )
         do mLogAgent.AppendToLog (sprintf "Printer %s will not respond until fw upgrade process is complete" fwJob.id )
 
     } |> Async.Start
