@@ -21,9 +21,11 @@ type FwFile =
       fwFileName : string;
    }
 
+let fwFolderFullPath = Path.GetFullPath "./firmware"
+
 let fwFileList() = json<FwFile array> (
                       [|"*.zpl";"*.ZPL";"*.NRD";"*.nrd"|]
-                      |> (Array.map (fun filter -> Directory.GetFiles(Path.GetFullPath "./firmware", filter)) >> Array.concat)
+                      |> (Array.map (fun filter -> Directory.GetFiles(fwFolderFullPath, filter)) >> Array.concat)
                       |> (Array.map (fun s -> {fwFileName = Path.GetFileName s}) )
                     )
 
@@ -45,7 +47,7 @@ let doFwUpgrade (fwJob:FwJobObj) (agent: ChannelAgent) (mLogAgent:LogAgent) =
         let finished = ref false
         let acc = ref 0L
 
-        use stream = new FileStream ("./" + fwJob.fwFile, FileMode.Open)
+        use stream = new FileStream (fwFolderFullPath + fwJob.fwFile, FileMode.Open)
         do mLogAgent.AppendToLog (sprintf "Starting fw upgrade %s > %s " fwJob.fwFile fwJob.id )
 
         while not finished.Value do
