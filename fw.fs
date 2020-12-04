@@ -21,7 +21,7 @@ type FwFile =
       fwFileName : string;
    }
 
-let fwFolderFullPath = Path.GetFullPath "./firmware"
+let fwFolderFullPath = Path.GetFullPath "./firmware/"
 
 let fwFileList() = json<FwFile array> (
                       [|"*.zpl";"*.ZPL";"*.NRD";"*.nrd"|]
