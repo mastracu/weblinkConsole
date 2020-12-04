@@ -6,14 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "suaveNetCore5/1.0.0": {
+      "weblinkConsole/1.0.0": {
         "dependencies": {
           "FSharp.Core": "5.0.0",
           "FSharp.Data": "3.3.3",
           "Suave": "2.5.6"
         },
         "runtime": {
-          "suaveNetCore5.dll": {}
+          "weblinkConsole.dll": {}
         }
       },
       "FSharp.Core/5.0.0": {
@@ -90,7 +90,7 @@
     }
   },
   "libraries": {
-    "suaveNetCore5/1.0.0": {
+    "weblinkConsole/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

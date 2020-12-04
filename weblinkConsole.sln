@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "suaveNetCore5", "suaveNetCore5.fsproj", "{42BF385D-1829-4EB0-BBFC-4A5A8334A01F}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "weblinkConsole", "weblinkConsole.fsproj", "{42BF385D-1829-4EB0-BBFC-4A5A8334A01F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
