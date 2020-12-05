@@ -800,7 +800,7 @@
                         var selText = currentLine.substr(selToken.offset, selTokenEnd - selToken.offset);
                         console.log("selText:" + selText);
 
-                        return xhr('https://kotlin-rain.appspot.com/zpl', selText).then(function (res) {
+                        return xhr('https://cxnt48.com/zpl', selText).then(function (res) {
                             return {
                                 // range: new monaco.Range(1, 1, model.getLineCount(), model.getLineMaxColumn(model.getLineCount())),
                                 range: new monaco.Range(position.lineNumber, selToken.offset, position.lineNumber, selTokenEnd),
@@ -883,7 +883,8 @@
         $("#zplref-button").click(function () {
             var selection = window.getSelection().toString();
             var http = new XMLHttpRequest();
-            var url = 'https://kotlin-rain.appspot.com/zpl';
+            // https://kotlin-rain.appspot.com/zpl;
+            var url = 'https://cxnt48.com/zpl';
             http.open('POST', url, true);
 
             //Send the proper header information along with the request
