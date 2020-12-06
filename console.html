@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="./tabulator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 11px 15px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+            .button:hover {
+                background: green;
+            }
+
+        .form {
+            margin-bottom: 5px;
+            margin-left: 4px;
+        }
+
+        #live-log-table {
+            margin-left: 0px;
+            margin-bottom: 5px;
+        }
+
+        #jsoncmd {
+            height: 42px;
+            font-size: 12pt;
+            vertical-align: top;
+        }
+
+        .left-div {
+            width: 1300px;
+            margin-left: 0px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .live-monitor-div {
+            width: 99%;
+            height: 40%;
+            left: 0px;
+            margin-left: 4px;
+            margin-bottom: 10px;
+            position: fixed;
+            bottom: 0;
+        }
+
+        #printers-table {
+            width: 50%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #mainblock {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            width: 99%;
+            margin-left: 4px;
+            margin-bottom: 20px;
+        }
+
+        .form {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            margin-left: 0px;
+        }
+
+        .raw-tabArea {
+            height: 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #999;
+        }
+
+        .raw-tab {
+            height: 20px;
+            line-height: 20px;
+            box-sizing: border-box;
+            color: #999;
+            padding: 0 8px;
+            border: 1px solid #999;
+            border-bottom: 0;
+            cursor: pointer;
+            float: left;
+        }
+
+            .raw-tab.active {
+                color: black;
+                border-bottom: 1px solid white;
+            }
+
+        .raw-editor-container {
+            border: 1px solid #999;
+            border-top: 0;
+        }
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-left: 4px;
+            width: 99%;
+        }
+
+            /* Style the buttons that are used to open the tab content */
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+
+                /* Change background color of buttons on hover */
+                .tab button:hover {
+                    background-color: #ddd;
+                }
+
+                /* Create an active/current tablink class */
+                .tab button.active {
+                    background-color: #ccc;
+                }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: hidden; /* No scroll allowed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            height: 80%;
+            overflow: scroll !important;
+        }
+
+        /* The Close Button */
+        .closeModal {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .closeModal:hover,
+            .closeModal:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+        }
+
+        textarea {
+            border-style: solid;
+            border-width: medium;
+        }
+
+        textarea:focus {
+            outline: none;
+        }
+
+        /* https://alligator.io/css/collapsible/ */
+
+        input[type='checkbox'] {
+            display: none;
+        }
+        .lbl-toggle {
+            display: block;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 1rem;
+            /* color: #A77B0E; */
+            color: white;
+            background: #FAE042;
+            /* background: #4CAF50; */
+            cursor: pointer;
+            border-radius: 7px;
+            transition: all 0.25s ease-out;
+        }
+
+        .lbl-toggle::before {
+                content: ' ';
+                display: inline-block;
+                border-top: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                border-left: 5px solid currentColor;
+                vertical-align: middle;
+                margin-right: .7rem;
+                transform: translateY(-2px);
+                transition: transform .2s ease-out;
+        }
+        .collapsible-content .content-inner {
+            background: rgba(250, 224, 66, .2);
+            border-bottom: 1px solid rgba(250, 224, 66, .45);
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            padding: .5rem 1rem;
+        }
+        .collapsible-content {
+            max-height: 0px;
+            overflow: hidden;
+            transition: max-height .25s ease-in-out;
+        }
+        .toggle:checked + .lbl-toggle + .collapsible-content {
+            max-height: 350px;
+        }
+        .toggle:checked + .lbl-toggle::before {
+            transform: rotate(90deg) translateX(-3px);
+        }
+
+        .toggle:checked + .lbl-toggle {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'JSON cmd')">CONFIG channel console</button>
+        <button class="tablinks" onclick="openTab(event, 'MONACO')" id="defaultOpen">RAW channel console</button>
+        <button class="tablinks" onclick="openTab(event, 'CISDFCRC16')">! CISDFCRC16</button>
+        <button class="tablinks" onclick="openTab(event, 'PROGRAM')">! PROGRAM</button>
+        <button class="tablinks" onclick="openTab(event, 'Price label')" id="priceTab">ZPL price label</button>
+        <button class="tablinks" style="float:right" onclick="openTab(event, 'Info')">Guide to applications demonstration</button>
+        <button class="tablinks" style="float:right" onclick="openTab(event, 'Settings')">Static application assignment</button>
+    </div>
+    <div id="mainblock">
+        <div id="JSON cmd" class="tabcontent">
+            <input type="text" list="commands" placeholder="Json cmd" id="jsoncmd" size="65" spellcheck="false" />
+            <datalist id="commands">
+                <option value="{}{&#34apl.enable&#34:null}">
+                <option value="{}{&#34appl&#34:null}">
+                <option value="{}{&#34bluetooth.short_address&#34:null}">
+                <option value="{}{&#34capture.channel1.port&#34:null}">
+                <option value="{}{&#34device.languages&#34:null}">
+                <option value="{}{&#34device.location&#34:null}">
+                <option value="{}{&#34device.reset&#34:&#34&#34}">
+                <option value="{}{&#34device.restore_defaults&#34:&#34all&#34}">
+                <option value="{}{&#34device.sensor_select&#34:null}">
+                <option value="{}{&#34device.uptime&#34:null}">
+                <option value="{}{&#34device.printhead.test.detail&#34:null}">
+                <option value="{}{&#34device.printhead.test.summary&#34:null}">
+                <option value="{}{&#34device.printhead.odometer&#34:null}">
+                <option value="{}{&#34device.serial_numbers.printhead&#34:null}">
+                <option value="{}{&#34device.serial_numbers.printhead_date&#34:null}">
+                <option value="{}{&#34device.feature.head_element_test&#34:&#34&#34}">
+                <option value="{}{&#34display.language&#34:null}">
+                <option value="{}{&#34display.text&#34:null}">
+                <option value="{}{&#34head.element_test&#34:&#34&#34}">
+                <option value="{}{&#34ezpl.media_type&#34:null}">
+                <option value="{}{&#34ezpl.print_method&#34:null}">
+                <option value="{}{&#34ezpl.print_width&#34:null}">
+                <option value="{}{&#34file.cert.expiration&#34:null}">
+                <option value="{}{&#34file.dir&#34:&#34E:&#34}">
+                <option value="{}{&#34head.resolution.in_dpi&#34:null}">
+                <option value="{}{&#34ip.mirror&#34:null}">
+                <option value="{}{&#34ip.mirror.fetch&#34:&#34&#34}">
+                <option value="{}{&#34interface.network.active.ip_addr&#34:null}">
+                <option value="{}{&#34interface.network.active.cable_type&#34:null}">
+                <option value="{}{&#34memory&#34:null}">
+                <option value="{}{&#34odometer.rfid&#34:null}">
+                <option value="{}{&#34odometer.total_label_count&#34:null}">
+                <option value="{}{&#34odometer.user_label_count&#34:null}">
+                <option value="{}{&#34power&#34:null}">
+                <option value="{}{&#34power.health&#34:null}">
+                <option value="{}{&#34power.percent_full&#34:null}">
+                <option value="{}{&#34power.sleep.enable&#34:null}">
+                <option value="{}{&#34print.tone&#34:null}">
+                <option value="{}{&#34rfid.error.response&#34:null}">
+                <option value="{}{&#34rfid.position.program&#34:null}">
+                <option value="{}{&#34rfid.reader_1.power.read&#34:null}">
+                <option value="{}{&#34rfid.reader_1.power.write&#34:null}">
+                <option value="{}{&#34rfid.tag.calibrate&#34:&#34run&#34}">
+                <option value="{}{&#34ribbon.cartridge&#34:null}">
+                <option value="{}{&#34weblink.ip.conn1.location&#34:null}">
+                <option value="{}{&#34wlan.8021x.eap.username&#34:&#34ADuser&#34}">
+                <option value="{}{&#34wlan.private_key_password&#34:&#34pfxpwd&#34}">
+                <option value="{}{&#34zpl.calibrate&#34:&#34&#34}">
+                <option value="{}{&#34zpl.label_length&#34:null}">
+            </datalist>
+        </div>
+
+        <div id="Custom label" class="tabcontent">
+            <!--<textarea name="label" placeholder="key in or drag and drop" id="labelformat" cols="75" rows="10" spellcheck="false" ondrop="drop(event)" ondragover="allowDrop(event)"></textarea>-->
+            <div class="wrap-collabsible">
+                <input id="collapsible1" class="toggle" type="checkbox">
+                <label id="lblcollapsible1" for="collapsible1" class="lbl-toggle">Input 1</label>
+                <div class="collapsible-content">
+                    <div class="content-inner">
+                        <textarea name="label" placeholder="key in or drag and drop for input1" id="labelformat1" cols="75" rows="8" spellcheck="false" onfocus="myFunction(this.id)" ondrop="drop(event)" ondragover="allowDrop(event)"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-collabsible">
+                <input id="collapsible2" class="toggle" type="checkbox">
+                <label id="lblcollapsible2" for="collapsible2" class="lbl-toggle">Input 2</label>
+                <div class="collapsible-content">
+                    <div class="content-inner">
+                        <textarea name="label" placeholder="either key in or drag and drop for input2" id="labelformat2" cols="75" rows="1" spellcheck="false" onfocus="myFunction(this.id)" ondrop="drop(event)" ondragover="allowDrop(event)"></textarea>
+                    </div>
+                </div>
+            </div>
+            <p>
+                Objects in Flash:
+                <button type="button" value="^XA^HWE:*.*^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-certificate"></span> List
+                </button>
+                <button type="button" value="^XA^IDE:*.*^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </button>
+            </p>
+            <p>
+                Diagnostic info to host:
+                <button type="button" value="^XA^HH^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-list-alt"></span> Config Label
+                </button>
+                <button type="button" value="~HQES" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-scale"></span> System Status
+                </button>
+                <button type="button" value="~HD" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-dashboard"></span> Head
+                </button>
+                <button type="button" value="~HI" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-print"></span> Identification
+                </button>
+            </p>
+            <p>
+                Calibration:
+                <button type="button" value="~JC" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-film"></span> Media sensor calibration
+                </button>
+                <button type="button" value="~JG" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span> Media sensor profile
+                </button>
+                <button type="button" value="^XA^HR^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-object-align-horizontal"></span> RFID calibration
+                </button>
+            </p>
+            <p>
+                <a target="_blank" href="http://labelary.com/viewer.html">ZPL viewer</a>&emsp;
+                <button id="zplref-button" class="button">
+                    <span class="glyphicon glyphicon-book"></span>
+                </button>
+            </p>
+        </div>
+
+        <div id="Price label" class="tabcontent">
+            <div id="price-lookup-table" style=" overflow:hidden"></div>
+
+            <form id="newrowform" class="form">
+                <input type="text" placeholder="SKU" id="code" size="12" required>
+                <input type="text" id="description" placeholder="Description" size="17">
+                <input type="text" id="price" placeholder="Price" size="10" required>
+                <input type="text" id="ean" placeholder="Ean-13" size="15" required minlength="13" maxlength="13">
+            </form>
+            <button id="newrow-button" class="button">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <button id="deleterow-button" class="button">
+                <span class="glyphicon glyphicon-minus"></span>
+            </button>
+
+        </div>
+
+        <div id="CISDFCRC16" class="tabcontent">
+            <div id="drop_zone" style="border:dotted; width:500px; height:50px; text-align:center ">Drop files here<br />CISDFCRC16 header will be added automatically</div>
+            <output id="files2send"></output>
+        </div>
+
+        <div id="PROGRAM" class="tabcontent">
+            <div id="fw-table" style=" overflow:hidden"></div>
+        </div>
+
+        <div id="MONACO" class="tabcontent">
+            <div id="monacocontainer1" style="width:600px;height:220px;border:none;margin-bottom: 20px">
+                <div id="raw-tabArea" class="raw-tabArea" style="width:600px;height:20px;box-sizing:border-box;top:0;left:0">
+                    <span id="zpl1tab" class="raw-tab active" onclick="changerawTab(zpl1tab, 'zpl1')">1.ZPL</span>
+                    <span id="zpl2tab" class="raw-tab" onclick="changerawTab(zpl2tab, 'zpl2')">2.ZPL</span>
+                    <span id="zpl3tab" class="raw-tab" onclick="changerawTab(zpl3tab, 'zpl3')">3.ZPL</span>
+                </div>
+                <div id="raw-editorContainer" class="raw-editor-container" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:600px;height:200px;box-sizing:border-box;top:20px;left:0">
+                </div>
+            </div>
+            <p>
+                Objects in Flash:
+                <button type="button" value="^XA^HWE:*.*^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-certificate"></span> List
+                </button>
+                <button type="button" value="^XA^IDE:*.*^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </button>
+            </p>
+            <p>
+                Diagnostic info to host:
+                <button type="button" value="^XA^HH^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-list-alt"></span> Config Label
+                </button>
+                <button type="button" value="~HQES" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-scale"></span> System Status
+                </button>
+                <button type="button" value="~HD" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-dashboard"></span> Head
+                </button>
+                <button type="button" value="~HI" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-print"></span> Identification
+                </button>
+            </p>
+            <p>
+                Calibration:
+                <button type="button" value="~JC" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-film"></span> Media sensor calibration
+                </button>
+                <button type="button" value="~JG" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span> Media sensor profile
+                </button>
+                <button type="button" value="^XA^HR^XZ" class="btn btn-default btn-sm" draggable="true" ondragstart="drag(event)">
+                    <span class="glyphicon glyphicon-object-align-horizontal"></span> RFID calibration
+                </button>
+            </p>
+            <p>
+                <a target="_blank" href="http://labelary.com/viewer.html">ZPL viewer</a>&emsp;
+                <button id="zplref-button" class="button">
+                    <span class="glyphicon glyphicon-book"></span>
+                </button>
+            </p>
+        </div>
+
+        <button id="sendcmd-button" class="button" style="vertical-align: top">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <div id="printers-table"></div>
+        <button id="refresh-button" class="button" style="vertical-align: top">
+            <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+
+    </div>
+
+    <div id="Settings" class="tabcontent" style="margin-left: 4px;">
+        <div id="Static" class="col-md-12" >
+        </div>
+    </div>
+    
+    <div id="Info" class="tabcontent" style="margin-left: 4px;">
+        <div class="col-md-12">
+
+            <h1 id="fweblinkendpointforzebraprinters">F# WeblinkEndpoint for Zebra Printers</h1>
+
+
+
+            <p>Code <a target="_blank" href="https://github.com/mastracu/weblinkendpoint">here</a></p>
+            <p>Weblink Workbench and printer "application" demo tool. "application" here has a very specific meaning:</p>
+            <ul>
+                <li>a set of SGD configuration commands that redirect to cloud a specific input channel (USB, BT, SERIAL) - technically a list of JSON-SGD commands (typically a capture channel to variable and SGD-variable-change-alert setup)</li>
+                <li>some logic in the server that processes the alert and does something with it - technically an async computation expression that takes a string to a new string</li>
+            </ul>
+
+            <p>The 4 "applications" built into the server stem from 4 real-life use-cases where printer-redirected data is augmented / formatted appropriately before printing</p>
+
+            <ul>
+                <li>printing price labels (repricing) using ZQ label printer with Wifi and BT + CS4070 BT scanner</li>
+                <li>convertion of a legacy label received via USB into a new label preserving variable data</li>
+                <li>self-service label printing in parcel shops for return of goods purchased online</li>
+                <li>convertion of SVG label (dpi independent) into ZPL (TO BE IMPLEMENTED)</li>
+            </ul>
+
+            <h2 id="gettingstarted">Getting Started</h2>
+
+            <h3 id="demosessionsetup">Demo session setup</h3>
+
+            <p>
+                You will need to hook up your printer to the Internet
+            </p>
+            <p>
+                In order to do that, you may use "Configure Printer Connectivity" in Zebra Setup Utility.
+                I generally use Wifi printers and connect to ZGuest wireless network in Zebra office.
+            </p>
+
+            <p>You then specify the address of the weblink endpoint by issuing </p>
+
+            <pre><code>! U1 setvar "weblink.ip.conn1.location" "https://weblinktest.mastracu.it/websocketWithSubprotocol"
+            </code></pre>
+
+            <p>You then re-start / power-cycle the printer by issuing</p>
+
+            <pre><code>! U1 setvar "device.reset" ""
+            </code></pre>
+
+            <p>
+                Once the printer is connected, it will be listed in the printer table of the <a target="_blank" href="https://weblinkendpoint.mastracu.it/console.html">console</a>. You may need to click refresh button beside printer table.
+            </p>
+            <p>After printer is connected, calibrate the printer as needed by dragging "Media Sensor Calibration" into the Input1 window in "RAW Channel console" tab.</p>
+
+            <h3 id="notesformobileprinters">Notes for some mobile printers</h3>
+
+            <p>
+                On mobile printers like ZQ320 and ZQ310 (not on ZQ620), I have seen a behaviour where the printer will not stay in sleep mode (<a target="_blank" href="https://www.zebra.com/content/dam/zebra/software/en/application-notes/AppNote-SleepMode-v5.pdf">https://www.zebra.com/content/dam/zebra/software/en/application-notes/AppNote-SleepMode-v5.pdf</a>) if weblink is enabled.
+                The printer will awake seconds after entering sleep mode.
+                Because of this, I turn sleep mode off by issuing
+            </p>
+
+            <pre><code>! U1 setvar "power.sleep.enable" "off"
+            </code></pre>
+
+            <p>
+                Also while testing with ZQ310, I have noted mobile printer will shut down weblink connection after issuing battery low alert.
+                In my test battery low alert was issued at about 10% battery level (6.5 Volts) and printer did shut down at about 6% battery level (6.28 Volts)
+            </p>
+
+            <h3 id="sendingjsonconfigurationcommandstotheprinter">Sending JSON configuration commands to the printer</h3>
+
+            <p>Demonstrate how one can remotely send configuration commands to a printer or query printer data by sending commands from appselector page and checking response on logtable.</p>
+            <p>Some revealing commands to issue are</p>
+
+            <pre><code>{}{"ribbon.cartridge":null} 
+            </code></pre>
+
+            <p>on a ZD420 cartridge TT printer and</p>
+
+            <pre><code>{}{"power":null} 
+            </code></pre>
+
+            <p>on a mobile printer.</p>
+
+            <h3 id="repricingapplicationpricetag">Repricing application - <code>priceTag</code></h3>
+
+            <p>
+                Minimum label width: 5cms or 2 inches
+                Minimum label height: 3cms
+            </p>
+
+            <p>Follow the following steps to set it up</p>
+
+            <ol>
+                <li>Ensure the BT scanner is configured to CR-LF terminate the barcode (use 123 scan to generate the configuration barcode for your scanner). </li>
+                <li>Verify the printer is listed as connected in the the WebLinkEndPoint. Send the following json command to get the btaddress of the printer: </li>
+            <pre><code>{}{"bluetooth.short_address":null} 
+            </code></pre>
+            <p></p>
+                <li>From 123scan generate the Bluetooth Pairing barcode (Serial Port Profile - Master) by keying in the address retrieved in previous point.</li>
+                <li>Scan the barcode with CS4070 and the scanner should establish the BT connection with the printer (solid blue LED on the printer) </li>
+            </ol>
+
+            <p>From "ZPL price label" tab a add a new item in the table that you have handy in the meeting room.</p>
+
+            <p><strong>Please ensure barcode is 13-digits long as only EAN-13 barcodes are currently supported.</strong></p>
+
+            <p>
+                I can then go ahead and scan the barcode from the packaging.
+                A pricetag will be automatically printed if the barcode is found.
+                I can then change the price of the item in the table . I then scan the same product again and the label is printed with a different price.
+            </p>
+            <p>
+                By selecting a product and a printer I can also show how to print a label “remotely”.
+            </p>
+
+
+            <h3 id="labelconversionifadlabelconvertion">Label conversion - <code>ifadLabelConvertion</code></h3>
+
+            <p>
+                For the label conversion demo, I change the application associated with a 200dpi printer to ifadlabelconvertion.
+                Now everything I send to the printer via USB gets forwarded onto the cloud.
+            </p>
+
+            <p>Send file IFAAM004_2289143IFAAM004.txt via USB </p>
+
+            <pre><code>^XA^LH30,30^FO20,10^ADN80,50^FDIFAD INVENTORY^FS^FO20,80
+^ADN60,30^FDNOTEBOOK^FS^FO20,120^ADN30,10^FDS/N:^FS^FO80,120
+^ADN30,35^FD026442374753^FS^FO80,160^B3N,N,130,N,N^FD000000054986
+^FS^FO150,305^ADN30,35^FD000000054986^FS^XZ                              
+            </code></pre>
+
+            <p>and it gets converted to a quasi-equivalent 200 dpi label.</p>
+
+            <p>Render label with <a target="_blank" href="https://labelary.com/viewer.html">https://labelary.com/viewer.html</a></p>
+
+            <p>
+                Minimum label width: 5cms
+                Minimum label height: 3cms
+            </p>
+
+            <h3 id="shipmentlabellabeltogo">Shipment Label - <code>labelToGo</code></h3>
+
+            <p>Printer gets template id and var data via BT scanner - endpoint sends label down to printer</p>
+
+            <ol>
+                <li>Configure and pair BT scanner (see 1-3 in Repricing app)</li>
+                <li>Generate return barcode from <a target="_blank" href="https://weblink.mastracu.it/mobiletest.html">https://weblink.mastracu.it/mobiletest.html</a></li>
+                <li>Scan with BT scanner; label gets printed.</li>
+            </ol>
+
+            <h2 id="versioning">Versioning</h2>
+
+            <p>0.3 Jun 2019</p>
+
+
+        </div>
+    </div>
+
+    <div id="bottom-pane" class="live-monitor-div">
+        <div id="live-log-table" style="height:80%"></div>
+        <button id="logclear-button" class="button">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
+        <div id="caption-div" class="left-div">
+            To access full weblinkendpoint logtable <a target="_blank" href="logtable.html">logtable.html</a>
+            To generate barcode for goods return (labelToGo app) <a target="_blank" href="mobiletest.html">mobiletest.html</a><br />
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="closeModal">&times;</span>
+            <span id=spanInModal>tobereplaced..</span>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./tabulator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js" integrity="sha256-0SGl1PJNDyJwcV5T+weg2zpEMrh7xvlwO4oXgvZCeZk=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        $.getJSON("./printerdefaultapp.json", function (json) {
+            var outputStatic = "<h1>Printer Application assignments</h1>";
+            console.log(json);
+            outputStatic += "<ul>"; 
+            // Loop through
+            for (var i in json) {
+                outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + "</li>" ;
+            }
+            outputStatic += "</ul>"; 
+
+            document.getElementById("Static").innerHTML = outputStatic;
+        });
+
+        function zplCode() {
+            return [
+                '^XA',
+                '^FO40,40',
+                '^A0,40^FDHELLO ZEBRA^FS',
+                '^XZ'
+            ].join('\n');;
+        };
+
+        function rfidZplCode() {
+            return [
+                '^XA',
+                '^HL',
+                '^PQ2',
+                '^RS8,B8^RW16,20',
+                '^RU',
+                '^FO30,50^A0N,30^FN1^FS',
+                '^FO30,100^A0N,30^FN2^FS',
+                '^FO30,140^BY2^BCN,100,N,N,N^FN2^FS',
+                '^FN1^FDUnique 38 bits from TID: #H^FS',
+                '^FN2^FD#F^FS',
+                '^RFW,H^FD#F^FS',
+                '^HV1,,,,L',
+                '^XZ'
+            ].join('\n');;
+        };
+
+        var editor = null;
+        var data = {
+            zpl1: {
+                model: null,
+                state: null
+            },
+            zpl2: {
+                model: null,
+                state: null
+            },
+            zpl3: {
+                model: null,
+                state: null
+            }
+        };
+
+        // Put the monaco.html code here starting with require.
+        // require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' } });
+
+        // require(['vs/editor/editor.main'], function () {		
+        require.config({ paths: { 'vs': './monaco' } });
+
+        require(['vs/editor/editor.main'], function () {
+
+            monaco.languages.register({ id: 'zpl' });
+
+            // Register a tokens provider for the language
+            monaco.languages.setMonarchTokensProvider('zpl', {
+                tokenizer: {
+                    root: [
+                        [/\^(A@?|[B-Z][A-Z0-9])/, "zplcmd", "insidecmd"],
+                        [/~[A-Z][A-Z0-9]/, "zpltilde", "insidecmd"],
+                    ],
+                    insidecmd: [
+                        [/.*?(?=[\^~])/, "parms", "root"],
+                        [/.*?(?=$)/, "parms", "root"],
+                    ]
+                }
+            });
+
+            // Define a new theme that contains only rules that match this language
+            monaco.editor.defineTheme('myCoolTheme', {
+                base: 'vs',
+                inherit: false,
+                rules: [
+                    { token: 'zplcmd', foreground: 'ff0000', fontStyle: 'bold' },
+                    { token: 'zpltilde', foreground: 'FFA500' },
+                    { token: 'parms', foreground: '087c4c' },
+                ]
+            });
+
+            function xhr(url, key) {
+                var req = null;
+                return new Promise(function (c, e) {
+                    req = new XMLHttpRequest();
+                    req.onreadystatechange = function () {
+                        if (req._canceled) { return; }
+
+                        if (req.readyState === 4) {
+                            if ((req.status >= 200 && req.status < 300) || req.status === 1223) {
+                                c(req);
+                            } else {
+                                e(req);
+                            }
+                            req.onreadystatechange = function () { };
+                        }
+                    };
+
+                    req.open("POST", url, true);
+                    req.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+
+                    req.responseType = "";
+
+                    req.send(key);
+                }, function () {
+                    req._canceled = true;
+                    req.abort();
+                });
+            };
+
+            monaco.languages.registerHoverProvider('zpl', {
+                provideHover: function (model, position) {
+                    var currentLine = model.getLineContent(position.lineNumber);
+                    var textTokens = monaco.editor.tokenize(currentLine, "zpl");
+                    var lineTokensCount = textTokens[0].length;
+                    var selToken = null;
+                    var selTokenEnd = null;
+                    for (var i = 0; i < lineTokensCount; i++) {
+                        if (textTokens[0][i].type == "zplcmd.zpl" || textTokens[0][i].type == "zpltilde.zpl") {
+                            if (textTokens[0][i].offset < position.column) {
+                                selToken = textTokens[0][i];
+
+                            } else {
+                                if (selTokenEnd === null && selToken) {
+                                    selTokenEnd = textTokens[0][i].offset;
+                                };
+                            };
+                        };
+                    };
+
+
+                    if (selToken) {
+                        if (selTokenEnd === null) {
+                            selTokenEnd = model.getLineMaxColumn(position.lineNumber);
+                        }
+                        var selText = currentLine.substr(selToken.offset, selTokenEnd - selToken.offset);
+                        console.log("selText:" + selText);
+
+                        return xhr('https://cxnt48.com/zpl', selText).then(function (res) {
+                            return {
+                                // range: new monaco.Range(1, 1, model.getLineCount(), model.getLineMaxColumn(model.getLineCount())),
+                                range: new monaco.Range(position.lineNumber, selToken.offset, position.lineNumber, selTokenEnd),
+                                contents: [
+                                    { value: '**' + selText + '**' },
+                                    { value: '```html\n' + res.responseText + '\n```' }
+                                ]
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+            data.zpl1.model = monaco.editor.createModel(zplCode(), 'zpl');
+            data.zpl2.model = monaco.editor.createModel(rfidZplCode(), 'zpl');
+            data.zpl3.model = monaco.editor.createModel('~JC', 'zpl');
+
+            var raweditorContainer = document.getElementById('raw-editorContainer');
+            zpl1tab = document.getElementById('zpl1tab');
+            zpl2tab = document.getElementById('zpl2tab');
+            zpl3tab = document.getElementById('zpl3tab');
+            tabArea = document.getElementById('raw-tabArea')
+
+            editor = monaco.editor.create(raweditorContainer, {
+                model: data.zpl1.model,
+                theme: 'myCoolTheme',
+                minimap: {
+                    enabled: false
+                }
+            });
+
+
+        });
+
+        function changerawTab(selectedTabNode, desiredModelId) {
+            for (var i = 0; i < tabArea.childNodes.length; i++) {
+                var child = tabArea.childNodes[i];
+                if (/tab/.test(child.className)) {
+                    child.className = 'raw-tab';
+                }
+            }
+            selectedTabNode.className = 'raw-tab active';
+
+            var currentState = editor.saveViewState();
+
+            var currentModel = editor.getModel();
+            if (currentModel === data.zpl1.model) {
+                data.zpl1.state = currentState;
+            } else if (currentModel === data.zpl2.model) {
+                data.zpl2.state = currentState;
+            } else if (currentModel === data.zpl3.model) {
+                data.zpl3.state = currentState;
+            }
+
+            editor.setModel(data[desiredModelId].model);
+            editor.restoreViewState(data[desiredModelId].state);
+            editor.focus();
+        }
+
+
+        // Get the modal
+        var modal = document.getElementById('myModal');
+        // Get the <span> element that closes the modal
+        var spanclose = document.getElementsByClassName("closeModal")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        spanclose.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        $("#zplref-button").click(function () {
+            var selection = window.getSelection().toString();
+            var http = new XMLHttpRequest();
+            // https://kotlin-rain.appspot.com/zpl;
+            var url = 'https://cxnt48.com/zpl';
+            http.open('POST', url, true);
+
+            //Send the proper header information along with the request
+            http.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+
+            http.onreadystatechange = function () {//Call a function when the state changes.
+                if (http.readyState == 4 && http.status == 200) {
+                    console.log(selection);
+                    document.getElementById("spanInModal").innerHTML = "<PRE>" + selection + "\n\n" + http.responseText + "</PRE>";
+                    modal.style.display = "block";
+                    // alert(http.responseText);
+                }
+            }
+            http.send(selection);
+        });
+
+        collapsible1.checked = true;
+        var inputTextArea;
+        myFunction("labelformat1");
+
+        $("#live-log-table").tabulator({
+            selectable: 1,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                { title: "Websocket channels live monitoring", field: "liveLog", width: 5000, sorter: "string", align: "left", },
+            ],
+            rowSelectionChanged: function (data, rows) {
+                //update selected row counter on selection change
+            },
+            rowDblClick: function (e, row) {
+                var rowData = row.getData();
+                // console.log(rowData.liveLog);
+                document.getElementById("spanInModal").innerHTML = "<PRE>" + rowData.liveLog + "</PRE>";
+                modal.style.display = "block";
+            },
+        });
+
+        $("#printers-table").tabulator({
+            selectable: 1,
+            layout: "fitColumns",
+            columns: [ //Define Table Columns
+                { title: "Printer SN", field: "uniqueID", width: 170, sorter: "string", align: "left", frozen: true},
+                // { title: "Printer Serial Number", field: "uniqueID", formatter: "link", formatterParams: { url: function (cell) { return "/printerSettings?printerId=" + cell.getValue(); }, target: "_blank", }, width: 200, sorter: "string", align: "left", },
+                { title: "Product", field: "productName", width: 110, sorter: "string", align: "left", frozen: true},
+                { title: "FW Version", field: "appVersion", width: 140, sorter: "string", align: "left", },
+                { title: "Connected since", field: "connectedSince", width: 175, formatter: "datetime", align: "left", },
+                {
+                    title: "Application", field: "sgdSetAlertFeedback", width: 160, sorter: "string", align: "left", editor: "select", editorParams: {
+                        "ifadLabelConversion": "ifadLabelConversion",
+                        "priceTag": "priceTag",
+                        "wikipediaConversion": "wikipediaConversion",
+                        "labelToGo": "labelToGo",
+                        "none": "none",
+                    }
+                },
+                { title: "WLAN Cert Exp", field: "wlanCertExpDate", width: 180, sorter: "string", align: "left", },
+            ],
+            cellEdited: function (cell) {
+                var data = cell.getRow().getData();
+                var myJSON = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+                var url = "printerupdate";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(myJSON);
+
+            },
+            rowAdded: function (row) {
+            },
+        });
+        $("#printers-table").tabulator("setData", "printerslist.json");
+
+
+        document.getElementById("Price label").style.display = "inline-block";
+        $("#price-lookup-table").tabulator({
+            selectable: true,
+            height: 200,
+            layout: "fitColumns",
+            columns: [ //Define Table Columns
+                { title: "SKU", field: "sku", sorter: "number", width: 120, align: "right", },
+                { title: "Description", field: "description", sorter: "string", align: "left", width: 160 },
+                { title: "Unit Price", field: "unitPrice", width: 105, sorter: "number", editor: "input", validator: "float", align: "right", sortable: false },
+                { title: "EAN 13 code", field: "eanCode", width: 150, sorter: "number", align: "right" },
+            ],
+            //index:"sku",
+            cellEdited: function (cell) {
+                var data = cell.getRow().getData();
+                var myJSON = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+                var url = "productupdate";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(myJSON);
+            },
+            rowAdded: function (row) {
+                var data = row.getData();
+                var myJSON = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+                var url = "productupdate";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(myJSON);
+            },
+            rowDeleted: function (row) {
+                var data = row.getData();
+                var myJSON = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+                var url = "productremove";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(myJSON);
+            },
+        });
+        $("#price-lookup-table").tabulator("setData", "storepricelist.json");
+        document.getElementById("Price label").style.display = "none";
+
+        document.getElementById("PROGRAM").style.display = "inline-block";
+        $("#fw-table").tabulator({
+            selectable: 1,
+            height: 200,
+            layout: "fitColumns",
+            columns: [ //Define Table Columns
+                { title: "Fw File", field: "fwFileName", sorter: "string", width: 260, align: "left", },
+            ],
+        });
+        $("#fw-table").tabulator("setData", "fwlist.json");
+        document.getElementById("PROGRAM").style.display = "none";
+
+        $("#refresh-button").click(function () {
+            $("#printers-table").tabulator("setData", "printerslist.json");
+        });
+
+        $("#logclear-button").click(function () {
+            $("#live-log-table").tabulator("clearData");
+        });
+
+        $("#newrow-button").click(function () {
+            $("#price-lookup-table").tabulator("addData", [{ sku: $('#code').val(), description: $('#description').val(), eanCode: $('#ean').val(), unitPrice: $('#price').val() }], true);
+            document.getElementById("newrowform").reset();
+        });
+
+        $("#deleterow-button").click(function () {
+            var selectedRows = $("#price-lookup-table").tabulator("getSelectedRows");
+            selectedRows[0].delete();
+        });
+
+        var es = new EventSource("sseLog");
+        var listener = function (event) {
+            var type = event.type;
+
+            console.log(event.type + event.data);
+
+            if (type == "message") {
+                $("#live-log-table").tabulator("addRow", { liveLog: event.data }, true);
+            }
+        };
+        es.addEventListener("open", listener);
+        es.addEventListener("message", listener);
+        es.addEventListener("error", listener);
+
+        // https://stackoverflow.com/questions/9267899/arraybuffer-to-base64-encoded-string
+        function _arrayBufferToBase64(buffer) {
+            var binary = '';
+            var bytes = new Uint8Array(buffer);
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+        }
+
+        function openTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            //          console.log(tabName);
+
+            switch (tabName) {
+                case "JSON cmd":
+                    $("#sendcmd-button").off('click').on('click', function () {
+                        var selectedPrinter = $("#printers-table").tabulator("getSelectedData");
+
+                        if (selectedPrinter.length == 0) {
+                            alert("No printer selected !")
+                        }
+                        else {
+                            var ProductJsonCmdObj = { printerID: selectedPrinter[0].uniqueID, msg: $('#jsoncmd').val() }
+                            var myJSON = JSON.stringify(ProductJsonCmdObj);
+                            var xhr = new XMLHttpRequest();
+                            var url = "json2printer";
+                            xhr.open("POST", url, true);
+                            xhr.setRequestHeader("Content-type", "application/json");
+                            xhr.send(myJSON);
+                        }
+                    });
+                    break;
+
+                case "MONACO":
+                    $("#sendcmd-button").off('click').on('click', function () {
+                        var selectedPrinter = $("#printers-table").tabulator("getSelectedData");
+
+                        if (selectedPrinter.length == 0) {
+                            alert("No printer selected !")
+                        }
+                        else {
+                            var PrinterLabelObj = { printerID: selectedPrinter[0].uniqueID, msg: editor.getValue() };
+                            var myJSON = JSON.stringify(PrinterLabelObj);
+                            var xhr = new XMLHttpRequest();
+                            var url = "utf82raw";
+                            xhr.open("POST", url, true);
+                            xhr.setRequestHeader("Content-type", "application/json");
+                            xhr.send(myJSON);
+                            console.log("JSON output: " + myJSON);
+                        }
+                    });
+
+                    break;
+                case "Price label":
+                    $("#sendcmd-button").off('click').on('click', function () {
+                        var selectedData = $("#price-lookup-table").tabulator("getSelectedData");
+                        var selectedPrinter = $("#printers-table").tabulator("getSelectedData");
+
+                        if (selectedData.length == 0) {
+                            alert("No products selected to print !")
+                        }
+                        else {
+                            if (selectedPrinter.length == 0) {
+                                alert("No printer selected !")
+                            }
+                            else {
+                                var ProductPrinterObj = { id: selectedPrinter[0].uniqueID, ProductObj: selectedData[0] }
+                                var myJSON = JSON.stringify(ProductPrinterObj);
+                                var xhr = new XMLHttpRequest();
+                                var url = "printproduct";
+                                // printencproduct
+                                xhr.open("POST", url, true);
+                                xhr.setRequestHeader("Content-type", "application/json");
+                                xhr.send(myJSON);
+                                console.log("JSON output: " + myJSON);
+                            }
+                        }
+                    });
+
+                    break;
+                case "CISDFCRC16":
+                    $("#sendcmd-button").off('click').on('click', function () {
+                        var selectedPrinter = $("#printers-table").tabulator("getSelectedData");
+
+                        if (selectedPrinter.length == 0) {
+                            alert("No printer selected !")
+                        }
+                        else {
+                            for (var i = 0, f; f = window.files2store[i]; i++) {
+                                var reader = new FileReader();
+                                reader.onload = (function (thefile) {
+                                    return function (event) {
+                                        var rawdata = event.target.result;
+                                        var lunghezza = rawdata.byteLength.toString(16).padStart(8, '0');
+                                        var header = "! CISDFCRC16\n0000\n" + thefile.name + "\n" + lunghezza + "\n0000\n";
+                                        var PrinterLabelObj = { printerID: selectedPrinter[0].uniqueID, CISDFCRC16Hdr: header, base64Data: _arrayBufferToBase64(rawdata) };
+                                        var myJSON = JSON.stringify(PrinterLabelObj);
+                                        var xhr = new XMLHttpRequest();
+                                        var url = "CISDFCRC16";
+                                        xhr.open("POST", url, true);
+                                        xhr.setRequestHeader("Content-type", "application/json");
+                                        xhr.send(myJSON);
+                                    };
+                                })(f);
+                                reader.readAsArrayBuffer(f);
+                            }
+                        }
+                    });
+                    break;
+                case "PROGRAM":
+                    $("#sendcmd-button").off('click').on('click', function () {
+                        var selectedFw = $("#fw-table").tabulator("getSelectedData");
+                        var selectedPrinter = $("#printers-table").tabulator("getSelectedData");
+
+                        if (selectedFw.length == 0) {
+                            alert("No fw selected to upgrade !")
+                        }
+                        else {
+                            if (selectedPrinter.length == 0) {
+                                alert("No printer selected to upgrade !")
+                            }
+                            else {
+                                var PrinterFwObj = { fwFile: selectedFw[0].fwFileName, id: selectedPrinter[0].uniqueID }
+                                var myJSON = JSON.stringify(PrinterFwObj);
+                                var xhr = new XMLHttpRequest();
+                                var url = "upgradeprinter";
+                                console.log("JSON output: " + myJSON);
+                                xhr.open("POST", url, true);
+                                xhr.setRequestHeader("Content-type", "application/json");
+                                xhr.send(myJSON);
+                            }
+                        }
+                    });
+                    break;
+                default:
+                    $("#sendcmd-button").click(function () {
+                    });
+            };
+            if (tabName == "Info" || tabName == "Settings") {
+                document.getElementById("mainblock").style.display = "none";
+                document.getElementById("bottom-pane").style.display = "none";
+            } else {
+                document.getElementById("mainblock").style.display = "inline-block";
+                document.getElementById("bottom-pane").style.display = "inline-block";
+            };
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "inline-block";
+            evt.currentTarget.className += " active";
+        };
+
+        function handleFileSelect(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+
+            window.files2store = evt.dataTransfer.files;
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            for (var i = 0, f; f = window.files2store[i]; i++) {
+                output.push('<li><strong>', escape(f.name), '</strong> - ',
+                    //              output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, '(', f.size.toString(16).padStart(8, '0'), ') bytes, last modified: ',
+                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                    '</li>');
+            }
+            document.getElementById('files2send').innerHTML = '<ul>' + output.join('') + '</ul>';
+        }
+
+        function handleDragOver(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+        }
+
+        // Setup the dnd listeners.
+        var dropZone = document.getElementById('drop_zone');
+        dropZone.addEventListener('dragover', handleDragOver, false);
+        dropZone.addEventListener('drop', handleFileSelect, false);
+
+        document.getElementById("defaultOpen").click();
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.value);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            editor.setValue(data);
+        }
+
+        function myFunction(x) {
+            labelformat1.style.borderColor = "transparent";
+            labelformat2.style.borderColor = "transparent";
+            lblcollapsible1.style.background = "#FAE042";
+            lblcollapsible2.style.background = "#FAE042";
+
+            document.getElementById(x).style.borderColor = "#4CAF50";
+            inputTextArea = x;
+
+            if (x == "labelformat1") {
+                lblcollapsible1.style.background = "#4CAF50";
+            };
+            if (x == "labelformat2") {
+                lblcollapsible2.style.background = "#4CAF50";
+            };
+        }
+
+    </script>
+
+</body>
+</html>

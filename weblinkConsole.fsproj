@@ -1,13 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="wwwroot\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="Dockerfile">
@@ -17,11 +13,14 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <Content Include="json\defaultinventory.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="json\printerdefaultapp.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\console.html" />
+    <Content Include="wwwroot\logtable.html" />
+    <Content Include="wwwroot\mobiletest.html" />
     <Compile Include="jsonhelper.fs" />
     <Compile Include="b64.fs" />
     <Compile Include="ZebraWebSocket.fs" />
