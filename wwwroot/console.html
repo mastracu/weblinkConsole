@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <link href="./tabulator.min.css" rel="stylesheet">
+    <link href="./monaco/editor/editor.main.css" rel="stylesheet" >
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <style>
         .button {
@@ -168,27 +169,29 @@
             font-size: 28px;
             font-weight: bold;
         }
-        .closeModal:hover,
+
+            .closeModal:hover,
             .closeModal:focus {
                 color: #000;
                 text-decoration: none;
                 cursor: pointer;
-        }
+            }
 
         textarea {
             border-style: solid;
             border-width: medium;
         }
 
-        textarea:focus {
-            outline: none;
-        }
+            textarea:focus {
+                outline: none;
+            }
 
         /* https://alligator.io/css/collapsible/ */
 
         input[type='checkbox'] {
             display: none;
         }
+
         .lbl-toggle {
             display: block;
             font-weight: bold;
@@ -206,7 +209,7 @@
             transition: all 0.25s ease-out;
         }
 
-        .lbl-toggle::before {
+            .lbl-toggle::before {
                 content: ' ';
                 display: inline-block;
                 border-top: 5px solid transparent;
@@ -216,7 +219,8 @@
                 margin-right: .7rem;
                 transform: translateY(-2px);
                 transition: transform .2s ease-out;
-        }
+            }
+
         .collapsible-content .content-inner {
             background: rgba(250, 224, 66, .2);
             border-bottom: 1px solid rgba(250, 224, 66, .45);
@@ -224,14 +228,17 @@
             border-bottom-right-radius: 7px;
             padding: .5rem 1rem;
         }
+
         .collapsible-content {
             max-height: 0px;
             overflow: hidden;
             transition: max-height .25s ease-in-out;
         }
+
         .toggle:checked + .lbl-toggle + .collapsible-content {
             max-height: 350px;
         }
+
         .toggle:checked + .lbl-toggle::before {
             transform: rotate(90deg) translateX(-3px);
         }
@@ -239,12 +246,6 @@
         .toggle:checked + .lbl-toggle {
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
-        }
-
-        /* editor-hover */
-
-        .monaco-editor-hover .monaco-editor-hover-content {
-            max-width: 1000px;
         }
 
     </style>
