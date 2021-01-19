@@ -28,11 +28,11 @@ let buildpricetag withEncoding (prod:Product)  =
         ^PW400
         ^LL0240
         ^LS0
-        ^BY3,3,41^FT56,132^BEN,,Y,N^FDBBBBBBBBBBBBB^FS
-        ^FT174,75^A0N,28,28^FH\^FDPPPPPP\15 a piece^FS
-        ^FT89,75^A0N,28,28^FH\^FDPrice^FS
-        ^FT120,40^A0N,28,28^FH\^FDXXXXXXXXXXXX^FS
-        ^FT10,40^A0N,28,28^FH\^FDProduct^FS
+        ^BY3,3,41^FT56,142^BEN,,Y,N^FDBBBBBBBBBBBBB^FS
+        ^FT174,85^A0N,28,28^FH\^FDPPPPPP\15 a piece^FS
+        ^FT89,85^A0N,28,28^FH\^FDPrice^FS
+        ^FT120,50^A0N,28,28^FH\^FDXXXXXXXXXXXX^FS
+        ^FT10,50^A0N,28,28^FH\^FDProduct^FS
         "
     let labelX = label0 + (if withEncoding then skuEncoding else "") + "^PQ1,0,1,Y^XZ"
 
