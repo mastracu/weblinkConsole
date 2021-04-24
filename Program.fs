@@ -285,7 +285,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                 // The printer sends a PING message roughly ever 60 seconds. The server needs to respond with a PONG, per RFC6455
                 // After three failed PING attempts, the printer disconnects and attempts to reconnect
 
-                do System.Console.WriteLine (DateTime.Now.ToString() + " Ping message from printer. Responding with Pong message")
+                do System.Console.WriteLine (DateTime.Now.ToString() + " Ping message from printer " + printerUniqueId + ". Responding with Pong message")
                 // A Pong frame sent in response to a Ping frame must have identical "Application data" as found in the message body of the Ping frame being replied to.
                 // the `send` function sends a message back to the client
                 do inbox.Post ((Opcode.Pong, data, true), false)
