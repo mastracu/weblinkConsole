@@ -8,13 +8,14 @@
                     return;
                 }
 
-                var displayStr = "Barcode Data: " + params['data'] + "<br>Time: " + params['time'] + "<br>Label: " + params['label'] + "<br>Type: " + params['type'];
+                var displayStr = "Barcode Data: " + params['data'] + "<br>Time: " + params['time'] + "<br>Type: " + params['type'];
                 document.getElementById("display").innerHTML = displayStr;
             }
 
             function loadEvent(){
                 EB.Barcode.enable({ allDecoders: true }, scanReceived);
                 EB.Barcode.code39convertToCode32 = true;
+                EB.Barcode.code39code32Prefix = true;
             }
 
             function unloadEvent(){
@@ -31,7 +32,8 @@
         Scan a barcode.<br><br><br>
         <div id="display">
         Barcode Data: <br>
-        Time: 
+        Time: <br>
+        Type:
         </div><br>
     </body>
 </html>
