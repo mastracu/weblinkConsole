@@ -21,6 +21,7 @@
     <Content Include="wwwroot\console.html" />
     <Content Include="wwwroot\logtable.html" />
     <Content Include="wwwroot\mobiletest.html" />
+    <Content Include="wwwroot\helloeb.html" />
     <Compile Include="jsonhelper.fs" />
     <Compile Include="b64.fs" />
     <Compile Include="ZebraWebSocket.fs" />
