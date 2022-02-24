@@ -13,7 +13,8 @@
             }
 
             function loadEvent(){
-                EB.Barcode.enable({allDecoders:true}, scanReceived);
+                EB.Barcode.enable({ allDecoders: true }, scanReceived);
+                EB.Barcode.code39convertToCode32;
             }
 
             function unloadEvent(){
