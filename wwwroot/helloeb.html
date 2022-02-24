@@ -8,13 +8,13 @@
                     return;
                 }
 
-                var displayStr = "Barcode Data: " +params['data']+"<br>Time: "+params['time'];
+                var displayStr = "Barcode Data: " + params['data'] + "<br>Time: " + params['time'] + "<br>Label: " + params['label'] + "<br>Type: " + params['type'];
                 document.getElementById("display").innerHTML = displayStr;
             }
 
             function loadEvent(){
                 EB.Barcode.enable({ allDecoders: true }, scanReceived);
-                EB.Barcode.code39convertToCode32;
+                EB.Barcode.code39convertToCode32 = true;
             }
 
             function unloadEvent(){
