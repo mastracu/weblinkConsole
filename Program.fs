@@ -109,7 +109,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
             ()
         do pongTimer.Stop()
         do pongTimer.Dispose()
-        if (cbNewMessage2Send <> null) then
+        if (cbNewMessage2Send <> null) then 
             cbNewMessage2Send.Dispose()
         else
             ()

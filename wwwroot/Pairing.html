@@ -1,0 +1,242 @@
+
+<!doctype html>
+<head>
+ 
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script type="javascript"></script>
+    <script src= "https://code.jquery.com/jquery-3.5.1.js"> </script> 
+	<script src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+  
+<!-- code CSS-->
+<style>
+#hed {
+   height: 434px;
+   width: 100%;
+   
+}
+
+#img{
+    height: 100px;
+	text-align:center;
+	margin-left:40%
+   
+}
+#img1{
+    height:120px;
+    width: 100%;
+	
+	
+}
+.costum{
+	height:200px;
+	
+}
+.display-1 {
+	text-align: center;
+
+	color: #8B0000	;
+	font-weight: 600;
+    font-size: 35px;
+	vertical-align:middle;
+}
+.title{
+    padding-bottom: 25px;
+	color: black	;
+    font-size: 5px;
+	vertical-align:middle;
+	margin-top:5%;
+
+}
+.fa{
+
+	font-size:20px;
+    color:#E9967A;
+
+	
+}
+.site-banding{
+	margin-bottom:0px;
+	
+}
+
+.description{
+	text-align:center;
+	font-weight: 400;
+}
+.container{
+    padding-top: 0%;
+ 
+}
+.id{
+    text-align:center;
+    vertical-align:middle;
+    
+}
+
+
+#champ {
+    border: 3px solid;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-left: 17%;
+    color:#8B0000;
+
+}
+#bor{
+    border: 1px solid;
+    color:#8B0000;
+    
+}
+#c{
+    padding-top: 5%;
+    padding-left: 8%;
+}
+
+</style>
+
+<!-- code javascript-->
+<script>
+   
+     
+    $(document).ready(function () { 
+  
+    $('#generate').click(function (event) { 
+		
+        var input = $("input").val();
+		
+		if ($("input").val().length < 12){
+			alert('la longueur est trop courte');
+				
+		}
+		if ($("input").val().length > 12){
+			alert('la longueur est plus longue, Merci de retirer les ":"');
+		}
+		
+	
+		if ($("input").val().length == 12 ){ 
+			var finalURL = 'http://api.labelary.com/v1/printers/8dpmm/labels/1x1/0/%5eXA%5eBY84,84%5eFT55,150%5eBXN,6,200,0,0,1,_%5eFH/%5eFD_3B' +
+			input +'^FS^PQ1,0,1,Y^XZ'
+		}
+
+   $('.qr-code').attr('src', finalURL); 
+  }); 
+
+}); 
+
+</script>
+
+
+<!--code html5-->
+<body>  
+ <header id="content">
+    <div class="costum">
+        <img src="img/Zebra_Logo_K.png" alt="My image" id="img">  
+        <div class ="site-banding" ></div>
+            <h1 class="display-1">Pairing Scanner to Printer</h1>
+        <div class="description">
+            <p style="color: #7c5447;" >
+            <i class="fa fa-quote-left" ></i> The Porwerful Tool of Pairing. 
+            <i class="fa fa-quote-right"></i>
+            </p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="title" >
+        <h4>Prepare your Scanner...</h4>
+    </div>
+    <div class= "row" >
+            <div class="col-lg-4 col-md-6 col-sm-6" id="bor">
+                <div class="single-cat text-center mb-50">
+                    <div class="cat-cap">
+                        <h5>Restore Defaults</h5>
+                    </div>
+                    <div>
+                        <img src="img/Restore_Defaults.png" /> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6" id="bor">
+                <div class="single-cat text-center mb-50">
+                    <div class="cat-cap">
+                        <h5>SPP BT Classic </h5>
+                    </div>
+                    <div>
+                        <img src="img/SPP.png" /> 
+                    </div> 
+                </div>           
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6" id="bor">
+                <div class="single-cat text-center mb-50">
+                    <div class="cat-cap">
+                        <h5>Auto-reconnect immediately</h5>
+                    </div>
+                    <div>
+                        <img src="img/Reconnect.png" /> 
+                    </div> 
+                </div>                  
+            </div>        
+        </div>
+		    <div class= "row" >
+            <div class="col-lg-4 col-md-6 col-sm-6" id="bor">
+                <div class="single-cat text-center mb-50">
+                    <div class="cat-cap">
+                        <h5>Enter as suffix</h5>
+                    </div>
+                    <div>
+                        <img src="img/Suffix.png" /> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6" id="bor">
+                <div class="single-cat text-center mb-50">
+                    <div class="cat-cap">
+                        <h5>Cradle for charge only </h5>
+                    </div>
+                    <div>
+                        <img src="img/Pairing_on_contact.png" /> 
+                    </div> 
+                </div>           
+            </div>       
+        </div>
+    </div>
+    <div class="container">
+        <div class="title" >
+            <h4 >Pairing your Scanner...</h4>
+        </div>
+            <div class="row" id="champ">
+               
+                <form class="row g-3" method='GET' action="" class="id" id="form">
+                    <div class="col-auto">
+                        <label  readonly class="form-control-plaintext" id="static" value="Enter your Mac Address">Enter your Mac Adress</label>
+                    </div>
+                    <div class="col-auto">
+                        <input  class="form-control" id="content" value=""   placeholder="Enter your Mac Adress" name="saisir" required >
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-dark active mb-3" id="generate">GO</button>
+                    </div>
+               
+                    <div class="container-fluid" > 
+                        <div class="text-center" id="c"> 
+                            <img src= "https://chart.googleapis.com/chart?cht=qr&chl=Hello+World&chs=160x160&chld=L|0" class="qr-code " /> 
+                        </div> 
+                    </div>              
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row" id="qr">
+            </br>
+            </br>
+            </div>
+        </div>
+     </div>
+</body>
+</html> 
+
+
