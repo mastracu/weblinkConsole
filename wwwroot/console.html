@@ -598,13 +598,13 @@
             <p>Follow the following steps to set it up</p>
 
             <ol>
-                <li>Ensure the BT scanner is configured to CR-LF terminate the barcode (use 123 scan to generate the configuration barcode for your scanner). </li>
                 <li>Verify the printer is listed as connected in the the WebLinkEndPoint. Send the following json command to get the btaddress of the printer: </li>
             <pre><code>{}{"bluetooth.short_address":null} 
             </code></pre>
             <p></p>
-            <li>Setup scanner by reading configuration barcodes at  <a target="_blank" href="https://weblink.mastracu.it/pairing.html">https://weblink.mastracu.it/pairing.html</a>. Key in BT address retrieved in previous point.</li>
-                <li>Scan the barcode with CS4070 and the scanner should establish the BT connection with the printer (solid blue LED on the printer) </li>
+                <li>Setup scanner by reading configuration barcodes at  <a target="_blank" href="https://weblink.mastracu.it/Pairing.html">https://weblink.mastracu.it/Pairing.html</a>. Key in BT address retrieved in previous point.
+                  Credit to Nezha Igaddi for contributing the page</li>
+                <li>Scan the barcode with CS4070 and the scanner should establish the BT connection with the printer (solid blue LED on some printers) </li>
                 <li>From "ZPL price label" tab a add a new item in the table that you have handy in the meeting room.
                      <strong>Please ensure barcode is 13-digits long as only EAN-13 barcodes are currently supported.</strong></li>
             </ol>

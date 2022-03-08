@@ -22,10 +22,11 @@
     <Content Include="wwwroot\logtable.html" />
     <Content Include="wwwroot\mobiletest.html" />
     <Content Include="wwwroot\helloeb.html" />
+    <Content Include="wwwroot\Pairing.html" />
     <Compile Include="jsonhelper.fs" />
     <Compile Include="b64.fs" />
-    <Compile Include="ZebraWebSocket.fs" />
     <Compile Include="messageLogAgent.fs" />
+    <Compile Include="ZebraWebSocket.fs" />
     <Compile Include="storeagent.fs" />
     <Compile Include="printersagent.fs" />
     <Compile Include="fw.fs" />
