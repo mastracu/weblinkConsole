@@ -1,14 +1,17 @@
 [
   {
-    "printerSN": "XXZKJ181100170",
-    "appCode": "priceTag"
-  },
-  {
-    "printerSN": "18J174008780",
-    "appCode": "ifadLabelConversion"
-  },
-  {
-    "printerSN": "40J135000563",
+    "printerSN": "D1J183000889",
+	"username": "ugo",
     "appCode": "none"
+  },
+  {
+    "printerSN": "18J191905961",
+	"username": "ugo",
+    "appCode": "none"
+  },
+  {
+    "printerSN": "50J183402540",
+	"username": "none",
+    "appCode": "priceTag"
   }
 ]

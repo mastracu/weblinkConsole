@@ -389,8 +389,13 @@ type File2Printer =
       base64Data : string;
    }
 
+let mutable consoleUser = "foo"
+
 let basicAuth =
-  Suave.Authentication.authenticateBasic ((=) ("foo", "bar"))
+  let credentialList = [("foo", "bar"); ("ugo", "marwe")]
+  Suave.Authentication.authenticateBasic (fun pair ->
+                                            consoleUser <- fst pair
+                                            List.contains pair credentialList)
 
 let getResourceFromReq<'a> (req : HttpRequest) =
   let getString (rawForm:byte[]) =

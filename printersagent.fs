@@ -17,6 +17,8 @@ type PrinterApp =
     {
       [<field: DataMember(Name = "printerSN")>]
       printerSN : string;
+      [<field: DataMember(Name = "username")>]
+      username : string;
       [<field: DataMember(Name = "appCode")>]
       appCode : string;
     }
@@ -28,6 +30,8 @@ type Printer =
       uniqueID : string;
       [<field: DataMember(Name = "productName")>]
       productName : string;
+      [<field: DataMember(Name = "username")>]
+      username : string;
       [<field: DataMember(Name = "appVersion")>]
       appVersion : string;
       [<field: DataMember(Name = "friendlyName")>]
@@ -46,35 +50,37 @@ type Printer =
 let rec tryFindPrinterDefaultApp id list = 
     match list with
     | [] -> None
-    | { printerSN = p; appCode = a} :: xs -> if p = id then Some a else (tryFindPrinterDefaultApp id xs)
+    | { printerSN = p; username = u; appCode = a} :: xs -> if p = id then Some (u, a) else (tryFindPrinterDefaultApp id xs)
 
 let rec addPrinter id agent list appList =
       let someApp = tryFindPrinterDefaultApp id appList
       let defApp = 
         match someApp with
-        | None -> "none"
+        | None -> "none", "none"
         | Some x -> x
 
       match list with
       | [] -> [{uniqueID = id;
                mainChannelAgent = agent; 
-               productName = ""; 
+               productName = "";
+               username = fst defApp;
                appVersion = ""; 
                connectedSince = DateTime.Now.ToString();
                friendlyName = "";
                wlanCertExpDate = "";
-               sgdSetAlertProcessor = defApp;
+               sgdSetAlertProcessor = snd defApp;
                rawChannelAgent = None;
                configChannelAgent = None}]
       | printHead :: xs -> if (printHead.uniqueID = id) 
                            then {printHead with mainChannelAgent = agent; 
                                                 rawChannelAgent = None; 
                                                 configChannelAgent = None;
+                                                username = fst defApp
                                                 productName = ""; 
                                                 appVersion = "";
                                                 wlanCertExpDate = "";
                                                 friendlyName = "";
-                                                sgdSetAlertProcessor = defApp} :: xs 
+                                                sgdSetAlertProcessor = snd defApp} :: xs 
                            else (printHead :: addPrinter id agent xs appList)
 
 let rec removePrinter id channel list  =
