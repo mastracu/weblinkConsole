@@ -761,7 +761,7 @@
 
     <div id="id01" class="loginmodal">
 
-        <form class="loginmodal-content">
+        <form id="loginform" class="loginmodal-content">
 
             <div class="logincontainer">
                 <label><b>Username</b></label>
@@ -787,18 +787,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js" integrity="sha256-0SGl1PJNDyJwcV5T+weg2zpEMrh7xvlwO4oXgvZCeZk=" crossorigin="anonymous"></script>
     <script type="text/javascript">
 
-        $.getJSON("../json/printerdefaultapp.json", function (json) {
-            var outputStatic = "<h1>Printer Application assignments</h1>";
-            console.log(json);
-            outputStatic += "<ul>";
-            // Loop through
-            for (var i in json) {
-                outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + "</li>";
-            }
-            outputStatic += "</ul>";
+        window.addEventListener("load", function () {
+            $.getJSON("../json/printerdefaultapp.json", function (json) {
+                var outputStatic = "<h1>Printer Application assignments</h1>";
+                console.log(json);
+                outputStatic += "<ul>";
+                // Loop through
+                for (var i in json) {
+                    outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + "</li>";
+                }
+                outputStatic += "</ul>";
 
-            document.getElementById("Static").innerHTML = outputStatic;
+                document.getElementById("Static").innerHTML = outputStatic;
+            });
         });
+
 
         function zplCode() {
             return [
