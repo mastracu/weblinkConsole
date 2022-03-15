@@ -395,6 +395,7 @@
                 <option value="{}{&#34ip.mirror.fetch&#34:&#34&#34}">
                 <option value="{}{&#34interface.network.active.ip_addr&#34:null}">
                 <option value="{}{&#34interface.network.active.cable_type&#34:null}">
+                <option value="{}{&#34media&#34:null}">
                 <option value="{}{&#34memory&#34:null}">
                 <option value="{}{&#34odometer.rfid&#34:null}">
                 <option value="{}{&#34odometer.total_label_count&#34:null}">
@@ -1226,6 +1227,8 @@
                             xhr.send(myJSON);
                         }
                     });
+                    document.getElementById("mainblock").style.display = "inline-block";
+                    document.getElementById("bottom-pane").style.display = "inline-block";
                     break;
 
                 case "MONACO":
@@ -1246,7 +1249,8 @@
                             console.log("JSON output: " + myJSON);
                         }
                     });
-
+                    document.getElementById("mainblock").style.display = "inline-block";
+                    document.getElementById("bottom-pane").style.display = "inline-block";
                     break;
                 case "Price label":
                     $("#sendcmd-button").off('click').on('click', function () {
@@ -1273,7 +1277,8 @@
                             }
                         }
                     });
-
+                    document.getElementById("mainblock").style.display = "inline-block";
+                    document.getElementById("bottom-pane").style.display = "inline-block";
                     break;
                 case "CISDFCRC16":
                     $("#sendcmd-button").off('click').on('click', function () {
@@ -1303,6 +1308,8 @@
                             }
                         }
                     });
+                    document.getElementById("mainblock").style.display = "inline-block";
+                    document.getElementById("bottom-pane").style.display = "inline-block";
                     break;
                 case "PROGRAM":
                     $("#sendcmd-button").off('click').on('click', function () {
@@ -1328,6 +1335,8 @@
                             }
                         }
                     });
+                    document.getElementById("mainblock").style.display = "inline-block";
+                    document.getElementById("bottom-pane").style.display = "inline-block";
                     break;
                 case "LOGIN":
                     document.getElementById('id01').style.display = 'block';
@@ -1339,10 +1348,8 @@
             if (tabName == "Info" || tabName == "Settings") {
                 document.getElementById("mainblock").style.display = "none";
                 document.getElementById("bottom-pane").style.display = "none";
-            } else {
-                document.getElementById("mainblock").style.display = "inline-block";
-                document.getElementById("bottom-pane").style.display = "inline-block";
             };
+
             // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(tabName).style.display = "inline-block";
             evt.currentTarget.className += " active";
