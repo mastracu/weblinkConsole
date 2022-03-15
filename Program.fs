@@ -397,6 +397,7 @@ let basicAuth =
                                             consoleUser <- fst pair
                                             List.contains pair credentialList)
 
+
 let getResourceFromReq<'a> (req : HttpRequest) =
   let getString (rawForm:byte[]) =
     System.Text.Encoding.UTF8.GetString(rawForm)
