@@ -290,7 +290,7 @@
         <button class="tablinks" onclick="openTab(event, 'Price label')" id="priceTab">ZPL price label</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'Info')">Guide to applications demonstration</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'Settings')">Static application assignment</button>
-        <button class="tablinks" style="float:right" >LOGIN</button>
+        <button class="tablinks" style="float:right" onclick="openTab(event, 'LOGIN')">LOGIN</button>
     </div>
     <div id="mainblock">
         <div id="JSON cmd" class="tabcontent">
@@ -504,10 +504,10 @@
     </div>
 
     <div id="Settings" class="tabcontent" style="margin-left: 4px;">
-        <div id="Static" class="col-md-12" >
+        <div id="Static" class="col-md-12">
         </div>
     </div>
-    
+
     <div id="Info" class="tabcontent" style="margin-left: 4px;">
         <div class="col-md-12">
 
@@ -601,17 +601,21 @@
 
             <ol>
                 <li>Verify the printer is listed as connected in the the WebLinkEndPoint. Send the following json command to get the btaddress of the printer: </li>
-            <pre><code>{}{"bluetooth.short_address":null} 
+                <pre><code>{}{"bluetooth.short_address":null} 
             </code></pre>
-            <p></p>
-                <li>Setup scanner by reading configuration barcodes at  <a target="_blank" href="https://weblink.mastracu.it/Pairing.html">https://weblink.mastracu.it/Pairing.html</a>. Key in BT address retrieved in previous point.
-                  Credit to Nezha Igaddi for contributing the page</li>
+                <p></p>
+                <li>
+                    Setup scanner by reading configuration barcodes at  <a target="_blank" href="https://weblink.mastracu.it/Pairing.html">https://weblink.mastracu.it/Pairing.html</a>. Key in BT address retrieved in previous point.
+                    Credit to Nezha Igaddi for contributing the page
+                </li>
                 <li>BT scanner should now establish connection with the printer (solid blue LED on some printers) </li>
-                <li>From "ZPL price label" tab add EAN13 barcode, description and price for an item you can access in the meeting room.
-                     <strong>Please ensure barcode is 13-digits long as only EAN-13 barcodes are currently supported.</strong></li>
+                <li>
+                    From "ZPL price label" tab add EAN13 barcode, description and price for an item you can access in the meeting room.
+                    <strong>Please ensure barcode is 13-digits long as only EAN-13 barcodes are currently supported.</strong>
+                </li>
             </ol>
 
-           
+
             <p>
                 You can then go ahead and scan the barcode from the packaging.
                 A pricetag will be automatically printed if the barcode is found.
@@ -684,6 +688,31 @@
         </div>
     </div>
 
+    <!-- The Modal Login window -->
+    <div id="id01" class="modal">
+
+        <form class="modal-content animate" action="/action_page.php">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+            </div>
+
+            <div class="container">
+                <label><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+
+                <label><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+
+                <button type="submit">Login</button>
+            </div>
+
+            <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="./tabulator.min.js"></script>
@@ -693,12 +722,12 @@
         $.getJSON("../json/printerdefaultapp.json", function (json) {
             var outputStatic = "<h1>Printer Application assignments</h1>";
             console.log(json);
-            outputStatic += "<ul>"; 
+            outputStatic += "<ul>";
             // Loop through
             for (var i in json) {
-                outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + "</li>" ;
+                outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + "</li>";
             }
-            outputStatic += "</ul>"; 
+            outputStatic += "</ul>";
 
             document.getElementById("Static").innerHTML = outputStatic;
         });
@@ -749,7 +778,7 @@
         // Put the monaco.html code here starting with require.
         // require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' } });
 
-        // require(['vs/editor/editor.main'], function () {		
+        // require(['vs/editor/editor.main'], function () {
         require.config({ paths: { 'vs': './monaco' } });
 
         require(['vs/editor/editor.main'], function () {
@@ -964,9 +993,9 @@
             selectable: 1,
             layout: "fitColumns",
             columns: [ //Define Table Columns
-                { title: "Printer SN", field: "uniqueID", width: 170, sorter: "string", align: "left", frozen: true},
+                { title: "Printer SN", field: "uniqueID", width: 170, sorter: "string", align: "left", frozen: true },
                 // { title: "Printer Serial Number", field: "uniqueID", formatter: "link", formatterParams: { url: function (cell) { return "/printerSettings?printerId=" + cell.getValue(); }, target: "_blank", }, width: 200, sorter: "string", align: "left", },
-                { title: "Product", field: "productName", width: 110, sorter: "string", align: "left", frozen: true},
+                { title: "Product", field: "productName", width: 110, sorter: "string", align: "left", frozen: true },
                 { title: "FW Version", field: "appVersion", width: 140, sorter: "string", align: "left", },
                 { title: "Connected since", field: "connectedSince", width: 175, formatter: "datetime", align: "left", },
                 {
@@ -1232,6 +1261,9 @@
                             }
                         }
                     });
+                    break;
+                case "LOGIN":
+                    document.getElementById('id01').style.display = 'block';
                     break;
                 default:
                     $("#sendcmd-button").click(function () {
