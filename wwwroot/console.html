@@ -320,13 +320,6 @@
             }
 
 
-        /*centre the display image inside the logincontainer*/
-        .loginimglogincontainer {
-            text-align: center;
-            margin: 24px 0 12px 0;
-            position: relative;
-        }
-
         /*set padding to the logincontainer*/
         .logincontainer {
             padding: 16px;
@@ -354,22 +347,6 @@
             border: 1px solid #888;
             width: 30%;
         }
-
-        /*style the loginclose button*/
-        .loginclose {
-            position: absolute;
-            right: 25px;
-            top: 0;
-            color: #000;
-            font-size: 35px;
-            font-weight: bold;
-        }
-
-            .loginclose:hover,
-            .loginclose:focus {
-                color: red;
-                cursor: pointer;
-            }
 
     </style>
 </head>
@@ -784,9 +761,6 @@
     <div id="id01" class="loginmodal">
 
         <form class="loginmodal-content">
-            <div class="loginimglogincontainer">
-                <span onclick="document.getElementById('id01').style.display='none'" class="loginclose" title="close modal">X</span>
-            </div>
 
             <div class="logincontainer">
                 <label><b>Username</b></label>
