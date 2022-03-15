@@ -1195,12 +1195,6 @@
             // Declare all variables
             var i, tabcontent, tablinks;
 
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
             // Get all elements with class="tablinks" and remove the class "active"
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
@@ -1229,6 +1223,13 @@
                     });
                     document.getElementById("mainblock").style.display = "inline-block";
                     document.getElementById("bottom-pane").style.display = "inline-block";
+                    // Get all elements with class="tabcontent" and hide them
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    // Show the current tab
+                    document.getElementById(tabName).style.display = "inline-block";
                     break;
 
                 case "MONACO":
@@ -1251,6 +1252,13 @@
                     });
                     document.getElementById("mainblock").style.display = "inline-block";
                     document.getElementById("bottom-pane").style.display = "inline-block";
+                    // Get all elements with class="tabcontent" and hide them
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    // Show the current tab
+                    document.getElementById(tabName).style.display = "inline-block";
                     break;
                 case "Price label":
                     $("#sendcmd-button").off('click').on('click', function () {
@@ -1279,6 +1287,13 @@
                     });
                     document.getElementById("mainblock").style.display = "inline-block";
                     document.getElementById("bottom-pane").style.display = "inline-block";
+                    // Get all elements with class="tabcontent" and hide them
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    // Show the current tab
+                    document.getElementById(tabName).style.display = "inline-block";
                     break;
                 case "CISDFCRC16":
                     $("#sendcmd-button").off('click').on('click', function () {
@@ -1310,6 +1325,13 @@
                     });
                     document.getElementById("mainblock").style.display = "inline-block";
                     document.getElementById("bottom-pane").style.display = "inline-block";
+                    // Get all elements with class="tabcontent" and hide them
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    // Show the current tab
+                    document.getElementById(tabName).style.display = "inline-block";
                     break;
                 case "PROGRAM":
                     $("#sendcmd-button").off('click').on('click', function () {
@@ -1337,6 +1359,13 @@
                     });
                     document.getElementById("mainblock").style.display = "inline-block";
                     document.getElementById("bottom-pane").style.display = "inline-block";
+                    // Get all elements with class="tabcontent" and hide them
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    // Show the current tab
+                    document.getElementById(tabName).style.display = "inline-block";
                     break;
                 case "LOGIN":
                     document.getElementById('id01').style.display = 'block';
@@ -1350,8 +1379,7 @@
                 document.getElementById("bottom-pane").style.display = "none";
             };
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(tabName).style.display = "inline-block";
+            // Add an "active" class to the button that opened the tab
             evt.currentTarget.className += " active";
         };
 
