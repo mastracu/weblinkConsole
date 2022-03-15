@@ -278,6 +278,99 @@
             max-width: 1600px;
         }
 
+        /*assign full width inputs*/
+        .logininput {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /*set a style for the buttons*/
+        .loginbutton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            /* set a hover effect for the button*/
+            .loginbutton:hover {
+                opacity: 0.8;
+            }
+
+        /*set extra style for the cancel button*/
+        .logincancelbtn {
+            border: none;
+            color: white;
+            cursor: pointer;
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+            margin: 8px 0;
+        }
+
+            .logincancelbtn:hover {
+                opacity: 0.8;
+            }
+
+
+        /*centre the display image inside the logincontainer*/
+        .loginimglogincontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+
+        /*set padding to the logincontainer*/
+        .logincontainer {
+            padding: 16px;
+        }
+
+        /*set the loginmodal background*/
+        .loginmodal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        /*style the model content box*/
+        .loginmodal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        /*style the loginclose button*/
+        .loginclose {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+            .loginclose:hover,
+            .loginclose:focus {
+                color: red;
+                cursor: pointer;
+            }
+
     </style>
 </head>
 <body>
@@ -688,29 +781,29 @@
         </div>
     </div>
 
-    <!-- The Modal Login window -->
-    <div id="id01" class="modal">
+    <div id="id01" class="loginmodal">
 
-        <form class="modal-content animate" action="/action_page.php">
-            <div class="imgcontainer">
-                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+        <form class="loginmodal-content">
+            <div class="loginimglogincontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="loginclose" title="loginclose loginmodal">×</span>
             </div>
 
-            <div class="container">
+            <div class="logincontainer">
                 <label><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required>
+                <input type="text" class="logininput" placeholder="Enter Username" name="uname" required>
 
                 <label><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" class="logininput" placeholder="Enter Password" name="psw" required>
 
-                <button type="submit">Login</button>
+                <button type="submit" class="loginbutton">Login</button>
             </div>
 
-            <div class="container" style="background-color:#f1f1f1">
-                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            <div class="logincontainer" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="logincancelbtn">Cancel</button>
             </div>
         </form>
     </div>
+
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>

@@ -3,8 +3,7 @@
 <style>
 	
 	/*assign full width inputs*/
-	input[type=text],
-	input[type=password] {
+	.logininput {
 		width: 100%;
 		padding: 12px 20px;
 		margin: 8px 0;
@@ -96,34 +95,6 @@
 		cursor: pointer;
 	}
 	
-	/* add zoom animation*/
-	.animate {
-		-webkit-animation: animatezoom 0.6s;
-		animation: animatezoom 0.6s
-	}
-	
-	@-webkit-keyframes animatezoom {
-		from {
-			-webkit-transform: scale(0)
-		}
-		to {
-			-webkit-transform: scale(1)
-		}
-	}
-	
-	@keyframes animatezoom {
-		from {
-			transform: scale(0)
-		}
-		to {
-			transform: scale(1)
-		}
-	}
-	
-	@media screen and (max-width: 300px) {
-		.logincancelbtn {
-			width: 100%;
-		}
 	}
 </style>
 
@@ -135,17 +106,17 @@
 
 	<div id="id01" class="loginmodal">
 
-		<form class="loginmodal-content animate" action="/action_page.php">
+		<form class="loginmodal-content" >
 			<div class="loginimglogincontainer">
 				<span onclick="document.getElementById('id01').style.display='none'" class="loginclose" title="loginclose loginmodal">×</span>
 			</div>
 
 			<div class="logincontainer">
 				<label><b>Username</b></label>
-				<input type="text" placeholder="Enter Username" name="uname" required>
+				<input type="text" class="logininput" placeholder="Enter Username" name="uname" required>
 
 				<label><b>Password</b></label>
-				<input type="password" placeholder="Enter Password" name="psw" required>
+				<input type="password" class="logininput" placeholder="Enter Password" name="psw" required>
 
 				<button type="submit" class="loginbutton">Login</button>
 			</div>
