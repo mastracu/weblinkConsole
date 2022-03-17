@@ -359,7 +359,7 @@
         <button class="tablinks" onclick="openTab(event, 'PROGRAM')">! PROGRAM</button>
         <button class="tablinks" onclick="openTab(event, 'Price label')" id="priceTab">ZPL price label</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'Info')">Guide to applications demonstration</button>
-        <button class="tablinks" style="float:right" onclick="openTab(event, 'Settings')">Static application assignment</button>
+        <button class="tablinks" style="float:right" onclick="openTab(event, 'Settings')">Known printers</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'LOGIN')">LOGIN</button>
     </div>
     <div id="mainblock">
@@ -788,13 +788,13 @@
     <script type="text/javascript">
 
         window.addEventListener("load", function () {
-            $.getJSON("printerdefaultapp.json", function (json) {
-                var outputStatic = "<h1>Printer Application assignments</h1>";
+            $.getJSON("/printersdefault.json", function (json) {
+                var outputStatic = "<h1>Known printers - privacy and default application</h1>";
                 console.log(json);
                 outputStatic += "<ul>";
                 // Loop through
                 for (var i in json) {
-                    outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + "</li>";
+                    outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + " -" + json[i].username + "</li>";
                 }
                 outputStatic += "</ul>";
 
@@ -1263,6 +1263,7 @@
                     // Show the current tab
                     document.getElementById(tabName).style.display = "inline-block";
                     break;
+
                 case "Price label":
                     $("#sendcmd-button").off('click').on('click', function () {
                         var selectedData = $("#price-lookup-table").tabulator("getSelectedData");
@@ -1298,6 +1299,7 @@
                     // Show the current tab
                     document.getElementById(tabName).style.display = "inline-block";
                     break;
+
                 case "CISDFCRC16":
                     $("#sendcmd-button").off('click').on('click', function () {
                         var selectedPrinter = $("#printers-table").tabulator("getSelectedData");
@@ -1336,6 +1338,7 @@
                     // Show the current tab
                     document.getElementById(tabName).style.display = "inline-block";
                     break;
+
                 case "PROGRAM":
                     $("#sendcmd-button").off('click').on('click', function () {
                         var selectedFw = $("#fw-table").tabulator("getSelectedData");
