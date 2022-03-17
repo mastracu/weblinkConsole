@@ -360,7 +360,7 @@
         <button class="tablinks" onclick="openTab(event, 'Price label')" id="priceTab">ZPL price label</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'Info')">Guide to applications demonstration</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'KNOWNPRINTERS')">Known printers</button>
-        <button class="tablinks" style="float:right" onclick="openTab(event, 'LOGIN')">LOGIN</button>
+        <button id ="logintab" class="tablinks" style="float:right" onclick="openTab(event, 'LOGIN')">LOGIN</button>
     </div>
     <div id="mainblock">
         <div id="JSON cmd" class="tabcontent">
@@ -818,6 +818,8 @@
 
                 if (checkCredentials()==true) {
                     loginOutcome.textContent = "LOGIN OK";
+                    document.getElementById("loginTab").textContent = "LOGOUT";
+                    document.getElementById("id01").style.display = "none";
                 }
                 else {
                     loginOutcome.textContent = "LOGIN KO";
