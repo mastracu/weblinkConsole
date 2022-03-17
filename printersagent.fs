@@ -167,6 +167,7 @@ type PrintersAgentMsg =
     | UpdateAppVersion of string * string
     | IsKnownID of string * AsyncReplyChannel<Boolean>
     | PrintersInventory  of AsyncReplyChannel<String>
+    | PrintersDefault of AsyncReplyChannel<String>
     | FetchPrinterInfo of string * AsyncReplyChannel<Printer Option>
     | SendMsgOverMainChannel of string * ChannelFrame * bool
     | SendMsgOverRawChannel of string * ChannelFrame * bool
@@ -204,6 +205,8 @@ type PrintersAgent(logAgent:LogAgent) =
                         // logAgent.AppendToLog (sprintf "Printersagent: inside PrintersInventory printerList: %A" connPrts.PrinterList )
                         replyChannel.Reply (json<Printer array> (List.toArray connPrts.PrinterList))
                         return! printersAgentLoop connPrts printAppList
+                    | PrintersDefault replyChannel ->
+                        replyChannel.Reply (json<PrinterApp array> (List.toArray printAppList))
                     | IsKnownID (id, replyChannel) -> 
                         replyChannel.Reply (isKnownID id connPrts.PrinterList)
                         return! printersAgentLoop connPrts printAppList
@@ -246,6 +249,7 @@ type PrintersAgent(logAgent:LogAgent) =
     member this.UpdateCertExpDate id ce = storeAgentMailboxProcessor.Post(UpdateCertDate (id,ce))
     member this.UpdateAppVersion id ver = storeAgentMailboxProcessor.Post(UpdateAppVersion (id,ver))
     member this.PrintersInventory() = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersInventory reply), timeout = 2000)
+    member this.PrintersDefault() = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersDefault reply), timeout = 2000)
     member this.IsKnownID sku = storeAgentMailboxProcessor.PostAndReply((fun reply -> IsKnownID(sku,reply)), timeout = 2000)
     member this.FetchPrinterInfo id = storeAgentMailboxProcessor.PostAndReply((fun reply -> FetchPrinterInfo(id,reply)), timeout = 2000)
     member this.SendMsgOverMainChannel id frame toLog = storeAgentMailboxProcessor.Post(SendMsgOverMainChannel (id,frame,toLog))
