@@ -207,6 +207,7 @@ type PrintersAgent(logAgent:LogAgent) =
                         return! printersAgentLoop connPrts printAppList
                     | PrintersDefault replyChannel ->
                         replyChannel.Reply (json<PrinterApp array> (List.toArray printAppList))
+                        return! printersAgentLoop connPrts printAppList
                     | IsKnownID (id, replyChannel) -> 
                         replyChannel.Reply (isKnownID id connPrts.PrinterList)
                         return! printersAgentLoop connPrts printAppList
