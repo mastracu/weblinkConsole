@@ -799,15 +799,13 @@
                 document.getElementById("Static").innerHTML = outputStatic;
             });
 
-            const form = document.getElementById("loginform");
-
             function checkCredentials() {
-                var inputs = form.elements;
-                var loginFormUsername = inputs["username"];
-                var loginFormPassword = inputs["psw"]
-                console.log(loginFormUsername.value);
+                var inputs = document.getElementById("loginform").elements;
+                var loginFormUsername = inputs["username"].value;
+                var loginFormPassword = inputs["psw"].value;
+                console.log(loginFormUsername);
 
-                return ((loginFormUsername.value == "admin") && (loginFormPassword.value == "m@rwe"));
+                return ((loginFormUsername == "admin") && (loginFormPassword == "m@rwe"));
             }
 
             // ...and take over its submit event.
