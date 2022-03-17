@@ -234,7 +234,7 @@ type PrintersAgent(logAgent:LogAgent) =
                                         | Some chanAgent -> chanAgent.Post (frame ,toLog)
                         return! printersAgentLoop connPrts printAppList
                 }
-            let jsonStr =File.ReadAllText(Path.GetFullPath "./json/printerdefaultapp.json")
+            let jsonStr =File.ReadAllText(Path.GetFullPath "./json/knownprinters.json")
             printersAgentLoop ConnectedPrinters.Empty (Array.toList (unjson<PrinterApp array> jsonStr))
         )
 
