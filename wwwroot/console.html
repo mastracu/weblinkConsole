@@ -359,7 +359,7 @@
         <button class="tablinks" onclick="openTab(event, 'PROGRAM')">! PROGRAM</button>
         <button class="tablinks" onclick="openTab(event, 'Price label')" id="priceTab">ZPL price label</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'Info')">Guide to applications demonstration</button>
-        <button class="tablinks" style="float:right" onclick="openTab(event, 'Settings')">Known printers</button>
+        <button class="tablinks" style="float:right" onclick="openTab(event, 'KNOWNPRINTERS')">Known printers</button>
         <button class="tablinks" style="float:right" onclick="openTab(event, 'LOGIN')">LOGIN</button>
     </div>
     <div id="mainblock">
@@ -574,7 +574,7 @@
 
     </div>
 
-    <div id="Settings" class="tabcontent" style="margin-left: 4px;">
+    <div id="KNOWNPRINTERS" class="tabcontent" style="margin-left: 4px;">
         <div id="Static" class="col-md-12">
         </div>
     </div>
@@ -788,7 +788,7 @@
     <script type="text/javascript">
 
         window.addEventListener("load", function () {
-            $.getJSON("/printersdefault.json", function (json) {
+            $.getJSON("/knownprinters.json", function (json) {
                 var outputStatic = "<h1>Known printers - realm and application</h1>";
                 console.log(json);
                 outputStatic += "<ul>";
@@ -1376,14 +1376,21 @@
                 case "LOGIN":
                     document.getElementById('id01').style.display = 'block';
                     break;
+                case "KNOWNPRINTERS":
+                    document.getElementById("mainblock").style.display = "none";
+                    document.getElementById("bottom-pane").style.display = "none";
+                    document.getElementById("Info").style.display = "none";
+                    document.getElementById("KNOWNPRINTERS").style.display = "inline-block";
+                    break;
+                case "Info":
+                    document.getElementById("mainblock").style.display = "none";
+                    document.getElementById("bottom-pane").style.display = "none";
+                    document.getElementById("KNOWNPRINTERS").style.display = "none";
+                    document.getElementById("Info").style.display = "inline-block";
+                    break;
                 default:
                     $("#sendcmd-button").click(function () {
                     });
-            };
-            if (tabName == "Info" || tabName == "Settings") {
-                document.getElementById("mainblock").style.display = "none";
-                document.getElementById("bottom-pane").style.display = "none";
-                document.getElementById(tabName).style.display = "inline-block";
             };
 
             // Add an "active" class to the button that opened the tab
