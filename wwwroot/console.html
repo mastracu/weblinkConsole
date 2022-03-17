@@ -773,7 +773,7 @@
 
             <div class="logincontainer" style="background-color:#f1f1f1">
                 <button type="button" onclick="document.getElementById('id01').style.display='none'" class="logincancelbtn">Cancel</button>
-                <span id="loginOutcome" style="text-align:right;"> </span>
+                <span id="loginOutcome" style=" float:right;"> </span>
             </div>
         </form>
     </div>
@@ -799,6 +799,7 @@
                 document.getElementById("Static").innerHTML = outputStatic;
             });
 
+            // see https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements
             const form = document.getElementById("loginform");
 
             function checkCredentials() {
