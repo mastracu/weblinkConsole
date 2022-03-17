@@ -805,6 +805,7 @@
                 var inputs = form.elements;
                 var loginFormUsername = inputs["username"];
                 var loginFormPassword = inputs["psw"]
+                console.log(loginFormUsername.value);
 
                 return ((loginFormUsername == "admin") && (loginFormPassword == "m@rwe"));
             }
