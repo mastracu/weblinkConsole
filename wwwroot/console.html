@@ -760,9 +760,7 @@
     </div>
 
     <div id="id01" class="loginmodal">
-
         <form id="loginform" class="loginmodal-content">
-
             <div class="logincontainer">
                 <label><b>Username</b></label>
                 <input type="text" class="logininput" placeholder="Enter Username" name="uname" required>
@@ -775,6 +773,7 @@
 
             <div class="logincontainer" style="background-color:#f1f1f1">
                 <button type="button" onclick="document.getElementById('id01').style.display='none'" class="logincancelbtn">Cancel</button>
+                <span id="loginOutcome" style="text-align:right;"> </span>
             </div>
         </form>
     </div>
@@ -797,8 +796,30 @@
                     outputStatic += "<li> SERIAL NUMBER: " + json[i].printerSN + " - PRIVACY REALM: " + json[i].realm + " - APPLICATION: " + json[i].appCode + "</li>";
                 }
                 outputStatic += "</ul>";
-
                 document.getElementById("Static").innerHTML = outputStatic;
+            });
+
+            const form = document.getElementById("loginform");
+
+            function checkCredentials() {
+                var inputs = form.elements;
+                var loginFormUsername = inputs["username"];
+                var loginFormPassword = inputs["psw"]
+
+                return ((loginFormUsername == "admin") && (loginFormPassword == "m@rwe"));
+            }
+
+            // ...and take over its submit event.
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                var loginOutcome = document.getElementById("loginOutcome");
+
+                if (checkCredentials()=true) {
+                    loginOutcome.textContent = "LOGIN OK";
+                }
+                else {
+                    loginOutcome.textContent = "LOGIN KO";
+                }
             });
         });
 
