@@ -805,9 +805,9 @@
                 var inputs = form.elements;
                 var loginFormUsername = inputs["username"];
                 var loginFormPassword = inputs["psw"]
-                console.log(loginFormUsername);
+                console.log(loginFormUsername.value);
 
-                return ((loginFormUsername == "admin") && (loginFormPassword == "m@rwe"));
+                return ((loginFormUsername.value == "admin") && (loginFormPassword.value == "m@rwe"));
             }
 
             // ...and take over its submit event.
