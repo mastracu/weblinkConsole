@@ -17,8 +17,8 @@ type PrinterApp =
     {
       [<field: DataMember(Name = "printerSN")>]
       printerSN : string;
-      [<field: DataMember(Name = "username")>]
-      username : string;
+      [<field: DataMember(Name = "realm")>]
+      realm : string;
       [<field: DataMember(Name = "appCode")>]
       appCode : string;
     }
@@ -30,8 +30,8 @@ type Printer =
       uniqueID : string;
       [<field: DataMember(Name = "productName")>]
       productName : string;
-      [<field: DataMember(Name = "username")>]
-      username : string;
+      [<field: DataMember(Name = "realm")>]
+      realm : string;
       [<field: DataMember(Name = "appVersion")>]
       appVersion : string;
       [<field: DataMember(Name = "friendlyName")>]
@@ -47,40 +47,40 @@ type Printer =
       configChannelAgent : ChannelAgent option;
    }
 
-let rec tryFindPrinterDefaultApp id list = 
+let rec tryFindPrinterData id list = 
     match list with
     | [] -> None
-    | { printerSN = p; username = u; appCode = a} :: xs -> if p = id then Some (u, a) else (tryFindPrinterDefaultApp id xs)
+    | { printerSN = p; realm = u; appCode = a} :: xs -> if p = id then Some (u, a) else (tryFindPrinterData id xs)
 
 let rec addPrinter id agent list appList =
-      let someApp = tryFindPrinterDefaultApp id appList
-      let defApp = 
-        match someApp with
-        | None -> "none", "none"
+      let someData = tryFindPrinterData id appList
+      let knownPrinterData = 
+        match someData with
+        | None -> "public", "none"
         | Some x -> x
 
       match list with
       | [] -> [{uniqueID = id;
                mainChannelAgent = agent; 
                productName = "";
-               username = fst defApp;
+               realm = fst knownPrinterData;
                appVersion = ""; 
                connectedSince = DateTime.Now.ToString();
                friendlyName = "";
                wlanCertExpDate = "";
-               sgdSetAlertProcessor = snd defApp;
+               sgdSetAlertProcessor = snd knownPrinterData;
                rawChannelAgent = None;
                configChannelAgent = None}]
       | printHead :: xs -> if (printHead.uniqueID = id) 
                            then {printHead with mainChannelAgent = agent; 
                                                 rawChannelAgent = None; 
                                                 configChannelAgent = None;
-                                                username = fst defApp
+                                                realm = fst knownPrinterData
                                                 productName = ""; 
                                                 appVersion = "";
                                                 wlanCertExpDate = "";
                                                 friendlyName = "";
-                                                sgdSetAlertProcessor = snd defApp} :: xs 
+                                                sgdSetAlertProcessor = snd knownPrinterData} :: xs 
                            else (printHead :: addPrinter id agent xs appList)
 
 let rec removePrinter id channel list  =
@@ -203,7 +203,7 @@ type PrintersAgent(logAgent:LogAgent) =
                     | UpdateApp (id,appname) -> return! printersAgentLoop ({ PrinterList = updateApp id appname connPrts.PrinterList}) printAppList
                     | PrintersInventory (includePrivatePrinters, replyChannel) -> 
                         // logAgent.AppendToLog (sprintf "Printersagent: inside PrintersInventory printerList: %A" connPrts.PrinterList )
-                        replyChannel.Reply (json<Printer array> (List.toArray (List.filter (fun dp -> includePrivatePrinters || dp.username = "none") connPrts.PrinterList) ))
+                        replyChannel.Reply (json<Printer array> (List.toArray (List.filter (fun dp -> includePrivatePrinters || dp.realm = "public") connPrts.PrinterList) ))
                         return! printersAgentLoop connPrts printAppList
                     | PrintersDefault replyChannel ->
                         replyChannel.Reply (json<PrinterApp array> (List.toArray printAppList))

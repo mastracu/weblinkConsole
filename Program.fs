@@ -434,7 +434,7 @@ let app  : WebPart =
           path "/logdump.json" >=> warbler (fun ctx -> OK ( mLogAgent.LogDump() ))
           path "/storepricelist.json" >=> warbler (fun ctx -> OK ( storeAgent.StoreInventory() ))
           path "/fwlist.json" >=> warbler (fun ctx -> OK ( fw.fwFileList() ))
-          path "/publicprinterslist.json" >=> warbler (fun ctx -> OK ( printersAgent.PrintersInventory(false) ))
+          path "/publiconlyprinterslist.json" >=> warbler (fun ctx -> OK ( printersAgent.PrintersInventory(false) ))
           path "/fullprinterslist.json" >=> warbler (fun ctx -> OK ( printersAgent.PrintersInventory(true) ))
           path "/printersdefault.json" >=> warbler (fun ctx -> OK (  printersAgent.PrintersDefault() ))
           basicAuth browseHome

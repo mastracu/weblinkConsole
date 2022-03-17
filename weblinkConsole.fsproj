@@ -15,7 +15,7 @@
     <Content Include="json\defaultinventory.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Include="json\printerdefaultapp.json">
+    <Content Include="json\knownprinters.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\console.html" />

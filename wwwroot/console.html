@@ -789,12 +789,12 @@
 
         window.addEventListener("load", function () {
             $.getJSON("/printersdefault.json", function (json) {
-                var outputStatic = "<h1>Known printers - privacy and default application</h1>";
+                var outputStatic = "<h1>Known printers - realm and application</h1>";
                 console.log(json);
                 outputStatic += "<ul>";
                 // Loop through
                 for (var i in json) {
-                    outputStatic += "<li>" + json[i].printerSN + " - " + json[i].appCode + " -" + json[i].username + "</li>";
+                    outputStatic += "<li> SERIAL NUMBER: " + json[i].printerSN + " - PRIVACY REALM: " + json[i].realm + " - APPLICATION: " + json[i].appCode + "</li>";
                 }
                 outputStatic += "</ul>";
 
