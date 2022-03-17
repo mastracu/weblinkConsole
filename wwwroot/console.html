@@ -819,13 +819,13 @@
                 var loginOutcome = document.getElementById("loginOutcome");
 
                 if (checkCredentials()==true) {
-                    loginOutcome.textContent = "LOGIN OK";
                     canAccessPrivatePrinters = true;
+                    $("#printers-table").tabulator("setData", "fullprinterslist.json");
                     document.getElementById("logintab").style.display = "none";
                     document.getElementById("id01").style.display = "none";
                 }
                 else {
-                    loginOutcome.textContent = "LOGIN KO";
+                    loginOutcome.textContent = "WRONG CREDENTIALS";
                 }
             });
         });
