@@ -166,7 +166,7 @@ type PrintersAgentMsg =
     | UpdateCertDate of string * string
     | UpdateAppVersion of string * string
     | IsKnownID of string * AsyncReplyChannel<Boolean>
-    | PrintersInventory  of AsyncReplyChannel<String>
+    | PrintersInventory  of Boolean * AsyncReplyChannel<String>
     | PrintersDefault of AsyncReplyChannel<String>
     | FetchPrinterInfo of string * AsyncReplyChannel<Printer Option>
     | SendMsgOverMainChannel of string * ChannelFrame * bool
@@ -201,9 +201,9 @@ type PrintersAgent(logAgent:LogAgent) =
                     | UpdateCertDate (id,ce) -> return! printersAgentLoop ({ PrinterList = updateCertExpDate id ce connPrts.PrinterList}) printAppList
                     | UpdateAppVersion (id,ver) -> return! printersAgentLoop ({ PrinterList = updateAppVersion id ver connPrts.PrinterList}) printAppList
                     | UpdateApp (id,appname) -> return! printersAgentLoop ({ PrinterList = updateApp id appname connPrts.PrinterList}) printAppList
-                    | PrintersInventory replyChannel -> 
+                    | PrintersInventory (includePrivatePrinters, replyChannel) -> 
                         // logAgent.AppendToLog (sprintf "Printersagent: inside PrintersInventory printerList: %A" connPrts.PrinterList )
-                        replyChannel.Reply (json<Printer array> (List.toArray connPrts.PrinterList))
+                        replyChannel.Reply (json<Printer array> (List.toArray (List.filter (fun dp -> includePrivatePrinters || dp.username = "none") connPrts.PrinterList) ))
                         return! printersAgentLoop connPrts printAppList
                     | PrintersDefault replyChannel ->
                         replyChannel.Reply (json<PrinterApp array> (List.toArray printAppList))
@@ -249,7 +249,7 @@ type PrintersAgent(logAgent:LogAgent) =
     member this.UpdatePartNumber id pn = storeAgentMailboxProcessor.Post(UpdatePartNumber (id,pn))
     member this.UpdateCertExpDate id ce = storeAgentMailboxProcessor.Post(UpdateCertDate (id,ce))
     member this.UpdateAppVersion id ver = storeAgentMailboxProcessor.Post(UpdateAppVersion (id,ver))
-    member this.PrintersInventory() = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersInventory reply), timeout = 2000)
+    member this.PrintersInventory includePrivatePrinters = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersInventory (includePrivatePrinters, reply) ), timeout = 2000)
     member this.PrintersDefault() = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersDefault reply), timeout = 2000)
     member this.IsKnownID sku = storeAgentMailboxProcessor.PostAndReply((fun reply -> IsKnownID(sku,reply)), timeout = 2000)
     member this.FetchPrinterInfo id = storeAgentMailboxProcessor.PostAndReply((fun reply -> FetchPrinterInfo(id,reply)), timeout = 2000)

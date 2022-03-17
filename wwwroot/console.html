@@ -1093,7 +1093,7 @@
             rowAdded: function (row) {
             },
         });
-        $("#printers-table").tabulator("setData", "printerslist.json");
+        $("#printers-table").tabulator("setData", "fullprinterslist.json");
 
 
         document.getElementById("Price label").style.display = "inline-block";
@@ -1152,7 +1152,7 @@
         document.getElementById("PROGRAM").style.display = "none";
 
         $("#refresh-button").click(function () {
-            $("#printers-table").tabulator("setData", "printerslist.json");
+            $("#printers-table").tabulator("setData", "fullprinterslist.json");
         });
 
         $("#logclear-button").click(function () {
