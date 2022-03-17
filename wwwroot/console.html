@@ -1180,7 +1180,7 @@
         document.getElementById("PROGRAM").style.display = "none";
 
         $("#refresh-button").click(function () {
-            if (canAccessPrivatePrinters = true) {
+            if (canAccessPrivatePrinters == true) {
                 $("#printers-table").tabulator("setData", "fullprinterslist.json");
             }
             else {
