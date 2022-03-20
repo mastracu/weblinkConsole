@@ -575,8 +575,9 @@
     </div>
 
     <div id="KNOWNPRINTERS" class="tabcontent" style="margin-left: 4px;">
+        <div id="knownprinters-table" style=" overflow:hidden"></div>
         <!--<div id="Static" class="col-md-12">
-        </div>-->
+    </div>-->
     </div>
 
     <div id="Info" class="tabcontent" style="margin-left: 4px;">
@@ -1189,7 +1190,7 @@
         });
 
         document.getElementById("KNOWNPRINTERS").style.display = "inline-block";
-        $("#knowprinters-table").tabulator({
+        $("#knownprinters-table").tabulator({
             selectable: 1,
             height: 200,
             layout: "fitColumns",
@@ -1199,17 +1200,8 @@
                 { title: "Default Application", field: "appCode", sorter: "string", width: 260, align: "left", },
             ],
         });
-        $("#knowprinters-table").tabulator("setData", "knownprinters.json");
+        $("#knownprinters-table").tabulator("setData", "knownprinters.json");
         document.getElementById("KNOWNPRINTERS").style.display = "none";
-
-        $("#refresh-button").click(function () {
-            if (canAccessPrivatePrinters == true) {
-                $("#printers-table").tabulator("setData", "fullprinterslist.json");
-            }
-            else {
-                $("#printers-table").tabulator("setData", "publiconlyprinterslist.json");
-            }
-        });
 
         $("#logclear-button").click(function () {
             $("#live-log-table").tabulator("clearData");
