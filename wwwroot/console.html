@@ -575,8 +575,8 @@
     </div>
 
     <div id="KNOWNPRINTERS" class="tabcontent" style="margin-left: 4px;">
-        <div id="Static" class="col-md-12">
-        </div>
+        <!--<div id="Static" class="col-md-12">
+        </div>-->
     </div>
 
     <div id="Info" class="tabcontent" style="margin-left: 4px;">
@@ -790,16 +790,16 @@
 
         window.addEventListener("load", function () {
             $.getJSON("/knownprinters.json", function (json) {
-                var outputStatic = "<h1>Known printers - realm and application</h1>";
-                console.log(json);
-                outputStatic += "<ul>";
-                // Loop through
-                for (var i in json) {
-                    outputStatic += "<li> SERIAL NUMBER: " + json[i].printerSN + " - PRIVACY REALM: " + json[i].realm + " - APPLICATION: " + json[i].appCode + "</li>";
-                }
-                outputStatic += "</ul>";
-                document.getElementById("Static").innerHTML = outputStatic;
-            });
+            //    var outputStatic = "<h1>Known printers - realm and application</h1>";
+            //    console.log(json);
+            //    outputStatic += "<ul>";
+            //     Loop through
+            //    for (var i in json) {
+            //        outputStatic += "<li> SERIAL NUMBER: " + json[i].printerSN + " - PRIVACY REALM: " + json[i].realm + " - APPLICATION: " + json[i].appCode + "</li>";
+            //    }
+            //    outputStatic += "</ul>";
+            //    document.getElementById("Static").innerHTML = outputStatic;
+            //});
 
             // see https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements
             const form = document.getElementById("loginform");
@@ -1178,6 +1178,29 @@
         });
         $("#fw-table").tabulator("setData", "fwlist.json");
         document.getElementById("PROGRAM").style.display = "none";
+
+        $("#refresh-button").click(function () {
+            if (canAccessPrivatePrinters == true) {
+                $("#printers-table").tabulator("setData", "fullprinterslist.json");
+            }
+            else {
+                $("#printers-table").tabulator("setData", "publiconlyprinterslist.json");
+            }
+        });
+
+        document.getElementById("KNOWNPRINTERS").style.display = "inline-block";
+        $("#knowprinters-table").tabulator({
+            selectable: 1,
+            height: 200,
+            layout: "fitColumns",
+            columns: [ //Define Table Columns
+                { title: "Serial Number", field: "printerSN", sorter: "string", width: 260, align: "left", },
+                { title: "Realm", field: "realm", sorter: "string", width: 260, align: "left", },
+                { title: "Default Application", field: "appCode", sorter: "string", width: 260, align: "left", },
+            ],
+        });
+        $("#knowprinters-table").tabulator("setData", "knowprinters.json");
+        document.getElementById("KNOWNPRINTERS").style.display = "none";
 
         $("#refresh-button").click(function () {
             if (canAccessPrivatePrinters == true) {
