@@ -1194,8 +1194,8 @@
 
         document.getElementById("KNOWNPRINTERS").style.display = "inline-block";
         $("#knownprinters-table").tabulator({
-            selectable: 1,
-            height: 200,
+            selectable: 0,
+         //   height: 200,
             layout: "fitColumns",
             columns: [ //Define Table Columns
                 { title: "Serial Number", field: "printerSN", sorter: "string", width: 260, align: "left", },
