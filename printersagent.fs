@@ -36,6 +36,8 @@ type Printer =
       appVersion : string;
       [<field: DataMember(Name = "friendlyName")>]
       friendlyName : string;
+      [<field: DataMember(Name = "printerLocation")>]
+      printerLocation : string;
       [<field: DataMember(Name = "sgdSetAlertFeedback")>]
       sgdSetAlertProcessor : string;      // "none" | "priceTag" | "ifadLabelConversion" | "wikipediaConversion" | "labelToGo"
       [<field: DataMember(Name = "connectedSince")>]
@@ -67,6 +69,7 @@ let rec addPrinter id agent list appList =
                appVersion = ""; 
                connectedSince = DateTime.Now.ToString();
                friendlyName = "";
+               printerLocation = "";
                wlanCertExpDate = "";
                sgdSetAlertProcessor = snd knownPrinterData;
                rawChannelAgent = None;
@@ -110,6 +113,13 @@ let rec updateAppVersion id ver list =
       | printer :: xs -> if printer.uniqueID = id 
                           then {printer with appVersion = ver} :: xs 
                           else (printer :: updateAppVersion id ver xs)
+
+let rec updateFriendlyName id friendlyName list =
+    match list with
+    | [] -> []
+    | printer :: xs -> if printer.uniqueID = id 
+                        then {printer with friendlyName = friendlyName} :: xs 
+                        else (printer :: updateFriendlyName id friendlyName xs)
 
 let rec updateApp id appname list =
       match list with
@@ -165,6 +175,7 @@ type PrintersAgentMsg =
     | UpdatePartNumber of string * string
     | UpdateCertDate of string * string
     | UpdateAppVersion of string * string
+    | UpdateFriendlyName of string * string
     | IsKnownID of string * AsyncReplyChannel<Boolean>
     | PrintersInventory  of Boolean * AsyncReplyChannel<String>
     | PrintersDefault of AsyncReplyChannel<String>
@@ -200,6 +211,7 @@ type PrintersAgent(logAgent:LogAgent) =
                     | UpdatePartNumber (id,pn) -> return! printersAgentLoop ({ PrinterList = updatePartNumber id pn connPrts.PrinterList}) printAppList
                     | UpdateCertDate (id,ce) -> return! printersAgentLoop ({ PrinterList = updateCertExpDate id ce connPrts.PrinterList}) printAppList
                     | UpdateAppVersion (id,ver) -> return! printersAgentLoop ({ PrinterList = updateAppVersion id ver connPrts.PrinterList}) printAppList
+                    | UpdateFriendlyName (id,fName) -> return! printersAgentLoop ({ PrinterList = updateFriendlyName id fName connPrts.PrinterList}) printAppList
                     | UpdateApp (id,appname) -> return! printersAgentLoop ({ PrinterList = updateApp id appname connPrts.PrinterList}) printAppList
                     | PrintersInventory (includePrivatePrinters, replyChannel) -> 
                         // logAgent.AppendToLog (sprintf "Printersagent: inside PrintersInventory printerList: %A" connPrts.PrinterList )
@@ -249,6 +261,7 @@ type PrintersAgent(logAgent:LogAgent) =
     member this.UpdatePartNumber id pn = storeAgentMailboxProcessor.Post(UpdatePartNumber (id,pn))
     member this.UpdateCertExpDate id ce = storeAgentMailboxProcessor.Post(UpdateCertDate (id,ce))
     member this.UpdateAppVersion id ver = storeAgentMailboxProcessor.Post(UpdateAppVersion (id,ver))
+    member this.UpdateFriendlyName id ver = storeAgentMailboxProcessor.Post(UpdateFriendlyName (id,ver))
     member this.PrintersInventory includePrivatePrinters = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersInventory (includePrivatePrinters, reply) ), timeout = 2000)
     member this.PrintersDefault() = storeAgentMailboxProcessor.PostAndReply((fun reply -> PrintersDefault reply), timeout = 2000)
     member this.IsKnownID sku = storeAgentMailboxProcessor.PostAndReply((fun reply -> IsKnownID(sku,reply)), timeout = 2000)

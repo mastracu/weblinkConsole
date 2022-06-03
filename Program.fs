@@ -280,6 +280,11 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                         do printersAgent.UpdateAppVersion printerUniqueId applName
                     | None -> ()
 
+                    match jval.TryGetProperty "device.friendly_name" with
+                    | Some jsonval ->   let fName = JsonExtensions.AsString (jsonval)
+                                        do printersAgent.UpdateFriendlyName printerUniqueId fName
+                    | None -> ()
+
               | (Ping, data, true) ->
                 // Ping message received. Responding with Pong
                 // The printer sends a PING message roughly ever 60 seconds. The server needs to respond with a PONG, per RFC6455
