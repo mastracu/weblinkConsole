@@ -235,7 +235,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                              do printersAgent.UpdateRawChannel printerUniqueId (Some inbox)
                         | "v1.config.zebra.com" ->
                              do printersAgent.UpdateConfigChannel printerUniqueId (Some inbox)
-                             do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"alerts.configured":"ALL MESSAGES,SDK,Y,Y,WEBLINK.IP.CONN2,0,N,|SGD SET,SDK,Y,Y,WEBLINK.IP.CONN1,0,N,capture.channel1.data.raw"} """, true) true
+                             do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"alerts.configured":"ALL MESSAGES,SDK,Y,Y,WEBLINK.IP.CONN2,0,N,|SGD SET,SDK,Y,Y,WEBLINK.IP.CONN2,0,N,capture.channel1.data.raw"} """, true) true
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"device.product_name":null} """, true) true
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"appl.name":null} """, true) true
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"device.friendly_name":null} """, true) true
