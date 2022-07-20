@@ -398,7 +398,7 @@ type File2Printer =
 let mutable consoleUser = "foo"
 
 let basicAuth =
-  let credentialList = [("foo", "bar"); ("ugo", "marwe")]
+  let credentialList = [("foo", "bar")]
   Suave.Authentication.authenticateBasic (fun pair ->
                                             consoleUser <- fst pair
                                             List.contains pair credentialList)
