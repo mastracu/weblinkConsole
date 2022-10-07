@@ -65,15 +65,22 @@ let convertIfadLabel (label:string) =
     "^FO80,202^A0N,40,40^FD" + field6 + "^FS^XZ"
 
 
-let convertWikipediaLabel (label:string) =
-(*
-^XA
-^LH30,30
-^FO20,10
-^ADN,90,50
-^AD^FDWikipedia^FS
-^XZ
-*)
-    let index1 = label.IndexOf("^AD^FD") + "^AD^FD".Length   // IFAD INVENTORY
-    let field1 = label.Substring (index1, label.IndexOf("^FS", index1) - index1)
-    "^XA^LH30,30^FO20,10^ADN,90,50^AD^FD" + "Converted" + "^FS^XZ"
+let encodeDHLLabel (dHLid:string) =
+    let part2encode = dHLid.[1..32]   // I primi 32 caratteri
+
+    let label0 = "
+        ^XA
+        ^FO50,50
+        ^A0N,65
+        ^FN7
+        ^FS
+        ^RFW,A
+        ^FDxxxxxxx
+        ^FS
+        ^FN7
+        ^RFR,A
+        ^FS
+        ^XZ
+        "
+
+    label0 |> String.replace "xxxxxxx" part2encode

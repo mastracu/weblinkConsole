@@ -39,7 +39,7 @@ type Printer =
       [<field: DataMember(Name = "printerLocation")>]
       printerLocation : string;
       [<field: DataMember(Name = "sgdSetAlertFeedback")>]
-      sgdSetAlertProcessor : string;      // "none" | "priceTag" | "ifadLabelConversion" | "wikipediaConversion" | "labelToGo"
+      sgdSetAlertProcessor : string;      // "none" | "priceTag" | "ifadLabelConversion" | "dhlRFID" | "labelToGo"
       [<field: DataMember(Name = "connectedSince")>]
       connectedSince : string;
       [<field: DataMember(Name = "wlanCertExpDate")>]

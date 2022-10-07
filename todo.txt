@@ -1,0 +1,15 @@
+Creo un file identityStore.fs
+
+In-memory dictionary di tutti gli utenti indicizzato per username
+ogni utente ha come attributo Role (company/tenant) e password
+vedi AudienceStorage.fs
+
+il dizionario viene caricato da un file json (password inizialmente in chiaro nel file json)
+
+ha senso avere più utenti per realm perchè (per esempio) posso salvare formati zpl privati (in futuro)
+
+--
+
+L'idea è che attraverso la web SPA, posso richiedere JWToken via LOGIN e ho poi accesso attraverso webapi alle stampanti di quel realm (oltre a quelle che non hanno realm assegnato - realm = NONE or "PUBLIC").
+sempre attraverso la web SPA, utente puo' cambiare la sua password ma non il realm
+    
