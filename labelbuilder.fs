@@ -66,7 +66,26 @@ let convertIfadLabel (label:string) =
 
 
 let encodeDHLLabel (dHLregistrationPlate:string) =
-    let dHLHexPlate = dHLregistrationPlate |> int64 |> (sprintf "%x")
+
+    // https://www.rapidtables.com/convert/number/decimal-to-hex.html
+    // https://stu.dev/bigint-to-string-in-any-base-fsharp/
+    let bigintToDigits b source =
+        let rec loop (b : int) num digits =
+            let (quotient, remainder) = bigint.DivRem(num, bigint b)
+            match quotient with
+            | zero when zero = 0I -> int remainder :: digits
+            | _ -> loop b quotient (int remainder :: digits)
+        loop b source []
+    let digitsToString source =
+        source
+        |> List.map (fun (x : int) -> x.ToString("X").ToLowerInvariant())
+        |> String.concat ""
+    let printBigintAsHex source =
+        let bigintToHex = bigintToDigits 16
+        source |> bigintToHex |>  digitsToString |> sprintf "%s"
+
+    let keepNumericOnly str = Seq.fold (fun finstr c  -> if (c < '0' || c > '9') then finstr else finstr + c.ToString()) ""  str
+    let hexEncode rp = rp |> keepNumericOnly |> bigint.Parse |> printBigintAsHex
 
     let label0 = "
 ^XA
@@ -74,13 +93,12 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 ^A0N,65
 ^FN7
 ^FS
-^RFW,H
-^FDxxxxxxx^FS
+^RFW,H,1,2,1^FD4000^FS
+^RFW,H,2,16,1^FDxxxxxxx^FS
 ^FN7
 ^RFR,H
 ^FS
 ^HV7
 ^XZ
 "
-
-    label0 |> String.replace "xxxxxxx" dHLHexPlate
+    label0 |> String.replace "xxxxxxx" (hexEncode dHLregistrationPlate)
