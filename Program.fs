@@ -247,7 +247,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                                 | "priceTag" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "labelToGo" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "ifadLabelConversion" -> sendUSBCaptureCmds printerUniqueId printersAgent true
-                                                | "dhlRFID" -> sendUSBCaptureCmds printerUniqueId printersAgent true
+                                                | "dhlRFID" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | _ -> ()
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"file.cert.expiration":null} """, true) true
                         | _ -> ()
