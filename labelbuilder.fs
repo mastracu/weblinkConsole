@@ -65,8 +65,8 @@ let convertIfadLabel (label:string) =
     "^FO80,202^A0N,40,40^FD" + field6 + "^FS^XZ"
 
 
-let encodeDHLLabel (dHLid:string) =
-    let part2encode = dHLid.[1..32]   // I primi 32 caratteri
+let encodeDHLLabel (dHLregistrationPlate:string) =
+    let dHLHexPlate = dHLregistrationPlate |> int |> (sprintf "%x")
 
     let label0 = "
         ^XA
@@ -74,13 +74,14 @@ let encodeDHLLabel (dHLid:string) =
         ^A0N,65
         ^FN7
         ^FS
-        ^RFW,A
+        ^RFW,H
         ^FDxxxxxxx
         ^FS
         ^FN7
-        ^RFR,A
+        ^RFR,H
         ^FS
+        ^HV7
         ^XZ
         "
 
-    label0 |> String.replace "xxxxxxx" part2encode
+    label0 |> String.replace "xxxxxxx" dHLHexPlate
