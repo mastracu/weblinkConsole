@@ -69,19 +69,18 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
     let dHLHexPlate = dHLregistrationPlate |> int64 |> (sprintf "%x")
 
     let label0 = "
-        ^XA
-        ^FO50,50
-        ^A0N,65
-        ^FN7
-        ^FS
-        ^RFW,H
-        ^FDxxxxxxx
-        ^FS
-        ^FN7
-        ^RFR,H
-        ^FS
-        ^HV7
-        ^XZ
-        "
+^XA
+^FO50,50
+^A0N,65
+^FN7
+^FS
+^RFW,H
+^FDxxxxxxx^FS
+^FN7
+^RFR,H
+^FS
+^HV7
+^XZ
+"
 
     label0 |> String.replace "xxxxxxx" dHLHexPlate
