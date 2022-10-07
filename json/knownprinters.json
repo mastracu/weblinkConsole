@@ -1,17 +1,22 @@
 [
-  {
-    "printerSN": "D1J183000889",
-	"realm": "private",
-    "appCode": "none"
-  },
-  {
-    "printerSN": "18J191905961",
-	"realm": "private",
-    "appCode": "none"
-  },
-  {
-    "printerSN": "50J183402540",
-	"realm": "public",
-    "appCode": "priceTag"
-  }
+    {
+        "printerSN": "D1J183000889",
+        "realm": "private",
+        "appCode": "none"
+    },
+    {
+        "printerSN": "18J191905961",
+        "realm": "private",
+        "appCode": "none"
+    },
+    {
+        "printerSN": "40J135000563",
+        "realm": "public",
+        "appCode": "dhlRFID"
+    },
+    {
+        "printerSN": "50J183402540",
+        "realm": "public",
+        "appCode": "priceTag"
+    }
 ]
