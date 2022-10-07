@@ -66,7 +66,7 @@ let convertIfadLabel (label:string) =
 
 
 let encodeDHLLabel (dHLregistrationPlate:string) =
-    let dHLHexPlate = dHLregistrationPlate |> int |> (sprintf "%x")
+    let dHLHexPlate = dHLregistrationPlate |> int64 |> (sprintf "%x")
 
     let label0 = "
         ^XA
