@@ -87,12 +87,17 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
     let keepNumericOnly str = Seq.fold (fun finstr c  -> if (c < '0' || c > '9') then finstr else finstr + c.ToString()) ""  str
     let hexEncode rp = rp |> keepNumericOnly |> bigint.Parse |> printBigintAsHex
 
+// https://www.zebra.com/us/en/support-downloads/knowledge-articles/defining-the-size-of-the-epc-data-that-can-be-encoded-for-gen2-rfid-tags.html
+// I need 30 hex digits to encode 36 decimal digits so I need to encode 128 bits epc
     let label0 = "
 ^XA
 ^FO50,50
 ^A0N,65
 ^FN7
 ^FS
+^FX Bar code.
+^BY3,2,200
+^FO50,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
 ^RFW,H,2,16,1^FDxxxxxxx^FS
 ^FN7
@@ -101,4 +106,4 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 ^HV7
 ^XZ
 "
-    label0 |> String.replace "xxxxxxx" (hexEncode dHLregistrationPlate)
+    label0 |> String.replace "xxxxxxx" (hexEncode dHLregistrationPlate) |> String.replace "yyyyyyyyyyyyyyyyy" dHLregistrationPlate
