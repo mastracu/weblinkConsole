@@ -15,6 +15,11 @@
         "appCode": "dhlRFID"
     },
     {
+        "printerSN": "DBJ214201215",
+        "realm": "public",
+        "appCode": "dhlRFID"
+    },
+    {
         "printerSN": "50J183402540",
         "realm": "public",
         "appCode": "priceTag"
