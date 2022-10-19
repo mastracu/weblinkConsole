@@ -91,13 +91,13 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 // I need 30 hex digits to encode 36 decimal digits so I need to encode 128 bits epc
     let label0 = "
 ^XA
-^FO50,50
+^FO90,50
 ^A0N,65
 ^FN7
 ^FS
 ^FX Bar code.
 ^BY3,2,200
-^FO50,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
+^FO90,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
 ^RFW,H,2,16,1^FDxxxxxxx^FS
 ^FN7
