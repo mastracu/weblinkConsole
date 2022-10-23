@@ -20,7 +20,7 @@ let sendPrintRequest weblinkEndpointUrl (printer:string) (zplcode:string) =
             |}
     }
     |> Request.send
-    |> Response.
+
 
     
 sendPrintRequest "https://weblink.mastracu.it/utf82raw" "40J135000563" "^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"
