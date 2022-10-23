@@ -485,6 +485,8 @@ let app  : WebPart =
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /utf82raw - %A" mp)
                                                let bytes2send = UTF8.bytes (mp.msg)
                                                do printersAgent.SendMsgOverRawChannel mp.printerID (Opcode.Binary, bytes2send, true ) true)
+                           >=> OK ("OK\n")
+
           path "/CISDFCRC16" >=> objectDo (fun (fp:File2Printer) ->
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /CISDFCRC16 - %A" fp.CISDFCRC16Hdr)
                                                let bytes2send = Array.append (ASCII.bytes fp.CISDFCRC16Hdr) (Convert.FromBase64String fp.base64Data)
