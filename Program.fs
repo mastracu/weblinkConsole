@@ -485,6 +485,7 @@ let app  : WebPart =
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /utf82raw - %A" mp)
                                                let bytes2send = UTF8.bytes (mp.msg)
                                                do printersAgent.SendMsgOverRawChannel mp.printerID (Opcode.Binary, bytes2send, true ) true)
+                          >=> OK ("""{"msg": "^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ","printerID": "40J135000563" """) >=> Writers.setMimeType "text/plain"
 
           path "/CISDFCRC16" >=> objectDo (fun (fp:File2Printer) ->
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /CISDFCRC16 - %A" fp.CISDFCRC16Hdr)
