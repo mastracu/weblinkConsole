@@ -208,11 +208,11 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                     do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " Original label: %s" label300dpi)
                                     do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " Converted label: %s" label200dpi)
                                     do printersAgent.SendMsgOverRawChannel printerUniqueId (Opcode.Binary, UTF8.bytes label200dpi, true) true
-                                | "wikipediaConversion" ->
+                                | "dhlRFID" ->
                                     let demoinlabel = (jsonalertval.GetProperty "setting_value").AsString()
-                                    let demooutlabel = (convertWikipediaLabel demoinlabel)
-                                    do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " Original label: %s" demoinlabel)
-                                    do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " Converted label: %s" demooutlabel)
+                                    let demooutlabel = (encodeDHLLabel demoinlabel)
+                                    do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " DHL barcode: %s" demoinlabel)
+                                    do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " DHL ZPL format: %s" demooutlabel)
                                     do printersAgent.SendMsgOverRawChannel printerUniqueId (Opcode.Binary, UTF8.bytes demooutlabel, true) true
                                 | "labelToGo" -> ()
                                 | _ -> ()
@@ -247,7 +247,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                                 | "priceTag" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "labelToGo" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "ifadLabelConversion" -> sendUSBCaptureCmds printerUniqueId printersAgent true
-                                                | "wikipediaConversion" -> sendUSBCaptureCmds printerUniqueId printersAgent true
+                                                | "dhlRFID" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | _ -> ()
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"file.cert.expiration":null} """, true) true
                         | _ -> ()
@@ -422,6 +422,19 @@ let app  : WebPart =
                        func obj
                        obj)
 
+  let helperFunction arg =
+    let mutable pID = ""
+    objectDo (fun (mp:Msg2Printer) ->
+                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /utf82raw - %A" mp)
+                let bytes2send = UTF8.bytes (mp.msg)
+                do printersAgent.SendMsgOverRawChannel mp.printerID (Opcode.Binary, bytes2send, true ) true
+                pID <- mp.printerID
+             )
+    >=> warbler (fun ctx -> OK(if printersAgent.IsKnownID(pID) then "OK\n" else "KO\n")) 
+    >=> Writers.setMimeType "text/plain"
+
+
+
   do System.Console.WriteLine (DateTime.Now.ToString() + " WebServer started")
 
   //let appname = System.Environment.GetEnvironmentVariable("HEROKU_APP_NAME")
@@ -454,7 +467,7 @@ let app  : WebPart =
                                 | "priceTag" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | "labelToGo" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | "ifadLabelConversion" -> sendUSBCaptureCmds prt.uniqueID printersAgent true
-                                | "wikipediaConversion" -> sendUSBCaptureCmds prt.uniqueID printersAgent true
+                                | "dhlRFID" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | _ -> ()
                     )
           path "/productupdate" >=> objectDo (fun prod -> storeAgent.UpdateWith prod)
@@ -481,10 +494,7 @@ let app  : WebPart =
                                                   | Some pr -> match pr.rawChannelAgent with
                                                                | None -> ()
                                                                | Some agent -> do doFwUpgrade fwjob agent mLogAgent)
-          path "/utf82raw" >=> objectDo (fun (mp:Msg2Printer) ->
-                                               do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /utf82raw - %A" mp)
-                                               let bytes2send = UTF8.bytes (mp.msg)
-                                               do printersAgent.SendMsgOverRawChannel mp.printerID (Opcode.Binary, bytes2send, true ) true)
+          path "/utf82raw" >=> helperFunction ()
           path "/CISDFCRC16" >=> objectDo (fun (fp:File2Printer) ->
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /CISDFCRC16 - %A" fp.CISDFCRC16Hdr)
                                                let bytes2send = Array.append (ASCII.bytes fp.CISDFCRC16Hdr) (Convert.FromBase64String fp.base64Data)

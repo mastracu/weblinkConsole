@@ -65,15 +65,45 @@ let convertIfadLabel (label:string) =
     "^FO80,202^A0N,40,40^FD" + field6 + "^FS^XZ"
 
 
-let convertWikipediaLabel (label:string) =
-(*
+let encodeDHLLabel (dHLregistrationPlate:string) =
+
+    // https://www.rapidtables.com/convert/number/decimal-to-hex.html
+    // https://stu.dev/bigint-to-string-in-any-base-fsharp/
+    let bigintToDigits b source =
+        let rec loop (b : int) num digits =
+            let (quotient, remainder) = bigint.DivRem(num, bigint b)
+            match quotient with
+            | zero when zero = 0I -> int remainder :: digits
+            | _ -> loop b quotient (int remainder :: digits)
+        loop b source []
+    let digitsToString source =
+        source
+        |> List.map (fun (x : int) -> x.ToString("X").ToLowerInvariant())
+        |> String.concat ""
+    let printBigintAsHex source =
+        let bigintToHex = bigintToDigits 16
+        source |> bigintToHex |>  digitsToString |> sprintf "%s"
+
+    let keepNumericOnly str = Seq.fold (fun finstr c  -> if (c < '0' || c > '9') then finstr else finstr + c.ToString()) ""  str
+    let hexEncode rp = rp |> keepNumericOnly |> bigint.Parse |> printBigintAsHex
+
+// https://www.zebra.com/us/en/support-downloads/knowledge-articles/defining-the-size-of-the-epc-data-that-can-be-encoded-for-gen2-rfid-tags.html
+// I need 30 hex digits to encode 36 decimal digits so I need to encode 128 bits epc
+    let label0 = "
 ^XA
-^LH30,30
-^FO20,10
-^ADN,90,50
-^AD^FDWikipedia^FS
+^FO90,50
+^A0N,65
+^FN7
+^FS
+^FX Bar code.
+^BY3,2,200
+^FO90,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
+^RFW,H,1,2,1^FD4000^FS
+^RFW,H,2,16,1^FDxxxxxxx^FS
+^FN7
+^RFR,H
+^FS
+^HV7
 ^XZ
-*)
-    let index1 = label.IndexOf("^AD^FD") + "^AD^FD".Length   // IFAD INVENTORY
-    let field1 = label.Substring (index1, label.IndexOf("^FS", index1) - index1)
-    "^XA^LH30,30^FO20,10^ADN,90,50^AD^FD" + "Converted" + "^FS^XZ"
+"
+    label0 |> String.replace "xxxxxxx" (hexEncode dHLregistrationPlate) |> String.replace "yyyyyyyyyyyyyyyyy" dHLregistrationPlate

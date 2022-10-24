@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="File1.fsx" />
+    <Content Include="todo.txt" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
@@ -28,6 +30,7 @@
     <Compile Include="messageLogAgent.fs" />
     <Compile Include="ZebraWebSocket.fs" />
     <Compile Include="storeagent.fs" />
+    <Compile Include="identityStore.fs" />
     <Compile Include="printersagent.fs" />
     <Compile Include="fw.fs" />
     <Compile Include="labelbuilder.fs" />

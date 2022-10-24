@@ -39,7 +39,7 @@ type Printer =
       [<field: DataMember(Name = "printerLocation")>]
       printerLocation : string;
       [<field: DataMember(Name = "sgdSetAlertFeedback")>]
-      sgdSetAlertProcessor : string;      // "none" | "priceTag" | "ifadLabelConversion" | "wikipediaConversion" | "labelToGo"
+      sgdSetAlertProcessor : string;      // "none" | "priceTag" | "ifadLabelConversion" | "dhlRFID" | "labelToGo"
       [<field: DataMember(Name = "connectedSince")>]
       connectedSince : string;
       [<field: DataMember(Name = "wlanCertExpDate")>]
@@ -159,9 +159,6 @@ let rec clearConfigChannel id agent list =
 
 let isKnownID id list = List.exists (fun printer -> printer.uniqueID = id) list
 let tryFindPrinter id list = List.tryFind (fun (prt:Printer) -> prt.uniqueID = id) list
-
-
-    
     
 type PrintersAgentMsg = 
     | Exit
