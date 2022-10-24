@@ -431,7 +431,8 @@ let app  : WebPart =
                 pID <- mp.printerID
                 do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " pID = %s" pID)
              )
-    >=> Writers.setMimeType "text/plain" >=> OK(if printersAgent.IsKnownID(pID) then "OK\n" else "KO\n") 
+    >=> OK(if printersAgent.IsKnownID(pID) then "OK\n" else "KO\n") 
+    >=> Writers.setMimeType "text/plain"
 
 
 
