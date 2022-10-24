@@ -429,7 +429,6 @@ let app  : WebPart =
                 let bytes2send = UTF8.bytes (mp.msg)
                 do printersAgent.SendMsgOverRawChannel mp.printerID (Opcode.Binary, bytes2send, true ) true
                 pID <- mp.printerID
-                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " pID = %s" pID)
              )
     >=> warbler (fun ctx -> OK(if printersAgent.IsKnownID(pID) then "OK\n" else "KO\n")) 
     >=> Writers.setMimeType "text/plain"
