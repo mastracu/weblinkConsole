@@ -431,7 +431,7 @@ let app  : WebPart =
                 pID <- mp.printerID
                 do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " pID = %s" pID)
              )
-    >=> OK(if printersAgent.IsKnownID(pID) then "OK\n" else "KO\n") 
+    >=> warbler (fun ctx -> OK(if printersAgent.IsKnownID(pID) then "OK\n" else "KO\n")) 
     >=> Writers.setMimeType "text/plain"
 
 
