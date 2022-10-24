@@ -157,7 +157,9 @@ let rec clearConfigChannel id agent list =
                           then {printer with configChannelAgent = None} :: xs 
                           else (printer :: clearConfigChannel id agent xs)
 
-let isKnownID id list = List.exists (fun printer -> printer.uniqueID = id) list
+let isKnownID id list = List.exists (fun printer ->
+                                            do System.Console.WriteLine (DateTime.Now.ToString() + sprintf "inside isKnownID pID = %s" id)
+                                            printer.uniqueID = id) list
 let tryFindPrinter id list = List.tryFind (fun (prt:Printer) -> prt.uniqueID = id) list
 
 
