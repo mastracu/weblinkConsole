@@ -1087,7 +1087,7 @@
 
         $("#printers-table").tabulator({
             selectable: 1,
-            height: "auto",
+            maxHeight: "30%", //do not let table get bigger than the height of its parent element
             layout: "fitColumns",
             columns: [ //Define Table Columns
                 { title: "Printer SN", field: "uniqueID", width: 170, sorter: "string", align: "left", frozen: true },
