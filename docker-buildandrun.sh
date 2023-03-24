@@ -1,6 +1,6 @@
 #!/bin/bash
 # $1 = weblinkendpoint
-echo "Building container: docker build -t $1 ."
+echo "building container: docker build -t $1 ."
 docker build -t $1 .
 echo "stopping all containers"
 docker stop $(docker ps -a -q)
