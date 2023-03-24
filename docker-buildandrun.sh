@@ -11,6 +11,6 @@ docker images --no-trunc | grep '<none>' | awk '{ print $3 }'  | xargs -r docker
 echo "starting container:"
 docker run -d \
   -it \
-  -p8083:8083 \
+  -p8084:8083 \
   --mount type=bind,source="$(pwd)"/../zebrafirmware,target=/App/firmware \
   $1
