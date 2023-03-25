@@ -3,7 +3,7 @@
 echo "building container: docker build -t $1 ."
 docker build -t $1 .
 echo "stopping all containers"
-docker stop $(docker ps -a -q)
+docker stop $(docker ps -f ancestor=$1 -a -q)
 echo "removing stopped containers"
 docker container prune -f
 echo "removing all untagged images"
