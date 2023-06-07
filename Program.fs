@@ -463,6 +463,7 @@ let app  : WebPart =
   //let releaseVersion = System.Environment.GetEnvironmentVariable("HEROKU_RELEASE_VERSION")
 
   choose [
+    audienceWebPart'
     path "/websocketWithSubprotocol" >=> ZebraWebSocket.handShakeWithSubprotocol (chooseSubprotocol "v1.weblink.zebra.com") (ws allAgents)
     path "/sseLog" >=> request (fun _ -> EventSource.handShake (sseContinuation logEvent.Publish ))
 
@@ -482,7 +483,6 @@ let app  : WebPart =
     POST >=>
       choose
         [ 
-          audienceWebPart'
           path "/printerupdate" >=>
            objectDo (fun prt -> printersAgent.UpdateApp prt.uniqueID prt.sgdSetAlertProcessor
                                 match prt.sgdSetAlertProcessor with
