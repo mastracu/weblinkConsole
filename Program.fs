@@ -34,6 +34,27 @@ open LabelBuilder
 open System
 open fw
 
+open JwtToken
+open AuthServer
+
+let authorizationServerConfig = {
+    AddAudienceUrlPath = "/api/audience"
+    CreateTokenUrlPath = "/oauth2/token"
+    SaveAudience = AudienceStorage.saveAudience
+    GetAudience = AudienceStorage.getAudience
+    Issuer = "suave"
+    TokenTimeSpan = TimeSpan.FromMinutes(1.)
+}
+
+let identityStore = {
+    getClaims = IdentityStore.getClaims
+    isValidCredentials = IdentityStore.isValidCredentials
+    getSecurityKey = KeyStore.securityKey
+    getSigningCredentials = KeyStore.hmacSha256
+}
+
+let audienceWebPart' = audienceWebPart authorizationServerConfig identityStore  
+
 let Crc16b (msg:byte[]) =
     let polynomial      = 0xA001us
     let mutable code    = 0xffffus
@@ -460,7 +481,9 @@ let app  : WebPart =
         ]
     POST >=>
       choose
-        [ path "/printerupdate" >=>
+        [ 
+          audienceWebPart'
+          path "/printerupdate" >=>
            objectDo (fun prt -> printersAgent.UpdateApp prt.uniqueID prt.sgdSetAlertProcessor
                                 match prt.sgdSetAlertProcessor with
                                 | "none" -> sendResetCaptureCmds prt.uniqueID printersAgent true
