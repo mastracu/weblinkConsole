@@ -2,7 +2,7 @@
 # $1 = weblinkendpoint
 echo "building container"
 docker build -t $1 .
-echo "starting container:"
+echo "starting newly created container:"
 docker run -d \
   -it \
   -p8085:8083 \
