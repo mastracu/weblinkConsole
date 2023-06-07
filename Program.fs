@@ -36,6 +36,8 @@ open fw
 
 open JwtToken
 open AuthServer
+open Secure
+open Encodings
 
 let authorizationServerConfig = {
     AddAudienceUrlPath = "/api/audience"
@@ -54,6 +56,18 @@ let identityStore = {
 }
 
 let audienceWebPart' = audienceWebPart authorizationServerConfig identityStore  
+
+let weblinkAPIAudience:Audience = 
+    {ClientId = "f4ddebe19f06496187e672a50e8dcbb9"
+     Secret = Base64String.fromString "3nAK8NbLIthGjgXmL0wRCqw786g7JRB9-lvCdq_ty80"
+     Name = "weblinkAPI"}
+AudienceStorage.saveAudience weblinkAPIAudience |> ignore
+
+let audienceJwtConfig = {
+  Issuer = "suave"
+  ClientId = "f4ddebe19f06496187e672a50e8dcbb9"
+  SecurityKey = KeyStore.securityKey <| Base64String.fromString "3nAK8NbLIthGjgXmL0wRCqw786g7JRB9-lvCdq_ty80"
+}
 
 let Crc16b (msg:byte[]) =
     let polynomial      = 0xA001us
@@ -468,7 +482,8 @@ let app  : WebPart =
     path "/sseLog" >=> request (fun _ -> EventSource.handShake (sseContinuation logEvent.Publish ))
 
     GET >=> choose
-        [ path "/hello" >=> OK "Hello GET"
+        [ path "/hello" >=> OK "Hello user\n"
+          path "/jwthello" >=> Secure.jwtAuthenticate audienceJwtConfig (OK "Hello you are an authenticated user\n")
           //stackoverflow.com/questions/4257372/how-to-force-garbage-collector-to-run
           path "/clearlog" >=> warbler (fun ctx -> let _ =  GC.GetTotalMemory true
                                                    OK ( mLogAgent.Empty(); "Log cleared" ))

@@ -1,0 +1,30 @@
+
+PS C:\Users\VHRD47.old\source\repos\fsharp-suave-jwt-unified\AuthServerHost\bin\Release\netcoreapp2.0> dotnet .\AuthServerHost.dll
+[16:33:59 INF] Smooth! Suave listener started in 107.783 with binding 127.0.0.1:8083
+
+PS C:\Users\VHRD47.old\source\repos\fsharp-suave-jwt-unified\Audience1\bin\Release\netcoreapp2.0> dotnet .\Audience1.dll
+Audience registration:
+ { clientID = "54d8bfbacb0d485689e7ffd8dab8989c"
+  base64Secret = "yHpFQOy5Zg-04fHQwP0Km8i1Om5Ojm-4c8bCYYmBq-g"
+  name = "audience1" }
+[16:34:58 INF] Smooth! Suave listener started in 38.119 with binding 127.0.0.1:8084
+
+
+
+> let maybeValidToken = tokenrequest "Admin" "Admin";;
+
+Sending request POST http://localhost:8083/oauth2/token ...
+200 (OK) (POST http://localhost:8083/oauth2/token)
+val maybeValidToken: Result<string,StatusCodeExpectation> =
+  Ok
+    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZ"+[387 chars]
+
+> let Resource1req = Result.bind (resourcerequest "http://localhost:8084/audience1/sample1") maybeValidToken;;
+Sending request POST http://localhost:8084/audience1/sample1 ...
+200 (OK) (POST http://localhost:8084/audience1/sample1)
+val Resource1req: Result<string,StatusCodeExpectation> = Ok "Sample 1"
+
+> let Resource2req = Result.bind (resourcerequest "http://localhost:8084/audience1/sample2") maybeValidToken;;
+Sending request POST http://localhost:8084/audience1/sample2 ...
+200 (OK) (POST http://localhost:8084/audience1/sample2)
+val Resource2req: Result<string,StatusCodeExpectation> = Ok "Sample 2"

@@ -6,8 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="File1.fsx" />
+    <Content Include="APITest\testScript.txt" />
     <Content Include="todo.txt" />
+    <None Include="APITest\File1.fsx" />
+    <None Include="APITest\Script1.fsx" />
+    <None Include="APITest\Script2.fsx" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
