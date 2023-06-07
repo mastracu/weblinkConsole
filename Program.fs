@@ -45,7 +45,8 @@ let authorizationServerConfig = {
     SaveAudience = AudienceStorage.saveAudience
     GetAudience = AudienceStorage.getAudience
     Issuer = "suave"
-    TokenTimeSpan = TimeSpan.FromMinutes(1.)
+    TokenTimeSpan = TimeSpan.FromMinutes(45.)
+    // https://stackoverflow.com/questions/40142548/why-is-my-jwt-bearer-authentication-recognizing-tokens-as-expired-5-minutes-afte
 }
 
 let identityStore = {
@@ -480,10 +481,11 @@ let app  : WebPart =
     audienceWebPart'
     path "/websocketWithSubprotocol" >=> ZebraWebSocket.handShakeWithSubprotocol (chooseSubprotocol "v1.weblink.zebra.com") (ws allAgents)
     path "/sseLog" >=> request (fun _ -> EventSource.handShake (sseContinuation logEvent.Publish ))
+    path "/api/svrevents" >=> Secure.jwtAuthenticate audienceJwtConfig (request (fun _ -> EventSource.handShake (sseContinuation logEvent.Publish )))
 
     GET >=> choose
         [ path "/hello" >=> OK "Hello user\n"
-          path "/jwthello" >=> Secure.jwtAuthenticate audienceJwtConfig (OK "Hello you are an authenticated user\n")
+          path "/api/hello" >=> Secure.jwtAuthenticate audienceJwtConfig (OK "Hello: you are an authenticated user\n")
           //stackoverflow.com/questions/4257372/how-to-force-garbage-collector-to-run
           path "/clearlog" >=> warbler (fun ctx -> let _ =  GC.GetTotalMemory true
                                                    OK ( mLogAgent.Empty(); "Log cleared" ))
@@ -492,6 +494,7 @@ let app  : WebPart =
           path "/fwlist.json" >=> warbler (fun ctx -> OK ( fw.fwFileList() ))
           path "/publiconlyprinterslist.json" >=> warbler (fun ctx -> OK ( printersAgent.PrintersInventory(false) ))
           path "/fullprinterslist.json" >=> warbler (fun ctx -> OK ( printersAgent.PrintersInventory(true) ))
+          path "/api/onlineprinters" >=> Secure.jwtAuthenticate audienceJwtConfig (warbler (fun ctx -> OK ( printersAgent.PrintersInventory(true) )))
           path "/knownprinters.json" >=> warbler (fun ctx -> OK (  printersAgent.PrintersDefault() ))
           basicAuth browseHome
         ]
@@ -515,6 +518,12 @@ let app  : WebPart =
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /json2printer - %A" mp)
                                                let bytes2send = UTF8.bytes (mp.msg)
                                                do printersAgent.SendMsgOverConfigChannel mp.printerID (Opcode.Binary, bytes2send, true ) true)
+          path "/api/jsoncmd" >=> Secure.jwtAuthenticate audienceJwtConfig 
+                                     (objectDo (fun (mp:Msg2Printer) ->
+                                        do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /json2printer - %A" mp)
+                                        let bytes2send = UTF8.bytes (mp.msg)
+                                        do printersAgent.SendMsgOverConfigChannel mp.printerID (Opcode.Binary, bytes2send, true ) true))
+
           path "/printproduct" >=> objectDo (fun (prodprint:ProductPrinterObj) ->
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /printproduct - %A" prodprint)
                                                let bytes2send = prodprint.ProductObj |> buildpricetag false |> UTF8.bytes
@@ -533,6 +542,8 @@ let app  : WebPart =
                                                                | None -> ()
                                                                | Some agent -> do doFwUpgrade fwjob agent mLogAgent)
           path "/utf82raw" >=> helperFunction ()
+          path "/api/rawcmd" >=> Secure.jwtAuthenticate audienceJwtConfig (helperFunction ()) 
+
           path "/CISDFCRC16" >=> objectDo (fun (fp:File2Printer) ->
                                                do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " POST /CISDFCRC16 - %A" fp.CISDFCRC16Hdr)
                                                let bytes2send = Array.append (ASCII.bytes fp.CISDFCRC16Hdr) (Convert.FromBase64String fp.base64Data)
