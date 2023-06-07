@@ -8,7 +8,7 @@ docker build -t $1 .
 # docker container#  prune -f
 # echo "removing a# ll untagged images"
 # docker images --# no-trunc | grep '<none>' | awk '{ print $3 }'  | xargs -r docker rmi
-echo "starting c# ontainer:"
+echo "starting container:"
 docker run -d#  \
   -it \
   -p8083:8083 \
