@@ -1,4 +1,4 @@
-COME IMPLEMENTARE JWT IN WEBLINK
+COME IMPLEMENTARE JWT
 
 Creo un file identityStore.fs
 
