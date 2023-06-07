@@ -9,7 +9,7 @@ docker build -t $1 .
 # echo "removing a# ll untagged images"
 # docker images --# no-trunc | grep '<none>' | awk '{ print $3 }'  | xargs -r docker rmi
 echo "starting container:"
-docker run -d#  \
+docker run -d  \
   -it \
   -p8083:8083 \
   --mount type=bind,source="$(pwd)"/../zebrafirmware,target=/App/firmware \
