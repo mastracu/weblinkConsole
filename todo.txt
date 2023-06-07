@@ -1,3 +1,5 @@
+COME IMPLEMENTARE JWT
+
 Creo un file identityStore.fs
 
 In-memory dictionary di tutti gli utenti indicizzato per username
