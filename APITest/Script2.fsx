@@ -12,14 +12,14 @@ type Token = {
 
 let     tokenrequest username password =
     http {
-        POST "http://localhost:8083/oauth2/token"
+        POST "https://weblink.mastracu.it:444/oauth2/token"
         CacheControl "no-cache"
         body
         jsonSerialize
             {|
                 UserName = username
                 Password = password
-                ClientId = "54d8bfbacb0d485689e7ffd8dab8989c"
+                ClientId = "f4ddebe19f06496187e672a50e8dcbb9"
             |}
     }
     |> Request.send
@@ -38,7 +38,7 @@ let resourcerequest url validToken =
     |> Result.map Response.toText
 
 let maybeValidToken = tokenrequest "Admin" "Admin"
-let Resource1req = Result.bind (resourcerequest "http://localhost:8084/audience1/sample1") maybeValidToken
+let Resource1req = Result.bind (resourcerequest "https://weblink.mastracu.it:444/api/rawcmd") maybeValidToken
 let Resource2req = Result.bind (resourcerequest "http://localhost:8084/audience1/sample2") maybeValidToken
 
 

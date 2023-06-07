@@ -12,6 +12,7 @@ let sendPrintRequest weblinkEndpointUrl (printer:string) (zplcode:string) =
     http {
         POST weblinkEndpointUrl
         CacheControl "no-cache"
+        header "token" validToken
         body
         jsonSerialize
             {|
@@ -23,4 +24,4 @@ let sendPrintRequest weblinkEndpointUrl (printer:string) (zplcode:string) =
 
 
     
-sendPrintRequest "https://weblink.mastracu.it/utf82raw" "40J135000563" "^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"
+sendPrintRequest "https://weblink.mastracu.it:444/api/rawcmd" "40J135000563" "^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"
