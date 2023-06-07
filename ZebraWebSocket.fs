@@ -21,7 +21,9 @@ module ZebraWebSocket =
 #if NETSTANDARD2_0
     let crpto = SHA1.Create()
 #else
-    let crpto = new SHA1Managed()
+    let crpto = SHA1.Create()
+    // let crpto = SHA1Managed.Create() 
+    // new SHA1Managed()
 #endif
     let bytes = Encoding.ASCII.GetBytes x
     let hash = crpto.ComputeHash bytes

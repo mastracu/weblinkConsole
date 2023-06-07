@@ -2,12 +2,6 @@
 # $1 = weblinkendpoint
 echo "building container"
 docker build -t $1 .
-echo "stopping all containers"
-docker stop $(docker ps -f ancestor=$1 -a -q)
-echo "removing stopped containers"
-docker container prune -f
-echo "removing all untagged images"
-docker images --no-trunc | grep '<none>' | awk '{ print $3 }'  | xargs -r docker rmi
 echo "starting container:"
 docker run -d \
   -it \
