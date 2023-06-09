@@ -12,6 +12,7 @@ open Suave.Logging
 open Suave.Utils
 open Suave.Json
 open Suave.EventSource
+open Suave.Writers
 
 open System
 open System.Net
@@ -101,8 +102,13 @@ let config =
     let port = System.Environment.GetEnvironmentVariable("PORT")
     let ip127  = IPAddress.Parse("127.0.0.1")
     let ipZero = IPAddress.Parse("0.0.0.0")
+    let mimeTypesincludingNRD =
+      defaultMimeTypesMap
+        @@ (function | ".NRD"  | _ -> None)
+    
 
     { defaultConfig with
+        mimeTypesMap = mimeTypesincludingNRD
         bindings=[ (if port = null then HttpBinding.create HTTP ipZero (uint16 8083)  // 3 Nov - it was ipZero
                     else HttpBinding.create HTTP ipZero (uint16 port)) ]
         homeFolder= Some (Path.GetFullPath "./wwwroot")
