@@ -104,7 +104,7 @@ let config =
     let ipZero = IPAddress.Parse("0.0.0.0")
     let mimeTypesincludingNRD =
       defaultMimeTypesMap
-        @@ (function | ".NRD"  | _ -> None)
+        @@ (function | ".NRD" -> createMimeType "text/plain" false | _ -> None)
     
 
     { defaultConfig with
