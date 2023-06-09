@@ -619,20 +619,20 @@
             </p>
             <p>Calibrate the printer as needed by dragging "Media Sensor Calibration" into the Input1 window in "RAW Channel console" tab.</p>
 
-            <h1 id="api">API set</h1>
+            <h3 id="api">API set</h3>
 
             <pre><code>
 ClientId = f4ddebe19f06496187e672a50e8dcbb9
 
-curl -X POST http://localhost:8085/oauth2/token -H 'Content-Type: application/json' -d '{"UserName":"Admin", "Password":"Admin", "ClientId":"f4ddebe19f06496187e672a50e8dcbb9"}'
+curl -X POST https://tecnoprinterserver.teicos.it:445/oauth2/token -H 'Content-Type: application/json' -d '{"UserName":"Admin", "Password":"Admin", "ClientId":"f4ddebe19f06496187e672a50e8dcbb9"}'
 {"accessToken":"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsIm5iZiI6MTY4NjE0NDEyNSwiZXhwIjoxNjg2MTQ0MTg1LCJpc3MiOiJzdWF2ZSIsImF1ZCI6ImY0ZGRlYmUxOWYwNjQ5NjE4N2U2NzJhNTBlOGRjYmI5In0.NximvTSf3A6IkbgbQ1Rk6keQPmzAWzt3az31yXa5gLY","expiresIn":60.0}
 
-curl http://localhost:8085/api/hello -H 'token: eyJhbGciOiJo....'
-curl http://localhost:8085/api/onlineprinters -H 'token: eyJhbGciOiJo..
-curl -X POST http://localhost:8085/api/jsoncmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"{}{"device.printhead.odometer":null}"}'
-curl -X POST http://localhost:8085/api/rawcmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"Ad^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"}'
-curl -N http://localhost:8085/api/svrevents -H "Accept:text/event-stream" -H 'token: eyJhbGciOiJo....'
-            </code></pre>
+curl https://tecnoprinterserver.teicos.it:445/api/hello -H 'token: eyJhbGciOiJo....'
+curl https://tecnoprinterserver.teicos.it:445/api/onlineprinters -H 'token: eyJhbGciOiJo..
+curl -X POST https://tecnoprinterserver.teicos.it:445/api/jsoncmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"{}{"device.printhead.odometer":null}"}'
+curl -X POST https://tecnoprinterserver.teicos.it:445/api/rawcmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"Ad^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"}'
+curl -N https://tecnoprinterserver.teicos.it:445/api/svrevents -H "Accept:text/event-stream" -H 'token: eyJhbGciOiJo....'
+</code></pre>
 
 
             <h3 id="sendingjsonconfigurationcommandstotheprinter">Sending JSON configuration commands to the printer</h3>
