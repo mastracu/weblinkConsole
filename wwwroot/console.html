@@ -597,7 +597,7 @@
             <p>
                 You will need to stage your printer with the public CA certificate chain first.
                 You can do that in several ways: FTP download, LinkOS sdk command line, new Zebra Printer Windows Driver or through
-                <pre><code>! U1 setvar "weblink.ip.conn1.location" "https://weblinktest.mastracu.it/websocketWithSubprotocol"</code></pre>
+                <pre><code>! U1 setvar "weblink.ip.conn2.location" "https://weblinktest.mastracu.it/websocketWithSubprotocol"</code></pre>
             </p>
             <p>
                 CA certificate chain can be downloaded from add link
@@ -605,44 +605,32 @@
 
             <p>You then specify the address of the weblink endpoint by issuing </p>
 
-            <pre><code>
-                 ! U1 setvar "weblink.ip.conn2.location" "https://tecnoprinterserver.teicos.it:445/websocketWithSubprotocol"
-            </code></pre>
+            <pre><code>! U1 setvar "weblink.ip.conn2.location" "https://tecnoprinterserver.teicos.it:445/websocketWithSubprotocol"</code></pre>
 
             <p>Next you configure your printer network settings to connect to the Internet and restart by issuing</p>
 
-            <pre><code>! U1 setvar "device.reset" ""
-            </code></pre>
+            <pre><code>! U1 setvar "device.reset" ""</code></pre>
 
             <p>
-                Access  <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/console.html">                </a>
+                Access  <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/console.html">SPA</a>
                 Click refresh button beside printer table.
-                Once the printer is connected, it will show up the printer table of theconsole
-                .
+                Once the printer is connected, it will show up in the printer list
             </p>
-            <p>After printer is connected, calibrate the printer as needed by dragging "Media Sensor Calibration" into the Input1 window in "RAW Channel console" tab.</p>
+            <p>Calibrate the printer as needed by dragging "Media Sensor Calibration" into the Input1 window in "RAW Channel console" tab.</p>
 
-            <h1 id="api">API</h1>
+            <h1 id="api">API set</h1>
 
             <pre><code>
-    !
-                ClientId = f4ddebe19f06496187e672a50e8dcbb9
+ClientId = f4ddebe19f06496187e672a50e8dcbb9
 
+curl -X POST http://localhost:8085/oauth2/token -H 'Content-Type: application/json' -d '{"UserName":"Admin", "Password":"Admin", "ClientId":"f4ddebe19f06496187e672a50e8dcbb9"}'
+{"accessToken":"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsIm5iZiI6MTY4NjE0NDEyNSwiZXhwIjoxNjg2MTQ0MTg1LCJpc3MiOiJzdWF2ZSIsImF1ZCI6ImY0ZGRlYmUxOWYwNjQ5NjE4N2U2NzJhNTBlOGRjYmI5In0.NximvTSf3A6IkbgbQ1Rk6keQPmzAWzt3az31yXa5gLY","expiresIn":60.0}
 
-                curl -X POST http://localhost:8085/oauth2/token -H 'Content-Type: application/json' -d '{"UserName":"Admin", "Password":"Admin", "ClientId":"f4ddebe19f06496187e672a50e8dcbb9"}'
-
-                {"accessToken":"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsIm5iZiI6MTY4NjE0NDEyNSwiZXhwIjoxNjg2MTQ0MTg1LCJpc3MiOiJzdWF2ZSIsImF1ZCI6ImY0ZGRlYmUxOWYwNjQ5NjE4N2U2NzJhNTBlOGRjYmI5In0.NximvTSf3A6IkbgbQ1Rk6keQPmzAWzt3az31yXa5gLY","expiresIn":60.0}
-
-
-                curl http://localhost:8085/api/hello -H 'token: eyJhbGciOiJo....'
-
-                curl http://localhost:8085/api/onlineprinters -H 'token: eyJhbGciOiJo....'
-
-                curl -X POST http://localhost:8085/api/jsoncmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"{}{"device.printhead.odometer":null}"}'
-
-                curl -X POST http://localhost:8085/api/rawcmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"Ad^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"}'
-
-                curl -N http://localhost:8085/api/svrevents -H "Accept:text/event-stream" -H 'token: eyJhbGciOiJo....'
+curl http://localhost:8085/api/hello -H 'token: eyJhbGciOiJo....'
+curl http://localhost:8085/api/onlineprinters -H 'token: eyJhbGciOiJo..
+curl -X POST http://localhost:8085/api/jsoncmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"{}{"device.printhead.odometer":null}"}'
+curl -X POST http://localhost:8085/api/rawcmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"Ad^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"}'
+curl -N http://localhost:8085/api/svrevents -H "Accept:text/event-stream" -H 'token: eyJhbGciOiJo....'
             </code></pre>
 
 
