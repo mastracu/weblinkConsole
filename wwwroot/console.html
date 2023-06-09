@@ -604,13 +604,13 @@
                 CA certificate chain can be downloaded from <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/WEBLINK2_CA.NRD">here</a>
             </p>
 
-            <p>You then specify the address of the weblink endpoint by issuing </p>
+            <p>Next you configure your printer network settings to connect to the Internet and you then specify the address of the weblink endpoint by issuing </p>
 
-            <pre><code>! U1 setvar "weblink.ip.conn2.location" "https://tecnoprinterserver.teicos.it:445/websocketWithSubprotocol"</code></pre>
-
-            <p>Next you configure your printer network settings to connect to the Internet and restart by issuing</p>
-
-            <pre><code>! U1 setvar "device.reset" ""</code></pre>
+            <pre><code>
+! U1 setvar "weblink.ip.conn2.location" "https://tecnoprinterserver.teicos.it:445/websocketWithSubprotocol"
+! U1 setvar "rtc.date" "dd/mm/yy"
+! U1 setvar "device.reset" ""
+            </code></pre>
 
             <p>
                 Access  <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/console.html">SPA</a>
