@@ -102,6 +102,8 @@ let config =
     let port = System.Environment.GetEnvironmentVariable("PORT")
     let ip127  = IPAddress.Parse("127.0.0.1")
     let ipZero = IPAddress.Parse("0.0.0.0")
+    
+    // https://suave.io/files.html
     let mimeTypesincludingNRD =
       defaultMimeTypesMap
         @@ (function | ".NRD" -> createMimeType "application/x-x509-ca-cert" false | _ -> None)
