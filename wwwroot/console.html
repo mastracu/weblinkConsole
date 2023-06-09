@@ -646,22 +646,6 @@
             </code></pre>
 
 
-            <h3 id="notesformobileprinters">Notes for some mobile printers</h3>
-
-            <p>
-                On mobile printers like ZQ320 and ZQ310 (not on ZQ620), I have seen a behaviour where the printer will not stay in sleep mode (<a target="_blank" href="https://www.zebra.com/content/dam/zebra/software/en/application-notes/AppNote-SleepMode-v5.pdf">https://www.zebra.com/content/dam/zebra/software/en/application-notes/AppNote-SleepMode-v5.pdf</a>) if weblink is enabled.
-                The printer will awake seconds after entering sleep mode.
-                To turn sleep mode off, push the following command
-            </p>
-
-            <pre><code>! U1 setvar "power.sleep.enable" "off"
-            </code></pre>
-
-            <p>
-                Also while testing with ZQ310, I have noted mobile printer will shut down weblink connection after issuing battery low alert.
-                In my test battery low alert was issued at about 10% battery level (6.5 Volts) and printer did shut down at about 6% battery level (6.28 Volts)
-            </p>
-
             <h3 id="sendingjsonconfigurationcommandstotheprinter">Sending JSON configuration commands to the printer</h3>
 
             <p>Demonstrate how one can remotely send configuration commands to a printer or query printer data by sending commands from appselector page and checking response on logtable.</p>
