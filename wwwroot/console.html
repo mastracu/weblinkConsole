@@ -596,11 +596,12 @@
 
             <p>
                 You will need to stage your printer with the public CA certificate chain first.
-                You can do that in several ways: FTP download, LinkOS sdk command line, new Zebra Printer Windows Driver or through
+                You can do that in several ways: FTP download, LinkOS sdk command line, new Zebra Printer Windows Driver or through !CISDFCRC16 menu of <a target="_blank" href="https://weblink.mastracu.it:444/console.html">Weblink staging portal</a>
+                Your printer will need to be sent the following command in order to connect to staging portal.
                 <pre><code>! U1 setvar "weblink.ip.conn2.location" "https://weblinktest.mastracu.it/websocketWithSubprotocol"</code></pre>
             </p>
             <p>
-                CA certificate chain can be downloaded from add link
+                CA certificate chain can be downloaded from <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/WEBLINK2_CA.NRD">here</a>
             </p>
 
             <p>You then specify the address of the weblink endpoint by issuing </p>
