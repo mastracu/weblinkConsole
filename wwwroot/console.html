@@ -592,20 +592,18 @@
 
             <h2 id="gettingstarted">Getting Started</h2>
 
-            <h3 id="demosessionsetup">Demo session setup</h3>
+            <h3 id="demosessionsetup">How to connect Zebra printers to TecnoPrinter server</h3>
 
             <p>
                 You will need to stage your printer with the public CA certificate chain first.
-                You can do that in several ways: FTP download, LinkOS sdk command line, new Zebra Printer Windows Driver or through !CISDFCRC16 menu of <a target="_blank" href="https://weblink.mastracu.it:444/console.html">Weblink staging portal</a>
+                CA certificate chain can be downloaded from <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/WEBLINK2_CA.NRD">here</a>
+                You can upload in several ways: FTP download, LinkOS sdk command line, new Zebra Printer Windows Driver or through !CISDFCRC16 menu of <a target="_blank" href="https://weblink.mastracu.it:444/console.html">Weblink staging portal</a>
                 For the last option you will need to ensure your printer can go out to the Internet and send the following commands to connect to staging portal.
 <pre><code>
 ! U1 setvar "weblink.ip.conn2.location" "https://weblinktest.mastracu.it/websocketWithSubprotocol"
 ! U1 setvar "rtc.date" "dd-mm-yy"
 ! U1 setvar "device.reset" ""
 </code></pre>
-            </p>
-            <p>
-                CA certificate chain can be downloaded from <a target="_blank" href="https://tecnoprinterserver.teicos.it:445/WEBLINK2_CA.NRD">here</a>
             </p>
 
             <p>You are now ready to connect the printer to the TecnoPrinter service. Send the printer the following commands </p>
