@@ -587,73 +587,49 @@
     <div id="Info" class="tabcontent" style="margin-left: 4px;">
         <div class="col-md-12">
 
+
             <h1 id="fweblinkendpointforzebraprinters">F# WeblinkEndpoint for Zebra Printers</h1>
 
 
-
-            <p>Code <a target="_blank" href="https://github.com/mastracu/weblinkConsole">here</a></p>
-            <p>Weblink Console and printer "application" demo tool. "application" here has a very specific meaning:</p>
-            <ul>
-                <li>a set of SGD configuration commands that redirect to cloud a specific input channel (USB, BT, SERIAL) - technically a list of JSON-SGD commands (typically a capture channel to variable and SGD-variable-change-alert setup)</li>
-                <li>some logic in the server that processes the alert and does something with it - technically an async computation expression that takes a string to a new string</li>
-            </ul>
-
-            <p>The 4 "applications" built into the server stem from 4 real-life use-cases where printer-redirected data is augmented / formatted appropriately before printing</p>
-
-            <ul>
-                <li>printing price labels (repricing) using ZQ label printer with Wifi and BT + CS4070 BT scanner</li>
-                <li>convertion of a legacy label received via USB into a new label preserving variable data</li>
-                <li>self-service label printing in parcel shops for return of goods purchased online</li>
-                <li>convertion of SVG label (dpi independent) into ZPL (TO BE IMPLEMENTED)</li>
-            </ul>
-
             <h2 id="gettingstarted">Getting Started</h2>
 
-            <h3 id="demosessionsetup">Demo session setup</h3>
+            <h3 id="demosessionsetup">How to connect Zebra printers to Weblink server</h3>
 
             <p>
-                You will need to connect your printer to the Internet
+                Ensure your printer is connected to the Internet and send the following commands via Zebra Setup Utilities - Open Communication with Printer
+<pre><code>
+! U1 setvar "weblink.ip.conn2.location" "https://weblinktest.mastracu.it:444/websocketWithSubprotocol"
+! U1 setvar "rtc.date" "dd-mm-yy"
+! U1 setvar "device.reset" ""
+</code></pre>
             </p>
-            <p>
-                In order to do that, you may use "Configure Printer Connectivity" in Zebra Setup Utility.
-            </p>
-
-            <p>You then specify the address of the weblink endpoint by issuing </p>
-
-            <pre><code>! U1 setvar "weblink.ip.conn2.location" "https://weblinktest.mastracu.it:444/websocketWithSubprotocol"
-            </code></pre>
-
-            <p>You then re-start / power-cycle the printer by issuing</p>
-
-            <pre><code>! U1 setvar "device.reset" ""
-            </code></pre>
 
             <p>
-                Once the printer is connected, it will be listed in the printer table of the <a target="_blank" href="https://weblinkendpoint.mastracu.it:444/console.html">console</a>. You may need to click refresh button beside printer table.
+                Now go the  <a target="_blank" href="https://weblink.mastracu.it:444/console.html">Weblink dashboard</a>.
+                Once the printer is connected, it will show up in the printer list
             </p>
             <p>Calibrate the printer as needed by dragging "Media Sensor Calibration" into the Input1 window in "RAW Channel console" tab.</p>
 
+            <h3 id="api">API set available</h3>
 
-            <h3 id="notesformobileprinters">Notes for some mobile printers</h3>
+            <pre><code>
+ClientId = f4ddebe19f06496187e672a50e8dcbb9
 
-            <p>
-                On mobile printers like ZQ320 and ZQ310 (not on ZQ620), I have seen a behaviour where the printer will not stay in sleep mode (<a target="_blank" href="https://www.zebra.com/content/dam/zebra/software/en/application-notes/AppNote-SleepMode-v5.pdf">https://www.zebra.com/content/dam/zebra/software/en/application-notes/AppNote-SleepMode-v5.pdf</a>) if weblink is enabled.
-                The printer will awake seconds after entering sleep mode.
-                To turn sleep mode off, push the following command
-            </p>
+curl -X POST https://tecnoprinterserver.teicos.it:445/oauth2/token -H 'Content-Type: application/json' -d '{"UserName":"Admin", "Password":"Admin", "ClientId":"f4ddebe19f06496187e672a50e8dcbb9"}'
+{"accessToken":"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsIm5iZiI6MTY4NjE0NDEyNSwiZXhwIjoxNjg2MTQ0MTg1LCJpc3MiOiJzdWF2ZSIsImF1ZCI6ImY0ZGRlYmUxOWYwNjQ5NjE4N2U2NzJhNTBlOGRjYmI5In0.NximvTSf3A6IkbgbQ1Rk6keQPmzAWzt3az31yXa5gLY","expiresIn":60.0}
 
-            <pre><code>! U1 setvar "power.sleep.enable" "off"
-            </code></pre>
+curl https://weblink.mastracu.it:444/api/hello -H 'token: eyJhbGciOiJo....'
+curl https://weblink.mastracu.it:444/api/onlineprinters -H 'token: eyJhbGciOiJo..
+curl -X POST https://weblink.mastracu.it:444/api/jsoncmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"{}{"device.printhead.odometer":null}"}'
+curl -X POST https://weblink.mastracu.it:444/api/rawcmd -H 'token: eyJhbGciOiJo....'  -H 'Content-Type: application/json' -d '{"printerID":"40J135000563", "msg":"Ad^XA^FO40,40^A0,40^FDHELLO ZEBRA^FS^XZ"}'
+curl -N https://weblink.mastracu.it:444/api/svrevents -H "Accept:text/event-stream" -H 'token: eyJhbGciOiJo....'
+</code></pre>
 
-            <p>
-                Also while testing with ZQ310, I have noted mobile printer will shut down weblink connection after issuing battery low alert.
-                In my test battery low alert was issued at about 10% battery level (6.5 Volts) and printer did shut down at about 6% battery level (6.28 Volts)
-            </p>
 
             <h3 id="sendingjsonconfigurationcommandstotheprinter">Sending JSON configuration commands to the printer</h3>
 
             <p>Demonstrate how one can remotely send configuration commands to a printer or query printer data by sending commands from appselector page and checking response on logtable.</p>
-            <p>Some revealing commands to issue are</p>
+            <p>Some commands you can issue are</p>
 
             <pre><code>{}{"ribbon.cartridge":null} 
             </code></pre>
