@@ -19,9 +19,14 @@
         "realm": "public",
         "appCode": "dhlRFID"
     },
-    {
-        "printerSN": "50J183402540",
-        "realm": "public",
-        "appCode": "none"
-    }
+  {
+    "printerSN": "50J183402540",
+    "realm": "public",
+    "appCode": "none"
+  },
+  {
+    "printerSN": "D6J240110350",
+    "realm": "public",
+    "appCode": "none"
+  }
 ]
