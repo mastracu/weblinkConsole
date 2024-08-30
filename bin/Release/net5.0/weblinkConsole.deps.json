@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v5.0": {
       "weblinkConsole/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "7.0.300",
+          "FSharp.Core": "8.0.200",
           "FSharp.Data": "3.3.3",
           "Suave": "2.5.6"
         },
@@ -16,11 +16,11 @@
           "weblinkConsole.dll": {}
         }
       },
-      "FSharp.Core/7.0.300": {
+      "FSharp.Core/8.0.200": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
-            "assemblyVersion": "7.0.0.0",
-            "fileVersion": "7.3.23.20307"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.2.24.10803"
           }
         },
         "resources": {
@@ -67,7 +67,7 @@
       },
       "FSharp.Data/3.3.3": {
         "dependencies": {
-          "FSharp.Core": "7.0.300"
+          "FSharp.Core": "8.0.200"
         },
         "runtime": {
           "lib/netstandard2.0/FSharp.Data.dll": {
@@ -78,7 +78,7 @@
       },
       "Suave/2.5.6": {
         "dependencies": {
-          "FSharp.Core": "7.0.300"
+          "FSharp.Core": "8.0.200"
         },
         "runtime": {
           "lib/netstandard2.0/Suave.dll": {
@@ -95,12 +95,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "FSharp.Core/7.0.300": {
+    "FSharp.Core/8.0.200": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-8vvItREJ1l5lcp3vBCSJ1mFevVAhR48I34DuF/EoUa7o1KlFpQpagyuZkVYMAsHPIjdp47ZxM9sI4eqeXaeWkA==",
-      "path": "fsharp.core/7.0.300",
-      "hashPath": "fsharp.core.7.0.300.nupkg.sha512"
+      "sha512": "sha512-U016Y0NhtIEQvbmxf6Sff9lx7PTSGEFctA/kLrJr9MvNfKwjrzlK/4C2V1StgsapegWeGYW6K8Zd/D6vc9C4Yw==",
+      "path": "fsharp.core/8.0.200",
+      "hashPath": "fsharp.core.8.0.200.nupkg.sha512"
     },
     "FSharp.Data/3.3.3": {
       "type": "package",
