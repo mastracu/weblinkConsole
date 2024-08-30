@@ -95,6 +95,11 @@ let sendUSBCaptureCmds printerID (printersAgent:PrintersAgent) toLog=
     do printersAgent.SendMsgOverConfigChannel printerID (Opcode.Binary, UTF8.bytes """{}{"capture.channel1.delimiter":"^XZ"} """, true) toLog
     do printersAgent.SendMsgOverConfigChannel printerID (Opcode.Binary, UTF8.bytes """{}{"capture.channel1.max_length":"512"} """, true) toLog
 
+let sendSERIALCaptureCmds printerID (printersAgent:PrintersAgent) toLog=
+    do printersAgent.SendMsgOverConfigChannel printerID (Opcode.Binary, UTF8.bytes """{}{"capture.channel1.port":"serial"} """, true) toLog
+    do printersAgent.SendMsgOverConfigChannel printerID (Opcode.Binary, UTF8.bytes """{}{"capture.channel1.delimiter":"\\015\\012"} """, true) toLog
+    do printersAgent.SendMsgOverConfigChannel printerID (Opcode.Binary, UTF8.bytes """{}{"capture.channel1.max_length":"512"} """, true) toLog
+
 //TODO: https://github.com/SuaveIO/suave/issues/307
 
 let config =
@@ -251,6 +256,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                     do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " DHL ZPL format: %s" demooutlabel)
                                     do printersAgent.SendMsgOverRawChannel printerUniqueId (Opcode.Binary, UTF8.bytes demooutlabel, true) true
                                 | "labelToGo" -> ()
+                                | "serialPortFw" -> ()
                                 | _ -> ()
                             | None -> ()
                         | _ -> ()
@@ -283,6 +289,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                                 | "priceTag" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "labelToGo" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "ifadLabelConversion" -> sendUSBCaptureCmds printerUniqueId printersAgent true
+                                                | "serialPortFW" -> sendSERIALCaptureCmds printerUniqueId printersAgent true
                                                 | "dhlRFID" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | _ -> ()
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"file.cert.expiration":null} """, true) true
@@ -508,6 +515,7 @@ let app  : WebPart =
                                 | "priceTag" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | "labelToGo" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | "ifadLabelConversion" -> sendUSBCaptureCmds prt.uniqueID printersAgent true
+                                | "serialPortFW" -> sendSERIALCaptureCmds prt.uniqueID printersAgent true
                                 | "dhlRFID" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | _ -> ()
                     )
