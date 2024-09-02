@@ -289,7 +289,7 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                                                 | "priceTag" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "labelToGo" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | "ifadLabelConversion" -> sendUSBCaptureCmds printerUniqueId printersAgent true
-                                                | "serialPortFW" -> sendSERIALCaptureCmds printerUniqueId printersAgent true
+                                                | "serialPortFw" -> sendSERIALCaptureCmds printerUniqueId printersAgent true
                                                 | "dhlRFID" -> sendBTCaptureCmds printerUniqueId printersAgent true
                                                 | _ -> ()
                              do printersAgent.SendMsgOverConfigChannel printerUniqueId (Opcode.Binary, UTF8.bytes """{}{"file.cert.expiration":null} """, true) true
@@ -515,7 +515,7 @@ let app  : WebPart =
                                 | "priceTag" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | "labelToGo" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | "ifadLabelConversion" -> sendUSBCaptureCmds prt.uniqueID printersAgent true
-                                | "serialPortFW" -> sendSERIALCaptureCmds prt.uniqueID printersAgent true
+                                | "serialPortFw" -> sendSERIALCaptureCmds prt.uniqueID printersAgent true
                                 | "dhlRFID" -> sendBTCaptureCmds prt.uniqueID printersAgent true
                                 | _ -> ()
                     )
