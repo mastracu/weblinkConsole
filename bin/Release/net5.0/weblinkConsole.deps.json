@@ -696,7 +696,10 @@
           "System.IdentityModel.Tokens.Jwt": "5.2.1"
         },
         "runtime": {
-          "Jwt.dll": {}
+          "Jwt.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
