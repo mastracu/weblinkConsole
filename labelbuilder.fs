@@ -95,16 +95,11 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 //
     let label0 = "
 ^XA
-^FO90,50
-^A0N,65
-^FN7
-^FS
-^A0N,40^FO10,200^FDyyyyyyyyyyyyyyyyy^FS
+^FO10,100^A0N,40^FN7 READ OK!^FS
+^FO10,200^A0N,60^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
 ^RFW,H,2,16,1^FDxxxxxxx^FS
-^A0N,40^FO10,300^FN7 
 ^RFR,H
-^FS
 ^HV7
 ^XZ
 "
