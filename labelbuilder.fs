@@ -92,6 +92,7 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 // ^FX Bar code.
 // ^BY3,2,200
 // ^FO90,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
+//
     let label0 = "
 ^XA
 ^FO90,50
