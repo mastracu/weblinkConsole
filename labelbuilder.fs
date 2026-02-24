@@ -99,9 +99,10 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 ^A0N,65
 ^FN7
 ^FS
-^FO90,300^FDyyyyyyyyyyyyyyyyy^FS
+^FO90,200^FDyyyyyyyyyyyyyyyyy^FS
+^FO90,400^FDxxxxxxx READ OK!^FS
 ^RFW,H,1,2,1^FD4000^FS
-^RFW,H,2,16,1^FDxxxxxxx READ OK!^FS
+^RFW,H,2,16,1^FDxxxxxxx^FS
 ^FN7
 ^RFR,H
 ^FS
