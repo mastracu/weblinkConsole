@@ -89,17 +89,18 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 
 // https://www.zebra.com/us/en/support-downloads/knowledge-articles/defining-the-size-of-the-epc-data-that-can-be-encoded-for-gen2-rfid-tags.html
 // I need 30 hex digits to encode 36 decimal digits so I need to encode 128 bits epc
+// ^FX Bar code.
+// ^BY3,2,200
+// ^FO90,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
     let label0 = "
 ^XA
 ^FO90,50
 ^A0N,65
 ^FN7
 ^FS
-^FX Bar code.
-^BY3,2,200
-^FO90,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
+^FO90,300^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
-^RFW,H,2,16,1^FDxxxxxxx^FS
+^RFW,H,2,16,1^FDxxxxxxx READ OK!^FS
 ^FN7
 ^RFR,H
 ^FS
