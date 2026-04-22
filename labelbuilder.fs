@@ -87,7 +87,7 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
     let keepNumericOnly str = Seq.fold (fun finstr c  -> if (c < '0' || c > '9') then finstr else finstr + c.ToString()) ""  str
     let hexEncode rp = rp |> keepNumericOnly |> bigint.Parse |> printBigintAsHex
 
-// https://www.zebra.com/us/en/support-downloads/knowledge-articles/defining-the-size-of-the-epc-data-that-can-be-encoded-for-gen2-rfid-tags.html
+// https://support-new.zebra.com/it/article/Defining-The-Size-Of-The-EPC-Data-That-Can-Be-Encoded-For-GEN2-RFID-Tags
 // I need 30 hex digits to encode 36 decimal digits so I need to encode 128 bits epc
 // ^FX Bar code.
 // ^BY3,2,200
@@ -95,12 +95,18 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 //
     let label0 = "
 ^XA
-^FO10,100^A0N,40^FN7 READ OK!^FS
-^FO10,200^A0N,60^FDyyyyyyyyyyyyyyyyy^FS
+^FX I print the 128 bits I have read from the tag after encoding - field 7
+^FO10,100^A0N,30^FN7 READ OK!^FS
+^FX I print the DHL registration plate
+^FO10,200^A0N,40^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
 ^RFW,H,2,16,1^FDxxxxxxx^FS
+^FX The read results are put into field variable 7. The printer substitutes instances of FN7 in the label format with the data
+^FX from this field. If necessary, the data read from the tag will be padded with zeroes to the maximum bit size.
 ^FN7^RFR,H^FS
+^FX Return data from FN7 to the host
 ^HV7
+^FX End of label
 ^XZ
 "
-    label0 |> String.replace "xxxxxxx" (hexEncode dHLregistrationPlate) |> String.replace "yyyyyyyyyyyyyyyyy" dHLregistrationPlate
+    label0 |> String.replace "xxxxxxx" (hexEncode dHLregistrationPlate) |> String.replace "yyyyyyyyyyyyyyyyy" dHLregistrationPlate.[3..]
