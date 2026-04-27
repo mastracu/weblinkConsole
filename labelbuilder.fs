@@ -97,7 +97,7 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 ^XA
 ^FX I print the 128 bits I have read from the tag after encoding - field 7
 ^FO100,50^A0N,30^FN7 READ OK!^FS
-^FX I print the DHL registration plate
+^FX I print  DHL registration plate
 ^FO100,100^A0N,40^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
 ^RFW,H,2,16,1^FDxxxxxxx^FS
