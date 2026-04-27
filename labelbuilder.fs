@@ -95,7 +95,7 @@ let encodeDHLLabel (dHLregistrationPlate:string) =
 ^A0N,65
 ^FN7
 ^FS
-^FX Bar code.
+^FX Bar code n.
 ^BY3,2,200
 ^FO90,300^BCN,,,,,A^FDyyyyyyyyyyyyyyyyy^FS
 ^RFW,H,1,2,1^FD4000^FS
