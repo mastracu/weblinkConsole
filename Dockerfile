@@ -1,5 +1,5 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
-COPY bin/Release/net5.0/publish/ App/
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+COPY bin/Release/net9.0/publish/ App/
 COPY wwwroot/ App/wwwroot
 COPY json/ App/json
 WORKDIR /App

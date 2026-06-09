@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-android35.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <!-- Rimosso DisableImplicitFSharpCoreReference per usare FSharp.Core nativo di .NET 9 -->
+  </PropertyGroup>
+
+  <!-- Risorse e configurazioni Android -->
+  <ItemGroup>
+    <GoogleServicesJson Include="google-services.json" />
+    <None Include="AndroidManifest.xml" />
+  </ItemGroup>
+
+  <!-- Codice sorgente F# (L'ordine di compilazione è rispettato) -->
+  <ItemGroup>
+    <Compile Include="MyFirebaseService.fs" />
+    <Compile Include="MainActivity.fs" />
+  </ItemGroup>
+
+  <!-- Dipendenze NuGet -->
+  <ItemGroup>
+    <!-- FSharp.Core viene ora gestito automaticamente da .NET 9 -->
+    <PackageReference Include="Xamarin.Firebase.Messaging" Version="125.0.2" />
+  </ItemGroup>
+
+</Project>

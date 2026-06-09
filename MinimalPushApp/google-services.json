@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612569141664",
+    "project_id": "weblinknotifications",
+    "storage_bucket": "weblinknotifications.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612569141664:android:6600d9e0adb24558f854c5",
+        "android_client_info": {
+          "package_name": "it.mastracu.MinimalPushApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaM_rwwzp6wTsgtnp_Hx4cwYlfD4e931c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

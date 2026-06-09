@@ -26,6 +26,9 @@ open System.IO
 open System.Xml
 open System.Text
 
+open NotificationService
+open CorePush.Firebase
+
 open tinyBase64Decoder
 open StoreAgent
 open MessageLogAgent
@@ -38,6 +41,30 @@ open JwtToken
 open AuthServer
 open Secure
 open Encodings
+open System.Net.Http
+
+
+// 1. Definiamo un Handler Suave che usa il nostro FirebaseSender
+// Usiamo il currying: passiamo il sender già inizializzato a questa funzione.
+let pushNotificationHandler (sender: FirebaseSender) (ctx: HttpContext) =
+    async {
+        // PER IL TEST: Metti qui il Token che hai copiato dal Logcat di Android!
+        let targetToken = "etUQrD1uTB-P7xLk1mO8dn:APA91bH38LvIIftTNXgEwa0asgrVnK4Wi0fjg5vXYh8jFhJbyrzxYUhQnzArD39_KfMj29e9sYNQSy-7pouU3DOqrLRbwI1JVThdfMSfqtMPTe6k8s1nUXA"
+        
+        let title = "Notifica da Suave!"
+        let body = "Il backend funzionale in F# comunica con Android."
+
+        // Chiamiamo la nostra funzione asincrona per l'invio
+        let! result = sendAndroidPush sender targetToken title body
+        
+        // Mappiamo il risultato (Ok o Error) nelle risposte HTTP di Suave
+        match result with
+        | Result.Ok msg -> 
+            return! OK msg ctx
+        | Result.Error err -> 
+            return! BAD_REQUEST err ctx
+    }
+
 
 let authorizationServerConfig = {
     AddAudienceUrlPath = "/api/audience"
@@ -454,7 +481,7 @@ let getResourceFromReq<'a> (req : HttpRequest) =
     System.Text.Encoding.UTF8.GetString(rawForm)
   req.rawForm |> getString
 
-let app  : WebPart =
+let app  (fs: FirebaseSender) : WebPart =
   let logEvent = new Event<String>()
   let mLogAgent = LogAgent(logEvent)
 
@@ -510,6 +537,9 @@ let app  : WebPart =
     POST >=>
       choose
         [ 
+
+          path "/send-push" >=> (pushNotificationHandler fs)
+          
           path "/printerupdate" >=>
            objectDo (fun prt -> printersAgent.UpdateApp prt.uniqueID prt.sgdSetAlertProcessor
                                 match prt.sgdSetAlertProcessor with
@@ -570,5 +600,23 @@ let app  : WebPart =
 
 [<EntryPoint>]
 let main _ =
-  startWebServer config app
-  0
+
+    // 2. Creazione dell'infrastruttura condivisa (Singleton)
+    // Instanziamo UN SOLO HttpClient e UN SOLO FirebaseSender per l'intero ciclo di vita dell'app.
+    use httpClient = new HttpClient()
+
+    // Assicurati che "weblinknotifications-firebase.json" sia copiato in output (come hai fatto prima)
+    let jsonPath = "weblinknotifications-firebase.json"
+
+    let firebaseSender = 
+        try
+            createSender jsonPath httpClient
+        with ex ->
+            printfn "Errore fatale: %s" ex.Message
+            Environment.Exit(1)
+            null // Non verrà mai raggiunto
+
+    printfn "FirebaseSender inizializzato correttamente con: %s" jsonPath
+
+    startWebServer config (app firebaseSender)
+    0

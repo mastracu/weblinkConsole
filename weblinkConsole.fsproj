@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +28,8 @@
     <Content Include="wwwroot\mobiletest.html" />
     <Content Include="wwwroot\helloeb.html" />
     <Content Include="wwwroot\Pairing.html" />
+    <Compile Include="notifications.fs" />
+    <Compile Include="notificationService.fs" />
     <Compile Include="jsonhelper.fs" />
     <Compile Include="b64.fs" />
     <Compile Include="messageLogAgent.fs" />
@@ -43,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CorePush" Version="4.4.0" />
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
     <PackageReference Include="Suave" Version="2.5.6" />
   </ItemGroup>
@@ -54,5 +57,11 @@
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="7.0.300" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="weblinknotifications-firebase.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>  
 
 </Project>
