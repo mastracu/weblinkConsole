@@ -339,4 +339,9 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+# Ignora completamente le cartelle temporanee di compilazione UM June 2026
+bin/
+obj/
+
+# Non tracciare il file con il secret firebase
 weblinknotifications-firebase.json
