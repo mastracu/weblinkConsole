@@ -49,7 +49,7 @@ open System.Net.Http
 let pushNotificationHandler (sender: FirebaseSender) (ctx: HttpContext) =
     async {
         // PER IL TEST: Metti qui il Token che hai copiato dal Logcat di Android!
-        let targetToken = "etUQrD1uTB-P7xLk1mO8dn:APA91bH38LvIIftTNXgEwa0asgrVnK4Wi0fjg5vXYh8jFhJbyrzxYUhQnzArD39_KfMj29e9sYNQSy-7pouU3DOqrLRbwI1JVThdfMSfqtMPTe6k8s1nUXA"
+        let targetToken = "cC8A6CSdQ7CKE84hXqFW_G:APA91bGC0FmNhAlyatry1wRbvZkNWZtagx2WKO9ZQOE266Lcg9f3mSjE9f7uShPxqD-7argQlHkRBBl13wpcgq0xS6Jp-lLH_9zBwXx78UuwqQNN7TJChbM"
         
         let title = "Notifica da Suave!"
         let body = "Il backend funzionale in F# comunica con Android."

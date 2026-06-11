@@ -24,6 +24,7 @@
   <ItemGroup>
     <!-- FSharp.Core viene ora gestito automaticamente da .NET 9 -->
     <PackageReference Include="Xamarin.Firebase.Messaging" Version="125.0.2" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="118.10.0.1" />
   </ItemGroup>
 
 </Project>
