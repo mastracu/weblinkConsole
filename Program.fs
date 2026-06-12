@@ -43,26 +43,48 @@ open Secure
 open Encodings
 open System.Net.Http
 
+// Payload contract from the Android client
+type RegisterTokenRequest = {
+    token: string
+}
 
-// 1. Definiamo un Handler Suave che usa il nostro FirebaseSender
-// Usiamo il currying: passiamo il sender già inizializzato a questa funzione.
+// 1. Handler to register the token sent from Android
+let registerTokenHandler (ctx: HttpContext) =
+    async {
+        try
+            // Parse the request body
+            let bodyString = Encoding.UTF8.GetString(ctx.request.rawForm)
+            
+            // Deserialize using built-in System.Text.Json
+            let data = Json.JsonSerializer.Deserialize<RegisterTokenRequest>(bodyString)
+            
+            if String.IsNullOrEmpty(data.token) then
+                return! BAD_REQUEST "Token non valido o vuoto." ctx
+            else
+                // Save the token into our global variable
+                NotificationService.lastRegisteredToken := data.token
+                printfn "Nuovo token registrato dal dispositivo: %s" data.token
+                return! OK "Token registrato sul backend con successo." ctx
+        with ex ->
+            return! BAD_REQUEST (sprintf "Errore nel parsing del JSON: %s" ex.Message) ctx
+    }
+
+// 2. Updated Handler to send push notifications using the registered token
 let pushNotificationHandler (sender: FirebaseSender) (ctx: HttpContext) =
     async {
-        // PER IL TEST: Metti qui il Token che hai copiato dal Logcat di Android!
-        let targetToken = "cC8A6CSdQ7CKE84hXqFW_G:APA91bGC0FmNhAlyatry1wRbvZkNWZtagx2WKO9ZQOE266Lcg9f3mSjE9f7uShPxqD-7argQlHkRBBl13wpcgq0xS6Jp-lLH_9zBwXx78UuwqQNN7TJChbM"
+        let token = !lastRegisteredToken
         
-        let title = "Notifica da Suave!"
-        let body = "Il backend funzionale in F# comunica con Android."
+        if String.IsNullOrEmpty(token) then
+            return! BAD_REQUEST "Nessun dispositivo registrato! Avvia prima l'app Android." ctx
+        else
+            let title = "Notifica da Suave!"
+            let body = "Il backend ha inviato questa notifica usando il token registrato dinamicamente."
 
-        // Chiamiamo la nostra funzione asincrona per l'invio
-        let! result = sendAndroidPush sender targetToken title body
-        
-        // Mappiamo il risultato (Ok o Error) nelle risposte HTTP di Suave
-        match result with
-        | Result.Ok msg -> 
-            return! OK msg ctx
-        | Result.Error err -> 
-            return! BAD_REQUEST err ctx
+            let! result = sendAndroidPush sender token title body
+            
+            match result with
+            | Result.Ok msg -> return! OK msg ctx
+            | Result.Error err -> return! BAD_REQUEST err ctx
     }
 
 
@@ -539,6 +561,9 @@ let app  (fs: FirebaseSender) : WebPart =
         [ 
 
           path "/send-push" >=> (pushNotificationHandler fs)
+
+          // Endpoint POST per ricevere il token dal cellulare Android
+          POST >=> path "/register-token" >=> registerTokenHandler
           
           path "/printerupdate" >=>
            objectDo (fun prt -> printersAgent.UpdateApp prt.uniqueID prt.sgdSetAlertProcessor

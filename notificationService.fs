@@ -5,6 +5,9 @@ open System.Net.Http
 open CorePush.Firebase
 open Notifications
 
+// A global in-memory thread-safe storage for the last registered Android token
+let lastRegisteredToken = ref ""
+
 /// Crea e inizializza un'istanza di FirebaseSender partendo dal file JSON delle credenziali
 let createSender (serviceAccountJsonPath: string) (httpClient: HttpClient) =
     if not (File.Exists(serviceAccountJsonPath)) then
