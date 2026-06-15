@@ -49,7 +49,7 @@ type RegisterTokenRequest = {
 }
 
 // 1. Handler to register the token sent from Android
-let registerTokenHandler (ctx: HttpContext) =
+let registerTokenHandler (logag: LogAgent) (ctx: HttpContext) =
     async {
         try
             // Parse the request body
@@ -63,7 +63,7 @@ let registerTokenHandler (ctx: HttpContext) =
             else
                 // Save the token into our global variable
                 NotificationService.lastRegisteredToken := data.token
-                printfn "Nuovo token registrato dal dispositivo: %s" data.token
+                logag.AppendToLog ("New Firebase Token from client: " + data.token) 
                 return! OK "Token registrato sul backend con successo." ctx
         with ex ->
             return! BAD_REQUEST (sprintf "Errore nel parsing del JSON: %s" ex.Message) ctx
@@ -563,7 +563,7 @@ let app  (fs: FirebaseSender) : WebPart =
           path "/send-push" >=> (pushNotificationHandler fs)
 
           // Endpoint POST per ricevere il token dal cellulare Android
-          POST >=> path "/register-token" >=> registerTokenHandler
+          POST >=> path "/register-token" >=> (registerTokenHandler mLogAgent)
           
           path "/printerupdate" >=>
            objectDo (fun prt -> printersAgent.UpdateApp prt.uniqueID prt.sgdSetAlertProcessor

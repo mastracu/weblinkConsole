@@ -43,9 +43,9 @@ type MainActivity() =
     let mutable serverUrlInput : EditText = null
     let mutable sendTokenButton : Button = null
 
-    // Shared HttpClient (best practice is to keep a single instance)
+    // 2. Definizione iniziale, standard e pulita di HttpClient
     let httpClient = new HttpClient()
-
+    
     // Function to register the token to your F# backend
     member this.RegisterTokenWithBackend(serverUrl: string, token: string) =
         async {
