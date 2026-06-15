@@ -163,7 +163,7 @@ let config =
     }
 
 
-let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
+let ws (firebaseSender: CorePush.Firebase.FirebaseSender) allAgents (webSocket : WebSocket) (context: HttpContext) =
 
   let (storeAgent:StoreAgent, printersAgent:PrintersAgent, logAgent:LogAgent) = allAgents
   let mutable printerUniqueId = ""
@@ -268,6 +268,26 @@ let ws allAgents (webSocket : WebSocket) (context: HttpContext) =
                         do System.Console.WriteLine (DateTime.Now.ToString() + sprintf " adjusted printerID: %s"  printerUniqueId)
                         do channelName <- "v1.main.zebra.com"
                         do printersAgent.AddPrinter printerUniqueId inbox
+                        // --- INIZIO LOGICA NOTIFICA PUSH ---
+                        let token = !lastRegisteredToken
+                        
+                        if String.IsNullOrEmpty(token) then
+                            printfn "Attenzione: Impossibile inviare il push. Nessun Token Android registrato!"
+                        else
+                            // Creiamo un blocco 'async' normale per chiamare la nostra funzione di invio Push
+                            // e lo eseguiamo in parallelo senza bloccare il WebSocket
+                            let sendPushTask = async {
+                                let title = "Nuova stampante su Weblink"
+                                let body = sprintf "Numero di serie stampante: %s" printerUniqueId
+                                
+                                let! result = sendAndroidPush firebaseSender token title body
+                                match result with
+                                | Result.Ok msg -> printfn "Push inviato via WS: %s" msg
+                                | Result.Error err -> printfn "Errore push via WS: %s" err
+                            }
+                            Async.Start(sendPushTask) // Lancia l'invio push in background
+                        // --- FINE LOGICA NOTIFICA PUSH ---
+
                         do printersAgent.SendMsgOverMainChannel printerUniqueId (Opcode.Binary, UTF8.bytes """ { "open" : "v1.raw.zebra.com" } """, true) true
                         do printersAgent.SendMsgOverMainChannel printerUniqueId (Opcode.Binary, UTF8.bytes """ { "open" : "v1.config.zebra.com" } """, true) true
                     | None -> ()
@@ -537,7 +557,7 @@ let app  (fs: FirebaseSender) : WebPart =
 
   choose [
     audienceWebPart'
-    path "/websocketWithSubprotocol" >=> ZebraWebSocket.handShakeWithSubprotocol (chooseSubprotocol "v1.weblink.zebra.com") (ws allAgents)
+    path "/websocketWithSubprotocol" >=> ZebraWebSocket.handShakeWithSubprotocol (chooseSubprotocol "v1.weblink.zebra.com") (ws fs allAgents)
     path "/sseLog" >=> request (fun _ -> EventSource.handShake (sseContinuation logEvent.Publish ))
     path "/api/svrevents" >=> Secure.jwtAuthenticate audienceJwtConfig (request (fun _ -> EventSource.handShake (sseContinuation logEvent.Publish )))
 
