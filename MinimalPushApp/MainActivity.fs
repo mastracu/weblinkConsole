@@ -28,6 +28,12 @@ type Printer = {
     connectionTime : string
 }
 
+type RegisterTokenRequest = {
+    deviceId: string
+    token: string
+}
+
+
 // 2. Listener per la ricezione del token Firebase all'avvio
 type TokenListener() =
     inherit Java.Lang.Object()
@@ -57,14 +63,18 @@ type MainActivity() =
     member this.RegisterTokenWithBackend(serverUrl: string, token: string) =
         async {
             try
+                // Recuperiamo l'ID univoco del dispositivo Android
+                let androidId = Android.Provider.Settings.Secure.GetString(this.ContentResolver, Android.Provider.Settings.Secure.AndroidId)
+
+                // Creiamo il payload strutturato con i due campi
+                let payload = { deviceId = androidId; token = token }
+                let json = System.Text.Json.JsonSerializer.Serialize(payload)
+                let content = new StringContent(json, Encoding.UTF8, "application/json")
+
                 this.RunOnUiThread(Action(fun () -> 
                     statusTextView.Text <- "Invio token al backend..."
                     statusTextView.SetTextColor(Color.Orange)
                 ))
-
-                let payload = Map.ofList [ "token", token ]
-                let json = JsonSerializer.Serialize(payload)
-                let content = new StringContent(json, Encoding.UTF8, "application/json")
 
                 let! response = httpClient.PostAsync(serverUrl, content) |> Async.AwaitTask
 
