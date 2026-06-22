@@ -53,6 +53,7 @@ let registerTokenHandler (logag: LogAgent) (ctx: HttpContext) =
     async {
         try
             let bodyString = Encoding.UTF8.GetString(ctx.request.rawForm)
+            logag.AppendToLog ("Body: " + bodyString)
             let data = System.Text.Json.JsonSerializer.Deserialize<RegisterTokenRequest>(bodyString)
             
             if String.IsNullOrEmpty(data.token) || String.IsNullOrEmpty(data.deviceId) then
