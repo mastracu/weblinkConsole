@@ -45,46 +45,66 @@ open System.Net.Http
 
 // Payload contract from the Android client
 type RegisterTokenRequest = {
+    deviceId: string
     token: string
 }
 
-// 1. Handler to register the token sent from Android
 let registerTokenHandler (logag: LogAgent) (ctx: HttpContext) =
     async {
         try
-            // Parse the request body
             let bodyString = Encoding.UTF8.GetString(ctx.request.rawForm)
+            let data = System.Text.Json.JsonSerializer.Deserialize<RegisterTokenRequest>(bodyString)
             
-            // Deserialize using built-in System.Text.Json
-            let data = Json.JsonSerializer.Deserialize<RegisterTokenRequest>(bodyString)
-            
-            if String.IsNullOrEmpty(data.token) then
-                return! BAD_REQUEST "Token non valido o vuoto." ctx
+            if String.IsNullOrEmpty(data.token) || String.IsNullOrEmpty(data.deviceId) then
+                return! BAD_REQUEST "Token o Device ID mancanti o vuoti." ctx
             else
-                // Save the token into our global variable
-                NotificationService.lastRegisteredToken := data.token
-                logag.AppendToLog ("New Firebase Token from client: " + data.token) 
-                return! OK "Token registrato sul backend con successo." ctx
+                // Passiamo sia il deviceId che il token all'agente
+                do! NotificationAgent.tokenManager.PostAndAsyncReply(fun ch -> NotificationAgent.Register(data.deviceId, data.token, ch))
+                logag.AppendToLog ("New Firebase Token: " + data.token)  
+                return! OK "Token registrato/aggiornato sul backend con successo." ctx
         with ex ->
             return! BAD_REQUEST (sprintf "Errore nel parsing del JSON: %s" ex.Message) ctx
     }
 
-// 2. Updated Handler to send push notifications using the registered token
-let pushNotificationHandler (sender: FirebaseSender) (ctx: HttpContext) =
-    async {
-        let token = !lastRegisteredToken
-        
-        if String.IsNullOrEmpty(token) then
-            return! BAD_REQUEST "Nessun dispositivo registrato! Avvia prima l'app Android." ctx
-        else
-            let title = "Notifica da Suave!"
-            let body = "Il backend ha inviato questa notifica usando il token registrato dinamicamente."
 
-            let! result = sendAndroidPush sender token title body
+// Funzione helper per l'invio Broadcast in parallelo
+let sendPushToAllDevices (firebaseSender: CorePush.Firebase.FirebaseSender) title body =
+    async {
+        // Chiediamo all'Agente la lista completa dei token attuali
+        let! tokens = NotificationAgent.tokenManager.PostAndAsyncReply(NotificationAgent.GetAll)
+        
+        if tokens.IsEmpty then
+            printfn "Impossibile inviare notifiche: nessun dispositivo Android registrato."
+            return "Nessun dispositivo registrato."
+        else
+            printfn "Invio broadcast a %d dispositivi..." tokens.Length
             
-            match result with
-            | Result.Ok msg -> return! OK msg ctx
-            | Result.Error err -> return! BAD_REQUEST err ctx
+            // Creiamo un'operazione asincrona per ogni token (Task in parallelo)
+            let sendTasks = 
+                tokens 
+                |> List.map (fun token -> 
+                    async {
+                        let! result = NotificationService.sendAndroidPush firebaseSender token title body
+                        match result with
+                        | Result.Ok msg -> printfn "Push inviato a [..%s]: %s" (token.Substring(0, 10)) msg
+                        | Result.Error err -> printfn "Errore per token [..%s]: %s" (token.Substring(0, 10)) err
+                    }
+                )
+            
+            // Eseguiamo tutti gli invii contemporaneamente (Parallelismo massivo F#)
+            do! Async.Parallel sendTasks |> Async.Ignore
+            
+            return sprintf "Notifiche broadcast completate su %d dispositivi." tokens.Length
+    }
+
+let pushNotificationHandler (firebaseSender: CorePush.Firebase.FirebaseSender) (ctx: HttpContext) =
+    async {
+        let title = "Zebra Monitor"
+        let body = "Una nuova stampante si è appena connessa alla rete!"
+        
+        // Chiamiamo il nostro broadcast
+        let! summary = sendPushToAllDevices firebaseSender title body
+        return! OK summary ctx
     }
 
 
@@ -269,23 +289,16 @@ let ws (firebaseSender: CorePush.Firebase.FirebaseSender) allAgents (webSocket :
                         do channelName <- "v1.main.zebra.com"
                         do printersAgent.AddPrinter printerUniqueId inbox
                         // --- INIZIO LOGICA NOTIFICA PUSH ---
-                        let token = !lastRegisteredToken
-                        
-                        if String.IsNullOrEmpty(token) then
-                            printfn "Attenzione: Impossibile inviare il push. Nessun Token Android registrato!"
-                        else
-                            // Creiamo un blocco 'async' normale per chiamare la nostra funzione di invio Push
-                            // e lo eseguiamo in parallelo senza bloccare il WebSocket
-                            let sendPushTask = async {
-                                let title = "Nuova stampante su Weblink"
-                                let body = sprintf "Numero di serie stampante: %s" printerUniqueId
+                        // Creiamo un blocco 'async' normale per chiamare la nostra funzione di invio Push
+                        // e lo eseguiamo in parallelo senza bloccare il WebSocket
+                        let sendPushTask = async {
+                            let title = "Nuova stampante su Weblink"
+                            let body = sprintf "Numero di serie stampante: %s" printerUniqueId
                                 
-                                let! result = sendAndroidPush firebaseSender token title body
-                                match result with
-                                | Result.Ok msg -> printfn "Push inviato via WS: %s" msg
-                                | Result.Error err -> printfn "Errore push via WS: %s" err
-                            }
-                            Async.Start(sendPushTask) // Lancia l'invio push in background
+                            let! _ = sendPushToAllDevices firebaseSender title body
+                            ()
+                        }
+                        Async.Start(sendPushTask) // Lancia l'invio push in background
                         // --- FINE LOGICA NOTIFICA PUSH ---
 
                         do printersAgent.SendMsgOverMainChannel printerUniqueId (Opcode.Binary, UTF8.bytes """ { "open" : "v1.raw.zebra.com" } """, true) true

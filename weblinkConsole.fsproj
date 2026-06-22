@@ -32,6 +32,7 @@
     <Compile Include="notificationService.fs" />
     <Compile Include="jsonhelper.fs" />
     <Compile Include="b64.fs" />
+    <Compile Include="notificationAgent.fs" />
     <Compile Include="messageLogAgent.fs" />
     <Compile Include="ZebraWebSocket.fs" />
     <Compile Include="storeagent.fs" />
